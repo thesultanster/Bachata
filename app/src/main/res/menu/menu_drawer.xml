@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- group with single selected item so only one item is highlighted in the nav menu -->
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/get_tutored"
+            android:title="Find Tutors"/>
+
+        <item
+            android:id="@+id/requests"
+            android:title="Requests" />
+
+
+        <item
+            android:id="@+id/chat"
+            android:title="Chats" />
+
+    </group>
+</menu>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "809163555429",
+    "firebase_url": "https://uhoo-6651f.firebaseio.com",
+    "project_id": "uhoo-6651f",
+    "storage_bucket": "uhoo-6651f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809163555429:android:a1b5a97a71dfe114",
+        "android_client_info": {
+          "package_name": "com.meetup.uhoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809163555429-13gnre6u84be5ck3brubv96msqcrk4f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJHTaICnqGm8aQS_cQbUS0WEWlqX19ZM8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

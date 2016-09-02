@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    >
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImage"
+            android:layout_height="65sp"
+            android:layout_margin="15dp"
+            android:layout_width="65sp"
+            android:src="@color/primaryColorLight" />
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="thesultanster"
+                android:textColor="@color/primaryText"
+                android:textSize="25sp" />
+
+
+            <TextView
+                android:id="@+id/miniBio"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="I do programming and c++ and java and Android applications " />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
