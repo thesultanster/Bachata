@@ -5,13 +5,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
 
-public class PeopleNearby extends AppCompatActivity {
+public class PeopleNearby extends NavigationDrawerFramework {
 
     // Used to manually update list of nearby users
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -33,6 +36,28 @@ public class PeopleNearby extends AppCompatActivity {
         // Set Up Variables
         InflateVariables();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.anonymous_user_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -64,6 +89,8 @@ public class PeopleNearby extends AppCompatActivity {
 
 
     }
+
+
 
 
 }
