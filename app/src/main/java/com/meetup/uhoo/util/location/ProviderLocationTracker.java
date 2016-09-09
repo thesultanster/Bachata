@@ -1,4 +1,4 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.util.location;
 
 import android.content.Context;
 import android.location.Location;

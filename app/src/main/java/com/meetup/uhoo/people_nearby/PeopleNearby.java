@@ -9,6 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
+import com.firebase.geofire.LocationCallback;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
@@ -31,34 +40,67 @@ public class PeopleNearby extends NavigationDrawerFramework {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_people_nearby);
 
-        //getToolbar().setTitle("Teams");
+        // Set Toolbar title
+        getToolbar().setTitle("Meet People");
 
         // Set Up Variables
         InflateVariables();
 
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("locations");
+        final GeoFire geoFire = new GeoFire(ref);
+
+        geoFire.getLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new LocationCallback() {
+            @Override
+            public void onLocationResult(String key, GeoLocation location) {
+                if (location != null) {
+                    System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+
+                    // Given Manual Location, query for changes in all object in a 0.6k radius
+                    GeoQuery geoQuery = geoFire.queryAtLocation(location, 0.6);
+                    geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+                        @Override
+                        public void onKeyEntered(String key, GeoLocation location) {
+                            System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
+                            adapter.addRow(new PeopleNearbyRecyclerInfo(key, key));
+                        }
+
+                        @Override
+                        public void onKeyExited(String key) {
+                            System.out.println(String.format("Key %s is no longer in the search area", key));
+                        }
+
+                        @Override
+                        public void onKeyMoved(String key, GeoLocation location) {
+                            System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
+                        }
+
+                        @Override
+                        public void onGeoQueryReady() {
+                            System.out.println("All initial data has been loaded and events have been fired!");
+                        }
+
+                        @Override
+                        public void onGeoQueryError(DatabaseError error) {
+                            System.err.println("There was an error with this query: " + error);
+                        }
+                    });
+
+                } else {
+                    System.out.println(String.format("There is no location for key %s in GeoFire", key));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.err.println("There was an error getting the GeoFire location: " + databaseError);
+            }
+        });
+
+
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.anonymous_user_toolbar, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
     void InflateVariables() {
@@ -66,14 +108,6 @@ public class PeopleNearby extends NavigationDrawerFramework {
         adapter = new PeopleNearbyRecyclerAdapter(PeopleNearby.this, new ArrayList<PeopleNearbyRecyclerInfo>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-
-
-
-        adapter.addRow(new PeopleNearbyRecyclerInfo("David Hasselhoff","Product Manager"));
-        adapter.addRow(new PeopleNearbyRecyclerInfo("Mark DeReyouter","Developer"));
-        adapter.addRow(new PeopleNearbyRecyclerInfo("David Bowie","Product Manager"));
-
     }
 
 

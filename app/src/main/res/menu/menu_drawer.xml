@@ -3,17 +3,17 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/get_tutored"
-            android:title="Find Tutors"/>
+            android:id="@+id/meet_people"
+            android:title="Meet People"/>
 
         <item
-            android:id="@+id/requests"
-            android:title="Requests" />
+            android:id="@+id/connections"
+            android:title="Connections" />
 
 
         <item
-            android:id="@+id/chat"
-            android:title="Chats" />
+            android:id="@+id/offers"
+            android:title="Offers" />
 
     </group>
 </menu>

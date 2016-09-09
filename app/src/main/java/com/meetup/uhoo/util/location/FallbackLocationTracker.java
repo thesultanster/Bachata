@@ -4,8 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.meetup.uhoo.ProviderLocationTracker;
-
 /**
  * Created by sultankhan on 1/11/16.
  *

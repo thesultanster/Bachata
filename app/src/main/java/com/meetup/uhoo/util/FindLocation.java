@@ -1,4 +1,4 @@
-package com.meetup.uhoo.util.location;
+package com.meetup.uhoo.util;
 
 import android.Manifest;
 import android.app.Activity;
@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.people_nearby.PeopleNearby;
+import com.meetup.uhoo.util.location.FallbackLocationTracker;
+import com.meetup.uhoo.util.location.LocationTracker;
 
 public class FindLocation extends Activity {
 
