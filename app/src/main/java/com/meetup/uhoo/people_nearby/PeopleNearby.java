@@ -55,7 +55,7 @@ public class PeopleNearby extends NavigationDrawerFramework {
                 if (location != null) {
                     System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
 
-                    // Given Manual Location, query for changes in all object in a 0.6k radius
+                    // Given Manual Location, query for changes in all object in a 0.6ki radius
                     GeoQuery geoQuery = geoFire.queryAtLocation(location, 0.6);
                     geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
                         @Override

@@ -36,23 +36,23 @@ public class FindLocation extends Activity {
     Bundle args = new Bundle();
 
     private FirebaseAuth mAuth;
-
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_location);
-
-        // Start Location Tracker
-        fallbackLocationTracker = new FallbackLocationTracker(this);
-
-
         //get the shared instance of the FirebaseAuth object
         mAuth = FirebaseAuth.getInstance();
 
+        //TODO:delete this shit
+        //Location targetLocation = new Location("");//provider name is unecessary
+        //targetLocation.setLatitude(34.1523723d);//your coords of course
+        //targetLocation.setLongitude(-118.4607954d);
+        //LoginAnonymousUser(targetLocation);
 
-
+        // Start Location Tracker
+        fallbackLocationTracker = new FallbackLocationTracker(this);
 
 
 
@@ -84,13 +84,14 @@ public class FindLocation extends Activity {
 
 
 
-
     @Override
     protected void onStop() {
         super.onStop();
 
         fallbackLocationTracker.stop();
     }
+
+
 
     // Displaying prompt to turn on GPS
     public static void displayPromptForEnablingGPS(final Activity activity) {

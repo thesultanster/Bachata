@@ -4,17 +4,25 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.credentials.CreateNewAccount;
+import com.meetup.uhoo.credentials.SignIn;
+import com.meetup.uhoo.profile.SimpleProfileInfo;
 
 
 public class NavigationDrawerFramework extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -30,6 +38,8 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
     protected FrameLayout mContent;
     protected Toolbar toolbar;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     public void setContentView(final int layoutResID) {
@@ -58,16 +68,35 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
         mDrawerToggle.syncState();
 
         // navigate(mNavItemId);
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d("auth", "NavigationDrawerFramework onAuthStateChanged:signed_in:" + user.getUid());
+                    toolbar.getMenu().getItem(R.id.create_account_icon).setVisible(false);
+
+                }
+
+            }
+        };
+
+
     }
 
     // Toolbar Code           /===========================================================================
     //====================================================================================================
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.anonymous_user_toolbar, menu);
-        return true;
+        return  true;
     }
+
+
 
     // Navigation Drawer Code /===========================================================================
     //====================================================================================================
@@ -77,6 +106,8 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
         // Update highlighted item in the navigation menu
         menuItem.setChecked(true);
         mNavItemId = menuItem.getItemId();
+
+
 
         // Allow some time after closing the drawer before performing real navigation
         // So the user can see what is happening
@@ -100,6 +131,11 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == android.support.v7.appcompat.R.id.home) {
             return mDrawerToggle.onOptionsItemSelected(item);
+        }
+        // If user clicks Create Account Icon
+        if(item.getItemId() == R.id.create_account_icon){
+            Intent intent = new Intent(this, SignIn.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -129,11 +165,11 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
         Intent intent = new Intent();
 
         switch(itemId){
-            /*
+
             case R.id.profile:
-                intent = new Intent(this, Profile.class);
+                intent = new Intent(this, SimpleProfileInfo.class);
                 break;
-            case R.id.team:
+            /*case R.id.team:
                 intent = new Intent(this, PeopleNearby.class);
                 break;
             case R.id.timeline:
