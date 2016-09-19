@@ -45,7 +45,6 @@ public class FindLocation extends Activity {
         //get the shared instance of the FirebaseAuth object
         mAuth = FirebaseAuth.getInstance();
 
-        //TODO:delete this shit
         //Location targetLocation = new Location("");//provider name is unecessary
         //targetLocation.setLatitude(34.1523723d);//your coords of course
         //targetLocation.setLongitude(-118.4607954d);
@@ -147,24 +146,37 @@ public class FindLocation extends Activity {
 
 
     private void LoginAnonymousUser(final Location loc) {
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("firebase auth", "signInAnonymously:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("firebase auth", "signInAnonymously", task.getException());
-                            Toast.makeText(FindLocation.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            SaveLocationInDatabase(loc);
+
+        }
+        // User not signed in
+        else
+        {
+
+
+
+            mAuth.signInAnonymously()
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("firebase auth", "signInAnonymously:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Log.w("firebase auth", "signInAnonymously", task.getException());
+                                Toast.makeText(FindLocation.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            SaveLocationInDatabase(loc);
                         }
-
-                        SaveLocationInDatabase(loc);
-                    }
-                });
+                    });
+        }
     }
 
     private void FindLocation() {
@@ -213,13 +225,9 @@ public class FindLocation extends Activity {
 
     private void SaveLocationInDatabase(final Location loc){
 
-        //TODO:: Change Picture and Text to "Currently logging in"
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("locations");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user_locations");
             GeoFire geoFire = new GeoFire(ref);
-            geoFire.setLocation(user.getUid(), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+            geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
                 @Override
                 public void onComplete(String key, DatabaseError error) {
                     if (error != null) {
@@ -232,9 +240,7 @@ public class FindLocation extends Activity {
                     }
                 }
             });
-        } else {
-            // No user is signed in
-        }
+
 
     }
 

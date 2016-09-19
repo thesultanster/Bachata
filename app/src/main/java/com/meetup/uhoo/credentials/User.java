@@ -16,23 +16,31 @@ public class User {
     public String oneLiner;
     public String uid;
     public GeoLocation location;
+    public boolean isCheckedIn;
+    public String checkedInto;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
         this.firstName = "";
         this.lastName = "";
         this.oneLiner = "";
+        this.isCheckedIn = false;
+        this.checkedInto = "";
     }
 
     public User(String uid, GeoLocation location) {
         this.uid = uid;
         this.location = location;
+        this.isCheckedIn = false;
+        this.checkedInto = "";
     }
 
     public User(String firstName, String lastName, String oneLiner) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.oneLiner = oneLiner;
+        this.isCheckedIn = false;
+        this.checkedInto = "";
     }
 
 
