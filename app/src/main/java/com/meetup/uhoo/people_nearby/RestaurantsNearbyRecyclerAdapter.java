@@ -1,7 +1,6 @@
 package com.meetup.uhoo.people_nearby;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,14 +15,14 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNearbyRecyclerAdapter.MyViewHolder> {
+public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<RestaurantsNearbyRecyclerAdapter.MyViewHolder> {
 
     // emptyList takes care of null pointer exception
-    List<PeopleNearbyRecyclerInfo> data = Collections.emptyList();
+    List<RestaurantsNearbyRecyclerInfo> data = Collections.emptyList();
     LayoutInflater inflator;
     Context context;
 
-    public PeopleNearbyRecyclerAdapter(PeopleNearby context, List<PeopleNearbyRecyclerInfo> data) {
+    public RestaurantsNearbyRecyclerAdapter(RestaurantsNearby context, List<RestaurantsNearbyRecyclerInfo> data) {
         this.context = context;
         inflator = LayoutInflater.from(context);
         this.data = data;
@@ -31,7 +30,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
 
 
-    public void addRow(PeopleNearbyRecyclerInfo row) {
+    public void addRow(RestaurantsNearbyRecyclerInfo row) {
         data.add(row);
         notifyItemInserted(getItemCount() - 1);
     }
@@ -77,10 +76,9 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         // This gives us current information list object
-        PeopleNearbyRecyclerInfo current = data.get(position);
+        RestaurantsNearbyRecyclerInfo current = data.get(position);
 
-        holder.name.setText(current.getName());
-        holder.miniBio.setText(current.getMiniBio());
+        holder.name.setText(current.name);
 
 
     }
@@ -95,7 +93,6 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name;
-        TextView miniBio;
 
         CircleImageView profileImage;
         public MyViewHolderClicks mListener;
@@ -108,7 +105,6 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
             //Link the objects
             name = (TextView) itemView.findViewById(R.id.name);
-            miniBio = (TextView) itemView.findViewById(R.id.miniBio);
             profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
 
             itemView.setOnClickListener(this);

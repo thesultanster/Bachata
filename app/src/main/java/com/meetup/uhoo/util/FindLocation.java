@@ -26,7 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.people_nearby.PeopleNearby;
+import com.meetup.uhoo.people_nearby.RestaurantsNearby;
 import com.meetup.uhoo.util.location.FallbackLocationTracker;
 import com.meetup.uhoo.util.location.LocationTracker;
 
@@ -52,7 +52,6 @@ public class FindLocation extends Activity {
 
         // Start Location Tracker
         fallbackLocationTracker = new FallbackLocationTracker(this);
-
 
 
     }
@@ -82,14 +81,12 @@ public class FindLocation extends Activity {
     }
 
 
-
     @Override
     protected void onStop() {
         super.onStop();
 
         fallbackLocationTracker.stop();
     }
-
 
 
     // Displaying prompt to turn on GPS
@@ -115,7 +112,6 @@ public class FindLocation extends Activity {
                         });
         builder.create().show();
     }
-
 
 
     @Override
@@ -153,9 +149,7 @@ public class FindLocation extends Activity {
 
         }
         // User not signed in
-        else
-        {
-
+        else {
 
 
             mAuth.signInAnonymously()
@@ -216,30 +210,37 @@ public class FindLocation extends Activity {
         args.putParcelable("userPosition", loc);
 
         // Pass User Location through and go to next activity
-        Intent intent = new Intent(FindLocation.this, PeopleNearby.class);
+        Intent intent = new Intent(FindLocation.this, RestaurantsNearby.class);
         intent.putExtra("bundle", args);
         startActivity(intent);
         finish();
 
     }
 
-    private void SaveLocationInDatabase(final Location loc){
+    private void SaveLocationInDatabase(final Location loc) {
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user_locations");
-            GeoFire geoFire = new GeoFire(ref);
-            geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
-                @Override
-                public void onComplete(String key, DatabaseError error) {
-                    if (error != null) {
-                        Log.d("firebase auth", "There was an error saving the location to GeoFire: " + error);
-                    } else {
+        // Update user in user_locations GeoFire Table
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user_locations");
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+            @Override
+            public void onComplete(String key, DatabaseError error) {
+                if (error != null) {
+                    Log.d("firebase auth", "There was an error saving the location to GeoFire: " + error);
+                } else {
 
-                        TerminateSplashScreen(loc);
+                    TerminateSplashScreen(loc);
 
-                        Log.d("firebase auth", "Location saved on server successfully!");
-                    }
+                    Log.d("firebase auth", "Location saved on server successfully!");
                 }
-            });
+            }
+        });
+
+
+        ref = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.child("latitude").setValue(loc.getLatitude());
+        ref.child("longitude").setValue(loc.getLongitude());
+
 
 
     }

@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.people_nearby.PeopleNearby;
 import com.meetup.uhoo.profile.SimpleProfileInfo;
 
 public class CreateNewAccount extends AppCompatActivity {

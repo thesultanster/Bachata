@@ -15,7 +15,8 @@ public class User {
     public String email;
     public String oneLiner;
     public String uid;
-    public GeoLocation location;
+    public double latitude;
+    public double longitude;
     public boolean isCheckedIn;
     public String checkedInto;
 
@@ -26,11 +27,13 @@ public class User {
         this.oneLiner = "";
         this.isCheckedIn = false;
         this.checkedInto = "";
+
     }
 
     public User(String uid, GeoLocation location) {
         this.uid = uid;
-        this.location = location;
+        this.latitude = location.latitude;
+        this.longitude = location.longitude;
         this.isCheckedIn = false;
         this.checkedInto = "";
     }

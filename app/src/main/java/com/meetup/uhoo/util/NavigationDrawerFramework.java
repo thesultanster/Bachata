@@ -14,16 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 
-import com.google.android.gms.plus.People;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.credentials.CreateNewAccount;
 import com.meetup.uhoo.credentials.SignIn;
-import com.meetup.uhoo.people_nearby.PeopleNearby;
+import com.meetup.uhoo.people_nearby.RestaurantsNearby;
 import com.meetup.uhoo.profile.SimpleProfileInfo;
 
 
@@ -172,7 +169,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
                 intent = new Intent(this, SimpleProfileInfo.class);
                 break;
             case R.id.meet_people:
-                intent = new Intent(this, PeopleNearby.class);
+                intent = new Intent(this, RestaurantsNearby.class);
                 break;
             /*case R.id.timeline:
                 intent = new Intent(this, Timeline.class);
