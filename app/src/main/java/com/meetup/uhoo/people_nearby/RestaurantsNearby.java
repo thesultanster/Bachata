@@ -256,7 +256,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         adapter.clearData();
 
 
-
         if (user == null) {
             Log.d("refresh", "user not loaded");
             mSwipeRefreshLayout.setRefreshing(false);
@@ -279,7 +278,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 // Get user value
                                 RestaurantsNearbyRecyclerInfo restaurant = dataSnapshot.getValue(RestaurantsNearbyRecyclerInfo.class);
-                                adapter.addRow(restaurant);
+
+                                if (restaurant != null)
+                                    adapter.addRow(restaurant);
                                 // ...
                             }
 
@@ -288,7 +289,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                 Log.w("restaurant", "getRestaurant:onCancelled", databaseError.toException());
                             }
                         });
-
 
 
                 //adapter.addRow(new RestaurantsNearbyRecyclerInfo(key));
