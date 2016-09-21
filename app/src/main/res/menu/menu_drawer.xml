@@ -19,5 +19,9 @@
             android:id="@+id/offers"
             android:title="Offers" />
 
+        <item
+            android:id="@+id/logOut"
+            android:title="Log Out" />
+
     </group>
 </menu>

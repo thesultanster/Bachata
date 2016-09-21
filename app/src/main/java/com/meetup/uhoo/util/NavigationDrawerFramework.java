@@ -171,10 +171,11 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
             case R.id.meet_people:
                 intent = new Intent(this, RestaurantsNearby.class);
                 break;
-            /*case R.id.timeline:
-                intent = new Intent(this, Timeline.class);
+            case R.id.logOut:
+                FirebaseAuth.getInstance().signOut();
+                intent = new Intent(this, FindLocation.class);
                 break;
-                */
+
 
         }
 

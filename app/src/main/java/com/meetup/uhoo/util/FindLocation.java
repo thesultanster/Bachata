@@ -143,15 +143,13 @@ public class FindLocation extends Activity {
 
     private void LoginAnonymousUser(final Location loc) {
 
+        // If user is currently signed in
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             SaveLocationInDatabase(loc);
-
         }
         // User not signed in
         else {
-
-
             mAuth.signInAnonymously()
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
