@@ -6,18 +6,19 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class RestaurantsNearbyRecyclerInfo {
 
-    String name, address;
+    String name, address, placeId;
 
     public  RestaurantsNearbyRecyclerInfo(){
         this.name = "";
         this.address = "";
+        this.placeId = "";
     }
 
     public RestaurantsNearbyRecyclerInfo(Place place)
     {
         this.name = place.getName().toString();
         this.address = place.getAddress().toString();
-
+        this.placeId = place.getId();
         place.freeze();
     }
 

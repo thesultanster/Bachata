@@ -1,7 +1,6 @@
-package com.meetup.uhoo.people_nearby;
+package com.meetup.uhoo.restaurant;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,21 +9,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.restaurant.RestaurantActivity;
 
 import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<RestaurantsNearbyRecyclerAdapter.MyViewHolder> {
+public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNearbyRecyclerAdapter.MyViewHolder> {
 
     // emptyList takes care of null pointer exception
-    List<RestaurantsNearbyRecyclerInfo> data = Collections.emptyList();
+    List<PeopleNearbyRecyclerInfo> data = Collections.emptyList();
     LayoutInflater inflator;
     Context context;
 
-    public RestaurantsNearbyRecyclerAdapter(RestaurantsNearby context, List<RestaurantsNearbyRecyclerInfo> data) {
+    public PeopleNearbyRecyclerAdapter(RestaurantActivity context, List<PeopleNearbyRecyclerInfo> data) {
         this.context = context;
         inflator = LayoutInflater.from(context);
         this.data = data;
@@ -32,7 +30,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
 
 
-    public void addRow(RestaurantsNearbyRecyclerInfo row) {
+    public void addRow(PeopleNearbyRecyclerInfo row) {
         data.add(row);
         notifyItemInserted(getItemCount() - 1);
     }
@@ -55,9 +53,9 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
             public void rowClick(View caller, int position) {
                 Log.d("rowClick", "rowClicks");
 
-                Intent intent = new Intent(context, RestaurantActivity.class);
-                intent.putExtra("restaurantId", data.get(position).placeId);
-                view.getContext().startActivity(intent);
+                //Intent intent = new Intent(context, SendSticker.class);
+                //intent.putExtra("userId", data.get(position).getParseObjectId());
+                //view.getContext().startActivity(intent);
             }
 
             @Override
@@ -78,7 +76,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         // This gives us current information list object
-        RestaurantsNearbyRecyclerInfo current = data.get(position);
+        PeopleNearbyRecyclerInfo current = data.get(position);
 
         holder.name.setText(current.name);
 

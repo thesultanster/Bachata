@@ -21,11 +21,13 @@
         <activity android:name=".people_nearby.RestaurantsNearby" />
         <activity android:name=".credentials.CreateNewAccount" />
         <activity android:name=".credentials.SignIn" />
-        <activity android:name=".profile.SimpleProfileInfo"></activity>
+        <activity android:name=".profile.SimpleProfileInfo" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyATKkC-_FIGAMEW035gfrA7pHO948RwRTc"/>
+            android:value="AIzaSyATKkC-_FIGAMEW035gfrA7pHO948RwRTc" />
+
+        <activity android:name=".restaurant.RestaurantActivity"></activity>
     </application>
 
 </manifest>

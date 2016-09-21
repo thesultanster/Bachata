@@ -291,7 +291,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         });
 
 
-                //adapter.addRow(new RestaurantsNearbyRecyclerInfo(key));
+                //adapter.addRow(new PeopleNearbyRecyclerInfo(key));
 
             }
 
@@ -326,7 +326,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     protected void onStop() {
         super.onStop();
 
-        geoQuery.removeAllListeners();
+        if(geoQuery != null)
+            geoQuery.removeAllListeners();
     }
 
     @Override
