@@ -1,20 +1,18 @@
 package com.meetup.uhoo.people_nearby;
 
-
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.model.LatLng;
 
-public class RestaurantsNearbyRecyclerInfo {
+public class Business {
 
     String name, address, placeId;
 
-    public  RestaurantsNearbyRecyclerInfo(){
+    public Business(){
         this.name = "";
         this.address = "";
         this.placeId = "";
     }
 
-    public RestaurantsNearbyRecyclerInfo(Place place)
+    public Business(Place place)
     {
         this.name = place.getName().toString();
         this.address = place.getAddress().toString();
@@ -22,7 +20,7 @@ public class RestaurantsNearbyRecyclerInfo {
         place.freeze();
     }
 
-    public RestaurantsNearbyRecyclerInfo(String key)
+    public Business(String key)
     {
         this.name = key;
     }

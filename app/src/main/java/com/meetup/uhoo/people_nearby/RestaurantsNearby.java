@@ -18,7 +18,6 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
-import com.firebase.geofire.LocationCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -36,7 +35,6 @@ import com.meetup.uhoo.R;
 import com.meetup.uhoo.credentials.User;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 
 public class RestaurantsNearby extends NavigationDrawerFramework implements GoogleApiClient.OnConnectionFailedListener {
@@ -170,7 +168,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                                 // Update restaurant info on restaurant table
                                 mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
-                                RestaurantsNearbyRecyclerInfo restaurant = new RestaurantsNearbyRecyclerInfo(place.getPlace());
+                                Business restaurant = new Business(place.getPlace());
                                 mDatabase.child(place.getPlace().getId()).setValue(restaurant);
 
 
@@ -234,7 +232,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
     void InflateVariables() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        adapter = new RestaurantsNearbyRecyclerAdapter(RestaurantsNearby.this, new ArrayList<RestaurantsNearbyRecyclerInfo>());
+        adapter = new RestaurantsNearbyRecyclerAdapter(RestaurantsNearby.this, new ArrayList<Business>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -277,7 +275,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 // Get user value
-                                RestaurantsNearbyRecyclerInfo restaurant = dataSnapshot.getValue(RestaurantsNearbyRecyclerInfo.class);
+                                Business restaurant = dataSnapshot.getValue(Business.class);
 
                                 if (restaurant != null)
                                     adapter.addRow(restaurant);

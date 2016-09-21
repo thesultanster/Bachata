@@ -20,11 +20,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<RestaurantsNearbyRecyclerAdapter.MyViewHolder> {
 
     // emptyList takes care of null pointer exception
-    List<RestaurantsNearbyRecyclerInfo> data = Collections.emptyList();
+    List<Business> data = Collections.emptyList();
     LayoutInflater inflator;
     Context context;
 
-    public RestaurantsNearbyRecyclerAdapter(RestaurantsNearby context, List<RestaurantsNearbyRecyclerInfo> data) {
+    public RestaurantsNearbyRecyclerAdapter(RestaurantsNearby context, List<Business> data) {
         this.context = context;
         inflator = LayoutInflater.from(context);
         this.data = data;
@@ -32,7 +32,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
 
 
-    public void addRow(RestaurantsNearbyRecyclerInfo row) {
+    public void addRow(Business row) {
         data.add(row);
         notifyItemInserted(getItemCount() - 1);
     }
@@ -78,7 +78,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         // This gives us current information list object
-        RestaurantsNearbyRecyclerInfo current = data.get(position);
+        Business current = data.get(position);
 
         holder.name.setText(current.name);
 
