@@ -1,5 +1,6 @@
 package com.meetup.uhoo.people_nearby;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -61,7 +62,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_people_nearby);
 
@@ -129,15 +130,27 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         });
 
 
+        // Checking In and Out Logic
         checkinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 // If user data has not been loaded
                 if (user == null) {
                     Log.d("user", "data not loaded yet");
                     return;
                 }
+
+
+                // Get user auth type. If anon user then tell them to create an account
+                SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+                String authType = prefs.getString("authType", null);
+                if (authType != null && authType.equals("ANON")) {
+                    Toast.makeText(RestaurantsNearby.this, "Please Create An Account", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
 
                 // If User is not checked in anywhere
                 if (!user.isCheckedIn) {
@@ -324,7 +337,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     protected void onStop() {
         super.onStop();
 
-        if(geoQuery != null)
+        if (geoQuery != null)
             geoQuery.removeAllListeners();
     }
 

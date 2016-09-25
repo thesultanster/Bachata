@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.provider.Settings;
@@ -143,13 +144,30 @@ public class FindLocation extends Activity {
 
     private void LoginAnonymousUser(final Location loc) {
 
+        // Get User shared prefs
+        SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+
         // If user is currently signed in
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
+
+            // cache user logged in state
+            editor.putBoolean("isLoggedIn", true);
+            editor.apply();
+
+            //TODO: DELETE
+            // Get user shared prefs and save account type
+            SharedPreferences.Editor ed = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+            ed.putString("authType", "EMAIL");
+            ed.apply();
+
+            // Save location in database
             SaveLocationInDatabase(loc);
         }
         // User not signed in
         else {
+            editor.putBoolean("isLoggedIn", false);
+            editor.apply();
             mAuth.signInAnonymously()
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -165,6 +183,12 @@ public class FindLocation extends Activity {
                                         Toast.LENGTH_SHORT).show();
                             }
 
+                            // Get user shared prefs and save account type
+                            SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                            editor.putString("authType", "ANON");
+                            editor.apply();
+
+                            // Save location in database
                             SaveLocationInDatabase(loc);
                         }
                     });

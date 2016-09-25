@@ -1,6 +1,7 @@
 package com.meetup.uhoo.credentials;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,6 +90,12 @@ public class CreateNewAccount extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(CreateNewAccount.this, "Profile Created!", Toast.LENGTH_SHORT).show();
+
+                                    // Get user shared prefs and save account type
+                                    SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                                    editor.putString("authType", "EMAIL");
+                                    editor.apply();
+
                                     FirebaseDatabase.getInstance().getReference().child("users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .setValue(new User())

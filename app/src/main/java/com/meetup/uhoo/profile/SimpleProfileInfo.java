@@ -27,7 +27,7 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_profile_info);
 

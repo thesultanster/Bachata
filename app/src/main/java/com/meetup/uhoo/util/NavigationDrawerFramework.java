@@ -1,9 +1,11 @@
 package com.meetup.uhoo.util;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,6 +42,11 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    // Cached User Data
+    SharedPreferences.Editor editor ;
+    SharedPreferences prefs ;
+
+
     @Override
     public void setContentView(final int layoutResID) {
         // Your base layout here
@@ -68,20 +75,18 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
         // navigate(mNavItemId);
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d("auth", "NavigationDrawerFramework onAuthStateChanged:signed_in:" + user.getUid());
-                    toolbar.getMenu().getItem(R.id.create_account_icon).setVisible(false);
 
-                }
 
-            }
-        };
 
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Cached User Data
+        editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+        prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
 
     }
 
@@ -90,8 +95,19 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
         getMenuInflater().inflate(R.menu.anonymous_user_toolbar, menu);
+
+        // Get Auth Type and change menu based on that
+        String authType = prefs.getString("authType", null);
+        if(authType == null)
+            Log.d("auth", "NavigationDrawerFramework auth type" + authType);
+
+
+        if (authType != null && authType.equals("EMAIL")) {
+            menu.findItem(R.id.create_account_icon).setVisible(false);
+            menu.findItem(R.id.create_account_text).setVisible(false);
+        }
+
         return  true;
     }
 
@@ -172,7 +188,12 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
                 intent = new Intent(this, RestaurantsNearby.class);
                 break;
             case R.id.logOut:
+                // Sign out user from database
                 FirebaseAuth.getInstance().signOut();
+
+                // Erase cached authType
+                editor.putString("authType", null);
+                editor.commit();
                 intent = new Intent(this, FindLocation.class);
                 break;
 
