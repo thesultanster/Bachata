@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,10 +17,9 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.credentials.SignIn;
-import com.meetup.uhoo.people_nearby.RestaurantsNearby;
+import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
 import com.meetup.uhoo.profile.SimpleProfileInfo;
 
 

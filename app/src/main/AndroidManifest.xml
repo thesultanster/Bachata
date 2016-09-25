@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".people_nearby.RestaurantsNearby" />
+        <activity android:name=".businesses_nearby.RestaurantsNearby" />
         <activity android:name=".credentials.CreateNewAccount" />
         <activity android:name=".credentials.SignIn" />
         <activity android:name=".profile.SimpleProfileInfo" />

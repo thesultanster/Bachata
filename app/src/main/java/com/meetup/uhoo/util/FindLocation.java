@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.people_nearby.RestaurantsNearby;
+import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
 import com.meetup.uhoo.util.location.FallbackLocationTracker;
 import com.meetup.uhoo.util.location.LocationTracker;
 

@@ -1,4 +1,4 @@
-package com.meetup.uhoo.people_nearby;
+package com.meetup.uhoo.businesses_nearby;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
 
@@ -81,7 +82,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
         // This gives us current information list object
         Business current = data.get(position);
 
-        holder.name.setText(current.name);
+        holder.name.setText(current.getName());
 
 
     }

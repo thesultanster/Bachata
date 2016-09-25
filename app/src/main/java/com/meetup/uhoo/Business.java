@@ -1,6 +1,4 @@
-package com.meetup.uhoo.people_nearby;
-
-import android.widget.SpinnerAdapter;
+package com.meetup.uhoo;
 
 import com.google.android.gms.location.places.Place;
 
@@ -38,6 +36,9 @@ public class Business implements Serializable{
         return placeId;
     }
 
+    public String getName(){
+        return name;
+    }
 
 
 }

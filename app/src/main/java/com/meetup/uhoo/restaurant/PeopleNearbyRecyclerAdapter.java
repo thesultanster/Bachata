@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.User;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,11 +19,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNearbyRecyclerAdapter.MyViewHolder> {
 
     // emptyList takes care of null pointer exception
-    List<PeopleNearbyRecyclerInfo> data = Collections.emptyList();
+    List<User> data = Collections.emptyList();
     LayoutInflater inflator;
     Context context;
 
-    public PeopleNearbyRecyclerAdapter(RestaurantActivity context, List<PeopleNearbyRecyclerInfo> data) {
+    public PeopleNearbyRecyclerAdapter(RestaurantActivity context, List<User> data) {
         this.context = context;
         inflator = LayoutInflater.from(context);
         this.data = data;
@@ -30,7 +31,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
 
 
-    public void addRow(PeopleNearbyRecyclerInfo row) {
+    public void addRow(User row) {
         data.add(row);
         notifyItemInserted(getItemCount() - 1);
     }
@@ -53,9 +54,9 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
             public void rowClick(View caller, int position) {
                 Log.d("rowClick", "rowClicks");
 
-                //Intent intent = new Intent(context, SendSticker.class);
-                //intent.putExtra("userId", data.get(position).getParseObjectId());
-                //view.getContext().startActivity(intent);
+                UserProfileDialog userDialog = new UserProfileDialog((RestaurantActivity) context, data.get(position));
+                userDialog.show();
+
             }
 
             @Override
@@ -76,9 +77,9 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         // This gives us current information list object
-        PeopleNearbyRecyclerInfo current = data.get(position);
+        User current = data.get(position);
 
-        holder.name.setText(current.name);
+        holder.name.setText(current.getName());
 
 
     }

@@ -1,7 +1,6 @@
-package com.meetup.uhoo.people_nearby;
+package com.meetup.uhoo.businesses_nearby;
 
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by sultankhan on 9/17/16.

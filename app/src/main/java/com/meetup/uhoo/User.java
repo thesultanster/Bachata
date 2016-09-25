@@ -1,4 +1,4 @@
-package com.meetup.uhoo.credentials;
+package com.meetup.uhoo;
 
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -30,12 +30,10 @@ public class User {
 
     }
 
-    public User(String uid, GeoLocation location) {
+    public User(String uid) {
         this.uid = uid;
-        this.latitude = location.latitude;
-        this.longitude = location.longitude;
-        this.isCheckedIn = false;
-        this.checkedInto = "";
+        this.firstName = "First Last";
+        this.lastName = "";
     }
 
     public User(String firstName, String lastName, String oneLiner) {
@@ -44,6 +42,10 @@ public class User {
         this.oneLiner = oneLiner;
         this.isCheckedIn = false;
         this.checkedInto = "";
+    }
+
+    public String getName(){
+        return firstName + " " + lastName;
     }
 
 

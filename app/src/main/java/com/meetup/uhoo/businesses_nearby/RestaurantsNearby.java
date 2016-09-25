@@ -1,4 +1,4 @@
-package com.meetup.uhoo.people_nearby;
+package com.meetup.uhoo.businesses_nearby;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,8 +32,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.credentials.User;
+import com.meetup.uhoo.User;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
@@ -54,12 +55,13 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     RestaurantsNearbyRecyclerAdapter adapter;
     User user;
 
-    private GoogleApiClient mGoogleApiClient;
+    GoogleApiClient mGoogleApiClient;
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("restaurant_locations");
     DatabaseReference userRef;
     final GeoFire geoFire = new GeoFire(ref);
     GeoQuery geoQuery;
 
+    Boolean userLoadFired = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -224,7 +226,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     placesSpinner.setVisibility(View.VISIBLE);
                 }
 
-                //Refresh();
+                // Load Refresh users when user is once loaded
+                // This is to stop updating the list at every user update
+                // Because we are inside an onDataChange method, it will be fired
+                // Everytime a user is updated. We just wanna load list once
+                if( !userLoadFired) {
+                    Refresh();
+                    userLoadFired = true;
+                }
             }
 
             @Override
@@ -238,7 +247,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         userRef.addValueEventListener(postListener);
 
 
-        Refresh();
+
 
     }
 
@@ -290,9 +299,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                 // Get user value
                                 Business restaurant = dataSnapshot.getValue(Business.class);
 
-                                if (restaurant != null)
+                                if (restaurant != null) {
                                     adapter.addRow(restaurant);
-                                // ...
+                                }
                             }
 
                             @Override

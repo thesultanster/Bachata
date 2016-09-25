@@ -14,7 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.people_nearby.Business;
+import com.meetup.uhoo.Business;
+import com.meetup.uhoo.User;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,6 @@ public class RestaurantActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     PeopleNearbyRecyclerAdapter adapter;
 
-    Business currentRestaurant;
     //String restaurantId;
     Business business;
     TextView restaurantNameText;
@@ -44,20 +44,7 @@ public class RestaurantActivity extends AppCompatActivity {
         InflateVariables();
 
 
-        // Load Current Restaurant Information
-        DatabaseReference currentRestaurantRef = FirebaseDatabase.getInstance().getReference();
-        currentRestaurantRef.child("restaurants").child(business.getId()).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        restaurantNameText.setText(dataSnapshot.getKey());
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("restaurant current", "getRestaurant:onCancelled", databaseError.toException());
-                    }
-                });
+        restaurantNameText.setText(business.getName());
 
         // Load User keys that are checked into current Restaurant
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
@@ -67,7 +54,7 @@ public class RestaurantActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         for (DataSnapshot user : dataSnapshot.getChildren()) {
-                            adapter.addRow(new PeopleNearbyRecyclerInfo(user.getKey().toString()));
+                            adapter.addRow(new User(user.getKey().toString()));
                         }
 
                     }
@@ -82,7 +69,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
     void InflateVariables() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        adapter = new PeopleNearbyRecyclerAdapter(RestaurantActivity.this, new ArrayList<PeopleNearbyRecyclerInfo>());
+        adapter = new PeopleNearbyRecyclerAdapter(RestaurantActivity.this, new ArrayList<User>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
