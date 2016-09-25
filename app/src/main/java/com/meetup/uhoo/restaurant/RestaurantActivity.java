@@ -29,7 +29,8 @@ public class RestaurantActivity extends AppCompatActivity {
     PeopleNearbyRecyclerAdapter adapter;
 
     Business currentRestaurant;
-    String restaurantId;
+    //String restaurantId;
+    Business business;
     TextView restaurantNameText;
 
     @Override
@@ -37,14 +38,15 @@ public class RestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        restaurantId = getIntent().getExtras().getString("restaurantId");
+        business = (Business) getIntent().getExtras().get("business");
+        //restaurantId = getIntent().getExtras().getString("restaurantId");
 
         InflateVariables();
 
 
         // Load Current Restaurant Information
         DatabaseReference currentRestaurantRef = FirebaseDatabase.getInstance().getReference();
-        currentRestaurantRef.child("restaurants").child(restaurantId).addListenerForSingleValueEvent(
+        currentRestaurantRef.child("restaurants").child(business.getId()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -59,7 +61,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         // Load User keys that are checked into current Restaurant
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
-        restaurantsRef.child("checkin").child(restaurantId).addListenerForSingleValueEvent(
+        restaurantsRef.child("checkin").child(business.getId()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

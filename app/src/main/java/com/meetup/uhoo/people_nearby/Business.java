@@ -1,10 +1,16 @@
 package com.meetup.uhoo.people_nearby;
 
+import android.widget.SpinnerAdapter;
+
 import com.google.android.gms.location.places.Place;
 
-public class Business {
+import java.io.Serializable;
 
-    String name, address, placeId;
+public class Business implements Serializable{
+
+    String name, address, placeId, phoneNumber;
+    double latitude, longitude;
+
 
     public Business(){
         this.name = "";
@@ -17,12 +23,19 @@ public class Business {
         this.name = place.getName().toString();
         this.address = place.getAddress().toString();
         this.placeId = place.getId();
+        this.latitude = place.getLatLng().latitude;
+        this.longitude = place.getLatLng().longitude;
+        this.phoneNumber= place.getPhoneNumber().toString();
         place.freeze();
     }
 
     public Business(String key)
     {
         this.name = key;
+    }
+
+    public String getId(){
+        return placeId;
     }
 
 

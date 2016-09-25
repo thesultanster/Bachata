@@ -100,13 +100,15 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
         // Get Auth Type and change menu based on that
         String authType = prefs.getString("authType", null);
         if(authType == null)
-            Log.d("auth", "NavigationDrawerFramework auth type" + authType);
+            return true;
 
 
         if (authType != null && authType.equals("EMAIL")) {
             menu.findItem(R.id.create_account_icon).setVisible(false);
             menu.findItem(R.id.create_account_text).setVisible(false);
         }
+
+        Log.d("auth", "NavigationDrawerFramework auth type " + authType);
 
         return  true;
     }

@@ -10,12 +10,12 @@
         android:orderInCategory="200"
         android:icon="@drawable/ic_person_add_black_24dp"
         app:showAsAction="ifRoom"
-        ></item>
+        />
 
     <item
         android:id="@+id/create_account_text"
         android:orderInCategory="100"
         android:title="Create Account"
         app:showAsAction="ifRoom"
-        ></item>
+        />
 </menu>
