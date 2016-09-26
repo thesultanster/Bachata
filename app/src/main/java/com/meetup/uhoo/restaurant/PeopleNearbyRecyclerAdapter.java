@@ -32,8 +32,26 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
 
     public void addRow(User row) {
+
+
+        final int index = getItemCount();
+
+        row.setOnEventListener(new UserDataFetchListener() {
+            @Override
+            public void onUserFetch(User user) {
+
+                Log.d("user Fetch complete", user.getName());
+                data.set(index,user);
+                updateRows();
+            }
+        });
+
         data.add(row);
         notifyItemInserted(getItemCount() - 1);
+    }
+
+    public void updateRows(){
+        notifyDataSetChanged();
     }
 
     public void clearData() {
@@ -82,6 +100,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
         holder.name.setText(current.getName());
 
 
+
     }
 
 
@@ -94,6 +113,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name;
+        TextView checkinText;
 
         CircleImageView profileImage;
         public MyViewHolderClicks mListener;

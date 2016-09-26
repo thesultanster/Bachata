@@ -54,7 +54,7 @@ public class RestaurantActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         for (DataSnapshot user : dataSnapshot.getChildren()) {
-                            adapter.addRow(new User(user.getKey().toString()));
+                            adapter.addRow(new User(user.getKey()));
                         }
 
                     }

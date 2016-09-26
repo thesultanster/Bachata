@@ -38,6 +38,8 @@ import com.meetup.uhoo.User;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RestaurantsNearby extends NavigationDrawerFramework implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -249,6 +251,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
 
+
+
     }
 
 
@@ -297,10 +301,36 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 // Get user value
-                                Business restaurant = dataSnapshot.getValue(Business.class);
+                                final Business restaurant = dataSnapshot.getValue(Business.class);
 
                                 if (restaurant != null) {
-                                    adapter.addRow(restaurant);
+
+
+
+                                    DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
+                                    restaurantsRef.child("checkin").child(restaurant.getId()).addListenerForSingleValueEvent(
+                                            new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                    List<User> users = new ArrayList<User>();
+                                                    for (DataSnapshot user : dataSnapshot.getChildren()) {
+                                                        users.add(new User(user.getKey()));
+                                                    }
+
+                                                    restaurant.setNumUsersCheckedIn(users.size());
+
+                                                    adapter.addRow(restaurant);
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                    Log.w("restaurant checkin", "getRestaurant:onCancelled", databaseError.toException());
+                                                }
+                                            });
+
+
                                 }
                             }
 

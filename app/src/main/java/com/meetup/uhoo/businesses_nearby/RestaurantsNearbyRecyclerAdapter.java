@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.User;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
+import com.meetup.uhoo.restaurant.UserDataFetchListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +52,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        final View view = inflator.inflate(R.layout.row_people_nearby, parent, false);
+        final View view = inflator.inflate(R.layout.row_business_nearby, parent, false);
         MyViewHolder holder = new MyViewHolder(view, new MyViewHolder.MyViewHolderClicks() {
 
             public void rowClick(View caller, int position) {
@@ -83,7 +85,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
         Business current = data.get(position);
 
         holder.name.setText(current.getName());
-
+        holder.checkinText.setText(current.getNumUsersCheckedIn() + " users checked in");
 
     }
 
@@ -96,7 +98,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
     // Created my custom view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView name;
+        TextView name, checkinText;
 
         CircleImageView profileImage;
         public MyViewHolderClicks mListener;
@@ -109,6 +111,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
             //Link the objects
             name = (TextView) itemView.findViewById(R.id.name);
+            checkinText = (TextView) itemView.findViewById(R.id.checkinText);
             profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
 
             itemView.setOnClickListener(this);
