@@ -64,6 +64,10 @@ public class User {
         return firstName + " " + lastName;
     }
 
+    public String getMiniBio(){
+        return oneLiner;
+    }
+
     public void FetchUserData(){
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
         restaurantsRef.child("users").child(uid).addListenerForSingleValueEvent(

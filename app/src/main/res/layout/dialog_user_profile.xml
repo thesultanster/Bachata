@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="10dp"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/nameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textSize="25dp"
-        android:text="First Last"/>
-
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/connectButton"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@color/primaryColorLight"/>
+
+        <TextView
+            android:id="@+id/nameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="+ Connect"/>
+            android:layout_margin="10dp"
+            android:textSize="25dp"
+            android:text="First Last"/>
 
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/miniBio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="This is my mini bio and stuff"/>
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="+ Connect"
+        android:visibility="gone"/>
 
 </LinearLayout>

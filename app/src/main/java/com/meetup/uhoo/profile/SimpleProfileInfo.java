@@ -1,5 +1,6 @@
 package com.meetup.uhoo.profile;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,6 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
         oneLinerEditText = (EditText) findViewById(R.id.oneLinerEditText);
         saveProfileInfoButton = (Button) findViewById(R.id.saveProfileInfoButton);
 
-
         saveProfileInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,11 +49,33 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(SimpleProfileInfo.this, "Profile Saved!", Toast.LENGTH_SHORT).show();
+
                         }
                     });
                 }
+
+                //
+                SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                editor.putString("name_first", firstNameEditText.getText().toString());
+                editor.putString("name_last", lastNameEditText.getText().toString());
+                editor.putString("oneLiner",oneLinerEditText.getText().toString());
+                editor.apply();
+
+
             }
         });
+
+
+        // Get User Data if it Exists
+        SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+        String oneLiner = prefs.getString("oneLiner", "");
+        String firstname = prefs.getString("name_first","");
+        String lastname = prefs.getString("name_last", "");
+
+        // Populate user data
+        firstNameEditText.setText(firstname);
+        lastNameEditText.setText(lastname);
+        oneLinerEditText.setText(oneLiner);
 
     }
 }

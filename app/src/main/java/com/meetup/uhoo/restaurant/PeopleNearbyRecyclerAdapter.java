@@ -93,14 +93,10 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     // Setting up the data for each row
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-
         // This gives us current information list object
         User current = data.get(position);
-
         holder.name.setText(current.getName());
-
-
-
+        holder.miniBio.setText(current.getMiniBio());
     }
 
 
@@ -113,7 +109,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name;
-        TextView checkinText;
+        TextView miniBio;
 
         CircleImageView profileImage;
         public MyViewHolderClicks mListener;
@@ -126,6 +122,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
             //Link the objects
             name = (TextView) itemView.findViewById(R.id.name);
+            miniBio = (TextView) itemView.findViewById(R.id.miniBio);
             profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
 
             itemView.setOnClickListener(this);

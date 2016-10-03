@@ -12,12 +12,14 @@
 
         <item
             android:id="@+id/connections"
-            android:title="Connections" />
+            android:title="Connections"
+            android:visible="false"/>
 
 
         <item
             android:id="@+id/offers"
-            android:title="Offers" />
+            android:title="Offers"
+            android:visible="false"/>
 
         <item
             android:id="@+id/logOut"

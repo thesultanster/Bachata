@@ -2,10 +2,15 @@ package com.meetup.uhoo.businesses_nearby;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.meetup.uhoo.R;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,16 +47,15 @@ public class PlacesNearbySpinnerAdapter extends ArrayAdapter<PlacesNearbySpinner
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
-        TextView label = new TextView(context);
-        label.setTextColor(Color.BLACK);
 
-        // Then you can get the current item using the values array (Users array) and the current position
-        // You can NOW reference each method you has created in your bean object (User class)
-        label.setText(data.get(position).getName());
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View row = inflater.inflate(R.layout.row_places_nearby, parent, false);
 
-        // And finally return your dynamic (or custom) view for each spinner item
-        return label;
+        TextView name = (TextView) row.findViewById(R.id.placeNameText);
+        name.setTextColor(Color.BLACK);
+        name.setText(data.get(position).getName());
+
+        return row;
     }
 
     // And here is when the "chooser" is popped up
@@ -59,11 +63,17 @@ public class PlacesNearbySpinnerAdapter extends ArrayAdapter<PlacesNearbySpinner
     @Override
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
-        TextView label = new TextView(context);
-        label.setTextColor(Color.BLACK);
-        label.setText(data.get(position).getName());
 
-        return label;
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View row = inflater.inflate(R.layout.row_places_nearby, parent, false);
+
+        TextView name = (TextView) row.findViewById(R.id.placeNameText);
+        name.setTextColor(Color.BLACK);
+        name.setText(data.get(position).getName());
+
+        return row;
+
     }
 }
 

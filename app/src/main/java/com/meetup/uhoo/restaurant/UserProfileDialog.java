@@ -18,10 +18,9 @@ import com.meetup.uhoo.User;
 public class UserProfileDialog extends Dialog implements
         android.view.View.OnClickListener {
 
-    public Dialog d;
-    Button connectButton, no;
+    Button connectButton;
     User user;
-    TextView name;
+    TextView name, miniBio;
 
     public UserProfileDialog(Activity a, User user) {
         super(a);
@@ -36,8 +35,10 @@ public class UserProfileDialog extends Dialog implements
 
         connectButton = (Button) findViewById(R.id.connectButton);
         name = (TextView) findViewById(R.id.nameText);
+        miniBio = (TextView) findViewById(R.id.miniBio);
 
         name.setText(user.getName());
+        miniBio.setText(user.getMiniBio());
 
         connectButton.setOnClickListener(this);
 

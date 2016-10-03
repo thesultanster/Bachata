@@ -85,53 +85,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         InflateVariables();
 
 
-        // TODO: Security Permission will crash app if user doesnt allow location
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
-        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-            @Override
-            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-
-                ArrayList<PlacesNearbySpinnerInfo> placesData = new ArrayList<PlacesNearbySpinnerInfo>();
-
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    Log.i("places", String.format("Place '%s' has likelihood: %g",
-                            placeLikelihood.getPlace().getName(),
-                            placeLikelihood.getLikelihood()));
-                    placesData.add(new PlacesNearbySpinnerInfo(placeLikelihood.getPlace()));
-                }
-                likelyPlaces.release();
-
-                // Initialize the adapter sending the current context
-                // Send the simple_spinner_item layout
-                // And finally send the Users array (Your data)
-                spinnerAdapter = new PlacesNearbySpinnerAdapter(RestaurantsNearby.this,
-                        android.R.layout.simple_spinner_item,
-                        placesData) {
-                };
-
-
-                placesSpinner.setAdapter(spinnerAdapter); // Set the custom adapter to the spinner
-                // You can create an anonymous listener to handle the event when is selected an spinner item
-                placesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view,
-                                               int position, long id) {
-                        // Here you get the current item (a User object) that is selected by its position
-                        PlacesNearbySpinnerInfo place = (PlacesNearbySpinnerInfo) spinnerAdapter.getItem(position);
-                        // Here you can do the action you want to...
-                        Toast.makeText(RestaurantsNearby.this, "Name: " + place.getName(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapter) {
-                    }
-                });
-
-
-            }
-        });
+       GetNearbyBusinesses();
 
 
         // Checking In and Out Logic
@@ -248,11 +202,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         userRef = FirebaseDatabase.getInstance().getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
         userRef.addValueEventListener(postListener);
 
-
-
-
-
-
     }
 
 
@@ -273,6 +222,66 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             }
         });
 
+    }
+
+    void GetNearbyBusinesses(){
+        // TODO: Security Permission will crash app if user doesnt allow location
+        // Query Nearby Locations and populate spinner
+        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
+        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+            @Override
+            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+
+                ArrayList<PlacesNearbySpinnerInfo> placesData = new ArrayList<PlacesNearbySpinnerInfo>();
+
+                int limit = 10;
+
+                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+
+                    if(limit <= 0){
+                        break;
+                    }
+
+                    Log.i("places", String.format("Place '%s' has likelihood: %g",
+                            placeLikelihood.getPlace().getName(),
+                            placeLikelihood.getLikelihood()));
+                    placesData.add(new PlacesNearbySpinnerInfo(placeLikelihood.getPlace()));
+
+                    limit--;
+                }
+                likelyPlaces.release();
+
+                // Initialize the adapter sending the current context
+                // Send the simple_spinner_item layout
+                // And finally send the Users array (Your data)
+                spinnerAdapter = new PlacesNearbySpinnerAdapter(RestaurantsNearby.this,
+                        R.layout.row_places_nearby,
+                        placesData) {
+                };
+
+
+                placesSpinner.setAdapter(spinnerAdapter); // Set the custom adapter to the spinner
+                // You can create an anonymous listener to handle the event when is selected an spinner item
+                placesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view,
+                                               int position, long id) {
+                        // Here you get the current item (a User object) that is selected by its position
+                        PlacesNearbySpinnerInfo place = (PlacesNearbySpinnerInfo) spinnerAdapter.getItem(position);
+                        // Here you can do the action you want to...
+                        Toast.makeText(RestaurantsNearby.this, "Name: " + place.getName(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapter) {
+                    }
+                });
+
+
+            }
+        });
     }
 
 

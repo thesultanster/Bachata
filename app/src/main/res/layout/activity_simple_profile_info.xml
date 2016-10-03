@@ -28,7 +28,7 @@
             android:id="@+id/lastNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Last Namel" />
+            android:hint="Last Name" />
 
     </android.support.design.widget.TextInputLayout>
 

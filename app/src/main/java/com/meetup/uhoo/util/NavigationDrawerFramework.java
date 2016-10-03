@@ -21,6 +21,7 @@ import com.meetup.uhoo.R;
 import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
 import com.meetup.uhoo.profile.SimpleProfileInfo;
+import com.meetup.uhoo.restaurant.RestaurantActivity;
 
 
 public class NavigationDrawerFramework extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -195,6 +196,11 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
                 editor.commit();
                 intent = new Intent(this, FindLocation.class);
                 break;
+
+            default:
+                intent = new Intent(this, RestaurantsNearby.class);
+                break;
+
 
 
         }
