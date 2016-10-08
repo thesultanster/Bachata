@@ -155,12 +155,6 @@ public class FindLocation extends Activity {
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
-            //TODO: DELETE
-            // Get user shared prefs and save account type
-            SharedPreferences.Editor ed = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-            ed.putString("authType", "EMAIL");
-            ed.apply();
-
             // Save location in database
             SaveLocationInDatabase(loc);
         }
@@ -203,6 +197,7 @@ public class FindLocation extends Activity {
 
         if (fallbackLocationTracker != null) {
 
+            /*
             // If has fine last known location
             if (fallbackLocationTracker.hasLocation()) {
                 LoginAnonymousUser(fallbackLocationTracker.getLocation());
@@ -213,6 +208,7 @@ public class FindLocation extends Activity {
             if (fallbackLocationTracker.hasPossiblyStaleLocation()) {
                 LoginAnonymousUser(fallbackLocationTracker.getPossiblyStaleLocation());
             }
+            */
 
             // Then find fine location
             fallbackLocationTracker.start(new LocationTracker.LocationUpdateListener() {

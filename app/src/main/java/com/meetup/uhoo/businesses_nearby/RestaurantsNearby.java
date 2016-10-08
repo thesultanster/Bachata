@@ -143,6 +143,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                 mDatabase.child(place.getPlace().getId()).setValue(restaurant);
 
 
+                                Refresh();
                             }
                         }
                     });

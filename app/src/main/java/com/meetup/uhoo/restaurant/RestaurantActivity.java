@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +33,6 @@ public class RestaurantActivity extends AppCompatActivity {
 
     //String restaurantId;
     Business business;
-    TextView restaurantNameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,15 @@ public class RestaurantActivity extends AppCompatActivity {
         InflateVariables();
 
 
-        restaurantNameText.setText(business.getName());
+        // Set Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        try {getSupportActionBar().setTitle(business.getName());}
+        catch (Exception e)
+        {
+            Toast.makeText(RestaurantActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
 
         // Load User keys that are checked into current Restaurant
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
@@ -72,7 +81,5 @@ public class RestaurantActivity extends AppCompatActivity {
         adapter = new PeopleNearbyRecyclerAdapter(RestaurantActivity.this, new ArrayList<User>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-        restaurantNameText = (TextView) findViewById(R.id.restaurantNameText);
     }
 }
