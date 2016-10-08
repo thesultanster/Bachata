@@ -1,5 +1,6 @@
 package com.meetup.uhoo.util;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -182,7 +183,16 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
         switch(itemId){
 
             case R.id.profile:
-                intent = new Intent(this, SimpleProfileInfo.class);
+                SharedPreferences prefs = this.getSharedPreferences("currentUser", Context.MODE_PRIVATE);
+                String authType = prefs.getString("language", "ANON");
+
+                // If user is ANON then make them sign up
+                if(authType.equals("ANON")){
+                    intent = new Intent(this, SignIn.class);
+                } else {
+                    intent = new Intent(this, SimpleProfileInfo.class);
+                }
+
                 break;
             case R.id.meet_people:
                 intent = new Intent(this, RestaurantsNearby.class);

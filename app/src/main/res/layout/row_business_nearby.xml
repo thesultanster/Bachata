@@ -15,15 +15,17 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
-            android:layout_height="65sp"
-            android:layout_margin="15dp"
-            android:layout_width="65sp"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             android:src="@color/primaryColorLight" />
 
         <LinearLayout
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+           android:layout_margin="10dp"
             android:orientation="vertical">
 
             <TextView

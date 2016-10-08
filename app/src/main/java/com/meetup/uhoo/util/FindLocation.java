@@ -46,14 +46,8 @@ public class FindLocation extends Activity {
         //get the shared instance of the FirebaseAuth object
         mAuth = FirebaseAuth.getInstance();
 
-        //Location targetLocation = new Location("");//provider name is unecessary
-        //targetLocation.setLatitude(34.1523723d);//your coords of course
-        //targetLocation.setLongitude(-118.4607954d);
-        //LoginAnonymousUser(targetLocation);
-
         // Start Location Tracker
         fallbackLocationTracker = new FallbackLocationTracker(this);
-
 
     }
 
@@ -63,7 +57,7 @@ public class FindLocation extends Activity {
         super.onStart();
 
 
-        // Here, thisActivity is the current activity
+        // Check If location permission is granted
         if (ContextCompat.checkSelfPermission(FindLocation.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -128,16 +122,12 @@ public class FindLocation extends Activity {
 
                 } else {
 
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    // permission denied, boo!
 
 
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -177,7 +167,7 @@ public class FindLocation extends Activity {
                                         Toast.LENGTH_SHORT).show();
                             }
 
-                            // Get user shared prefs and save account type
+                            // Get user shared prefs and save account type as ANONYMOUS
                             SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                             editor.putString("authType", "ANON");
                             editor.apply();
@@ -197,18 +187,20 @@ public class FindLocation extends Activity {
 
         if (fallbackLocationTracker != null) {
 
-            /*
+
             // If has fine last known location
             if (fallbackLocationTracker.hasLocation()) {
                 LoginAnonymousUser(fallbackLocationTracker.getLocation());
                 return;
             }
 
+            // TODO: Put this in a timer
             // If has course last known location
             if (fallbackLocationTracker.hasPossiblyStaleLocation()) {
                 LoginAnonymousUser(fallbackLocationTracker.getPossiblyStaleLocation());
             }
-            */
+
+
 
             // Then find fine location
             fallbackLocationTracker.start(new LocationTracker.LocationUpdateListener() {
