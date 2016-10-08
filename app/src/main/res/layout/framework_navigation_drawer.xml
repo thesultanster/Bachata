@@ -47,6 +47,7 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/AppTheme.Dark"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:layout_below="@+id/pendingRequestNotification"
             />
 

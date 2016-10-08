@@ -2,6 +2,7 @@ package com.meetup.uhoo.profile;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,11 +10,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimpleProfileInfo extends NavigationDrawerFramework {
 
@@ -44,21 +49,28 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
             public void onClick(View view) {
 
                 if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    User user = new User(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), oneLinerEditText.getText().toString());
-                    mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(SimpleProfileInfo.this, "Profile Saved!", Toast.LENGTH_SHORT).show();
 
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("/name_first/", firstNameEditText.getText().toString());
+                    childUpdates.put("/name_last/", lastNameEditText.getText().toString());
+                    childUpdates.put("/one_liner/", oneLinerEditText.getText().toString());
+
+                    mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+
+                            }
                         }
                     });
+
                 }
 
-                //
+
                 SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                 editor.putString("name_first", firstNameEditText.getText().toString());
                 editor.putString("name_last", lastNameEditText.getText().toString());
-                editor.putString("oneLiner",oneLinerEditText.getText().toString());
+                editor.putString("one_liner",oneLinerEditText.getText().toString());
                 editor.apply();
 
 
@@ -68,7 +80,7 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
 
         // Get User Data if it Exists
         SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
-        String oneLiner = prefs.getString("oneLiner", "");
+        String oneLiner = prefs.getString("one_liner", "");
         String firstname = prefs.getString("name_first","");
         String lastname = prefs.getString("name_last", "");
 

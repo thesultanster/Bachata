@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class RestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
+        // Get business details
         business = (Business) getIntent().getExtras().get("business");
         //restaurantId = getIntent().getExtras().getString("restaurantId");
 
@@ -48,9 +50,11 @@ public class RestaurantActivity extends AppCompatActivity {
         // Set Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        try {getSupportActionBar().setTitle(business.getName());}
-        catch (Exception e)
-        {
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(business.getName());
+        } catch (Exception e) {
             Toast.makeText(RestaurantActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
 
@@ -81,5 +85,15 @@ public class RestaurantActivity extends AppCompatActivity {
         adapter = new PeopleNearbyRecyclerAdapter(RestaurantActivity.this, new ArrayList<User>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

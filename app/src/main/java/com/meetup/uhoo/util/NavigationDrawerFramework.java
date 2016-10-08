@@ -64,15 +64,21 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // select the correct nav menu item
-        //navigationView.getMenu().findItem(mNavItemId).setChecked(true);
+        // Sets "Profile" to "Create Account" if the user is ANON
+        // TODO: This is hackish and I don't like it
+        SharedPreferences prefs = this.getSharedPreferences("currentUser", Context.MODE_PRIVATE);
+        String authType = prefs.getString("authType", "ANON");
+
+        // If user is ANON then make them sign up
+        if(authType.equals("ANON")) {
+            navigationView.getMenu().findItem(R.id.profile).setTitle("Create Account");
+        }
 
         // set up the hamburger icon to open and close the drawer
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        // navigate(mNavItemId);
 
 
 
@@ -104,7 +110,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
         if (authType != null && authType.equals("EMAIL")) {
             menu.findItem(R.id.create_account_icon).setVisible(false);
-            menu.findItem(R.id.create_account_text).setVisible(false);
+            //menu.findItem(R.id.create_account_text).setVisible(false);
         }
 
         Log.d("auth", "NavigationDrawerFramework auth type " + authType);
@@ -184,7 +190,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
             case R.id.profile:
                 SharedPreferences prefs = this.getSharedPreferences("currentUser", Context.MODE_PRIVATE);
-                String authType = prefs.getString("language", "ANON");
+                String authType = prefs.getString("authType", "ANON");
 
                 // If user is ANON then make them sign up
                 if(authType.equals("ANON")){

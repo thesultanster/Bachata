@@ -31,6 +31,9 @@ import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
 import com.meetup.uhoo.util.location.FallbackLocationTracker;
 import com.meetup.uhoo.util.location.LocationTracker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FindLocation extends Activity {
 
     FallbackLocationTracker fallbackLocationTracker;
@@ -201,7 +204,6 @@ public class FindLocation extends Activity {
             }
 
 
-
             // Then find fine location
             fallbackLocationTracker.start(new LocationTracker.LocationUpdateListener() {
                 @Override
@@ -239,17 +241,30 @@ public class FindLocation extends Activity {
                     Log.d("firebase auth", "There was an error saving the location to GeoFire: " + error);
                 } else {
 
-                    TerminateSplashScreen(loc);
+
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("/longitude/", loc.getLongitude());
+                    childUpdates.put("/latitude/", loc.getLatitude());
+
+                    userRef.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+                                Log.d("firebase loc", "Location saved on database");
+
+                                TerminateSplashScreen(loc);
+                            }
+                        }
+                    });
+
+
 
                     Log.d("firebase auth", "Location saved on server successfully!");
                 }
             }
         });
-
-
-        ref = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        ref.child("latitude").setValue(loc.getLatitude());
-        ref.child("longitude").setValue(loc.getLongitude());
 
 
 

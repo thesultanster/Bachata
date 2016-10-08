@@ -25,6 +25,8 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -65,6 +67,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
     Boolean userLoadFired = false;
 
+
+    ValueEventListener postListener;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +90,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         InflateVariables();
 
 
-       GetNearbyBusinesses();
+        GetNearbyBusinesses();
 
 
         // Checking In and Out Logic
@@ -168,40 +173,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         });
 
 
-        // Listener for Current User
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                Log.d("user", "isCheckedIn" + user.isCheckedIn);
 
-                if (user != null && user.isCheckedIn) {
-                    checkinButton.setText("Check Out");
-                    placesSpinner.setVisibility(View.GONE);
-                } else {
-                    checkinButton.setText("Checkin");
-                    placesSpinner.setVisibility(View.VISIBLE);
-                }
-
-                // Load Refresh users when user is once loaded
-                // This is to stop updating the list at every user update
-                // Because we are inside an onDataChange method, it will be fired
-                // Everytime a user is updated. We just wanna load list once
-                if( !userLoadFired) {
-                    Refresh();
-                    userLoadFired = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("user", "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        userRef = FirebaseDatabase.getInstance().getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-        userRef.addValueEventListener(postListener);
 
     }
 
@@ -225,7 +197,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
     }
 
-    void GetNearbyBusinesses(){
+    void GetNearbyBusinesses() {
         // TODO: Security Permission will crash app if user doesnt allow location
         // Query Nearby Locations and populate spinner
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
@@ -239,7 +211,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
 
-                    if(limit <= 0){
+                    if (limit <= 0) {
                         break;
                     }
 
@@ -305,24 +277,27 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
 
 
+                // After Querying the Key then query restaurant information
                 DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
                 restaurantsRef.child("restaurants").child(key).addListenerForSingleValueEvent(
                         new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                // Get user value
+
+                                // Bind Business object
                                 final Business restaurant = dataSnapshot.getValue(Business.class);
 
                                 if (restaurant != null) {
 
-
-
+                                    // Query the users checked into the restaurant in order to display number of users
+                                    // TODO: Find a way to persist this data when user goes to RestaurantActivity
                                     DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
                                     restaurantsRef.child("checkin").child(restaurant.getId()).addListenerForSingleValueEvent(
                                             new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                                    // Save users in list
                                                     List<User> users = new ArrayList<User>();
                                                     for (DataSnapshot user : dataSnapshot.getChildren()) {
                                                         users.add(new User(user.getKey()));
@@ -339,8 +314,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                                     Log.w("restaurant checkin", "getRestaurant:onCancelled", databaseError.toException());
                                                 }
                                             });
-
-
                                 }
                             }
 
@@ -386,8 +359,53 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     protected void onStop() {
         super.onStop();
 
+        if(postListener != null){
+            userRef.removeEventListener(postListener);
+        }
+
         if (geoQuery != null)
             geoQuery.removeAllListeners();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Listener for Current User
+        postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                Log.d("user", "isCheckedIn " + user.isCheckedIn);
+
+                if (user != null && user.isCheckedIn) {
+                    checkinButton.setText("Check Out");
+                    placesSpinner.setVisibility(View.GONE);
+                } else {
+                    checkinButton.setText("Checkin");
+                    placesSpinner.setVisibility(View.VISIBLE);
+                }
+
+                // Load Refresh users when user is once loaded
+                // This is to stop updating the list at every user update
+                // Because we are inside an onDataChange method, it will be fired
+                // Everytime a user is updated. We just wanna load list once
+                if (!userLoadFired) {
+                    Refresh();
+                    userLoadFired = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("user", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        userRef = FirebaseDatabase.getInstance().getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+        userRef.addValueEventListener(postListener);
+
     }
 
     @Override

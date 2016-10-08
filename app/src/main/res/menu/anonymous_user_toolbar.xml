@@ -12,10 +12,4 @@
         app:showAsAction="ifRoom"
         />
 
-    <item
-        android:id="@+id/create_account_text"
-        android:orderInCategory="100"
-        android:title="Create Account"
-        app:showAsAction="ifRoom"
-        />
 </menu>
