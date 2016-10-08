@@ -37,8 +37,8 @@ public class UserProfileDialog extends Dialog implements
         name = (TextView) findViewById(R.id.nameText);
         miniBio = (TextView) findViewById(R.id.miniBio);
 
-        name.setText(user.getName());
-        miniBio.setText(user.getMiniBio());
+        name.setText(user.getName_first() + " " + user.getName_last());
+        miniBio.setText(user.getOne_liner());
 
         connectButton.setOnClickListener(this);
 

@@ -61,7 +61,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         // Load User keys that are checked into current Restaurant
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
-        restaurantsRef.child("checkin").child(business.getId()).addListenerForSingleValueEvent(
+        restaurantsRef.child("checkin").child(business.getPlaceId()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

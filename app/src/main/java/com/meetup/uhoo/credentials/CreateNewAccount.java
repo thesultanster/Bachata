@@ -19,10 +19,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
 import com.meetup.uhoo.profile.SimpleProfileInfo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateNewAccount extends AppCompatActivity {
 
@@ -97,16 +102,6 @@ public class CreateNewAccount extends AppCompatActivity {
                                     editor.putString("authType", "EMAIL");
                                     editor.apply();
 
-                                    FirebaseDatabase.getInstance().getReference().child("users")
-                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .setValue(new User())
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Intent intent = new Intent(CreateNewAccount.this, SimpleProfileInfo.class);
-                                                    startActivity(intent);
-                                                }
-                                            });
                                 }
 
                             }

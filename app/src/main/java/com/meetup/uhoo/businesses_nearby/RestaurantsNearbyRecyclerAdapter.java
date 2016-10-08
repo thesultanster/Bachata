@@ -60,7 +60,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
                 Intent intent = new Intent(context, RestaurantActivity.class);
                 //intent.putExtra("restaurantId", data.get(position).placeId);
-                intent.putExtra("business",data.get(position));
+                intent.putExtra("business", data.get(position));
                 view.getContext().startActivity(intent);
             }
 

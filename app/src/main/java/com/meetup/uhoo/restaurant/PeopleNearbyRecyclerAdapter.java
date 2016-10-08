@@ -40,7 +40,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
             @Override
             public void onUserFetch(User user) {
 
-                Log.d("user Fetch complete", user.getName());
+                Log.d("user Fetch complete", user.getName_first() + " " + user.getName_last());
                 data.set(index,user);
                 updateRows();
             }
@@ -95,8 +95,8 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // This gives us current information list object
         User current = data.get(position);
-        holder.name.setText(current.getName());
-        holder.miniBio.setText(current.getMiniBio());
+        holder.name.setText(current.getName_first() + " " + current.getName_last());
+        holder.miniBio.setText(current.getOne_liner());
     }
 
 

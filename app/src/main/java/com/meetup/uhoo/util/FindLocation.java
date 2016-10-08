@@ -192,16 +192,16 @@ public class FindLocation extends Activity {
 
 
             // If has fine last known location
-            if (fallbackLocationTracker.hasLocation()) {
-                LoginAnonymousUser(fallbackLocationTracker.getLocation());
-                return;
-            }
+            //if (fallbackLocationTracker.hasLocation()) {
+            //    LoginAnonymousUser(fallbackLocationTracker.getLocation());
+            //    return;
+            //}
 
             // TODO: Put this in a timer
             // If has course last known location
-            if (fallbackLocationTracker.hasPossiblyStaleLocation()) {
-                LoginAnonymousUser(fallbackLocationTracker.getPossiblyStaleLocation());
-            }
+            //if (fallbackLocationTracker.hasPossiblyStaleLocation()) {
+            //    LoginAnonymousUser(fallbackLocationTracker.getPossiblyStaleLocation());
+            //}
 
 
             // Then find fine location

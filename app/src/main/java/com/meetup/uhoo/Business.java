@@ -45,7 +45,7 @@ public class Business implements Serializable{
         this.name = key;
     }
 
-    public String getId(){
+    public String getPlaceId(){
         return placeId;
     }
 

@@ -21,51 +21,54 @@ import java.util.List;
 public class User {
 
     private UserDataFetchListener userDataFetchListener;
-    public String firstName;
-    public String lastName;
+    public String name_first;
+    public String name_last;
     public String username;
     public String email;
-    public String oneLiner;
+    public String one_liner;
     public String uid;
     public double latitude;
     public double longitude;
-    public boolean isCheckedIn;
+    public boolean is_checked_in;
     public String checkedInto;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        this.firstName = "";
-        this.lastName = "";
-        this.oneLiner = "";
-        this.isCheckedIn = false;
+        this.name_first = "";
+        this.name_last = "";
+        this.one_liner = "";
+        this.is_checked_in = false;
         this.checkedInto = "";
 
     }
 
     public User(String uid) {
         this.uid = uid;
-        this.firstName = "First Last";
-        this.lastName = "";
-        this.oneLiner = "";
-        this.isCheckedIn = false;
+        this.name_first = "First Last";
+        this.name_last = "";
+        this.one_liner = "";
+        this.is_checked_in = false;
         this.checkedInto = "";
         FetchUserData();
     }
 
     public User(String firstName, String lastName, String oneLiner) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.oneLiner = oneLiner;
-        this.isCheckedIn = false;
+        this.name_first = firstName;
+        this.name_last = lastName;
+        this.one_liner = oneLiner;
+        this.is_checked_in = false;
         this.checkedInto = "";
     }
 
-    public String getName(){
-        return firstName + " " + lastName;
+    public String getName_first(){
+        return name_first;
+    }
+    public String getName_last(){
+        return name_last;
     }
 
-    public String getMiniBio(){
-        return oneLiner;
+    public String getOne_liner(){
+        return one_liner;
     }
 
     public void FetchUserData(){
@@ -78,10 +81,10 @@ public class User {
                         User user = dataSnapshot.getValue(User.class);
 
                         if(user != null) {
-                            firstName = user.firstName;
-                            lastName = user.lastName;
-                            oneLiner = user.oneLiner;
-                            isCheckedIn = user.isCheckedIn;
+                            name_first = user.name_first;
+                            name_last = user.name_last;
+                            one_liner = user.one_liner;
+                            is_checked_in = user.is_checked_in;
                             checkedInto = user.checkedInto;
 
                             if (userDataFetchListener != null)

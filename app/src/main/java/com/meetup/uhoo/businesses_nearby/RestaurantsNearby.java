@@ -116,7 +116,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
                 // If User is not checked in anywhere
-                if (!user.isCheckedIn) {
+                if (!user.is_checked_in) {
 
                     final PlacesNearbySpinnerInfo place = (PlacesNearbySpinnerInfo) spinnerAdapter.getItem(placesSpinner.getSelectedItemPosition());
 
@@ -292,7 +292,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                     // Query the users checked into the restaurant in order to display number of users
                                     // TODO: Find a way to persist this data when user goes to RestaurantActivity
                                     DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
-                                    restaurantsRef.child("checkin").child(restaurant.getId()).addListenerForSingleValueEvent(
+                                    restaurantsRef.child("checkin").child(restaurant.getPlaceId()).addListenerForSingleValueEvent(
                                             new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -376,9 +376,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                Log.d("user", "isCheckedIn " + user.isCheckedIn);
+                Log.d("user", "isCheckedIn " + user.is_checked_in);
 
-                if (user != null && user.isCheckedIn) {
+                if (user != null && user.is_checked_in) {
                     checkinButton.setText("Check Out");
                     placesSpinner.setVisibility(View.GONE);
                 } else {
