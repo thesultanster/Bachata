@@ -52,8 +52,10 @@ public class SignIn extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Validation Check
-                if(emailEditText.getText() == null || passwordEditText.getText() == null )
+                if(!ValidationCheck()){
                     return;
+                }
+
 
                 mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                         .addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
@@ -115,6 +117,21 @@ public class SignIn extends AppCompatActivity {
 
 
 
+    }
+
+
+    Boolean ValidationCheck(){
+        if(emailEditText.getText().length() == 0 ){
+            Toast.makeText(SignIn.this, "Please Enter an Email", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(passwordEditText.getText().length() == 0 ){
+            Toast.makeText(SignIn.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     @Override
