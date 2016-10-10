@@ -69,7 +69,7 @@ public class SignIn extends AppCompatActivity {
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     Log.w("auth", "signInWithEmail:failed", task.getException());
-                                    Toast.makeText(SignIn.this, "asdf",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignIn.this, "Sign In Failed",Toast.LENGTH_SHORT).show();
                                     return;
                                 }
 
@@ -120,6 +120,7 @@ public class SignIn extends AppCompatActivity {
     }
 
 
+    // Checks if email and password lengths are 0
     Boolean ValidationCheck(){
         if(emailEditText.getText().length() == 0 ){
             Toast.makeText(SignIn.this, "Please Enter an Email", Toast.LENGTH_SHORT).show();
