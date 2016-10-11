@@ -29,17 +29,20 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
         // Check If location permission is granted
         if (ContextCompat.checkSelfPermission(SplashScreenActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
+            // Go to Permissions Activity
+            Intent intent = new Intent(SplashScreenActivity.this, PermissionsActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(SplashScreenActivity.this, FindLocation.class);
+            startActivity(intent);
 
-            ActivityCompat.requestPermissions(SplashScreenActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
 
     }

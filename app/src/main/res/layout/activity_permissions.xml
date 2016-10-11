@@ -19,13 +19,15 @@
             android:layout_marginRight="50dp"
             android:layout_marginBottom="15dp"
             android:textStyle="bold"
-            android:text="To get goin, give Uhoo access"/>
+            android:textSize="18sp"
+            android:text="To get going, give Uhoo access"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
+            android:textSize="18sp"
             android:text="Uhoo needs access to your contacts, device storage, and GPS location"/>
 
 
@@ -41,11 +43,13 @@
         >
 
         <TextView
+            android:id="@+id/txtNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_margin="15dp"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:text="NEXT"/>
 
     </RelativeLayout>
