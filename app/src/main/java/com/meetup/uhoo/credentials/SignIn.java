@@ -111,7 +111,6 @@ public class SignIn extends AppCompatActivity {
                     // User is signed out
                     Log.d("auth", "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
 

@@ -60,21 +60,10 @@ public class FindLocation extends Activity {
         super.onStart();
 
 
-        // Check If location permission is granted
-        if (ContextCompat.checkSelfPermission(FindLocation.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
 
-
-            ActivityCompat.requestPermissions(FindLocation.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-
-        } else {
 
             FindLocation();
 
-        }
 
     }
 
