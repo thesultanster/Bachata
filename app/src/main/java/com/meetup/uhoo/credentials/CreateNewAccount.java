@@ -56,25 +56,11 @@ public class CreateNewAccount extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                /*
-                mAuth.createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
-                        .addOnCompleteListener(CreateNewAccount.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Log.d("auth", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                // Validation Check
+                if(!ValidationCheck()){
+                    return;
+                }
 
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(CreateNewAccount.this, "auth fail",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-
-                                // ...
-                            }
-                        });
-                */
 
                 // Create new credential for Email/Password
                 AuthCredential credential = EmailAuthProvider.getCredential(
@@ -148,6 +134,21 @@ public class CreateNewAccount extends AppCompatActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    // Checks if email and password lengths are 0
+    Boolean ValidationCheck(){
+        if(emailEditText.getText().length() == 0 ){
+            Toast.makeText(CreateNewAccount.this, "Please Enter an Email", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(passwordEditText.getText().length() == 0 ){
+            Toast.makeText(CreateNewAccount.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
 
