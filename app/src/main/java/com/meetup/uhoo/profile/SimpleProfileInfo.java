@@ -51,9 +51,9 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
                 if(FirebaseAuth.getInstance().getCurrentUser() != null) {
 
                     Map<String, Object> childUpdates = new HashMap<>();
-                    childUpdates.put("/name_first/", firstNameEditText.getText().toString());
-                    childUpdates.put("/name_last/", lastNameEditText.getText().toString());
-                    childUpdates.put("/one_liner/", oneLinerEditText.getText().toString());
+                    childUpdates.put("/firstName/", firstNameEditText.getText().toString());
+                    childUpdates.put("/lastName/", lastNameEditText.getText().toString());
+                    childUpdates.put("/oneLiner/", oneLinerEditText.getText().toString());
 
                     mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                         @Override
@@ -68,9 +68,9 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
 
 
                 SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-                editor.putString("name_first", firstNameEditText.getText().toString());
-                editor.putString("name_last", lastNameEditText.getText().toString());
-                editor.putString("one_liner",oneLinerEditText.getText().toString());
+                editor.putString("firstName", firstNameEditText.getText().toString());
+                editor.putString("lastName", lastNameEditText.getText().toString());
+                editor.putString("oneLiner",oneLinerEditText.getText().toString());
                 editor.apply();
 
 
@@ -80,9 +80,9 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
 
         // Get User Data if it Exists
         SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
-        String oneLiner = prefs.getString("one_liner", "");
-        String firstname = prefs.getString("name_first","");
-        String lastname = prefs.getString("name_last", "");
+        String oneLiner = prefs.getString("oneLiner", "");
+        String firstname = prefs.getString("firstName","");
+        String lastname = prefs.getString("lastName", "");
 
         // Populate user data
         firstNameEditText.setText(firstname);

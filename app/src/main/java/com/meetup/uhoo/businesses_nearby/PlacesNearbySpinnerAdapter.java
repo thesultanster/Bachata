@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 
 import java.util.Collections;
@@ -18,13 +19,13 @@ import java.util.List;
 /**
  * Created by sultankhan on 9/17/16.
  */
-public class PlacesNearbySpinnerAdapter extends ArrayAdapter<PlacesNearbySpinnerInfo> {
+public class PlacesNearbySpinnerAdapter extends ArrayAdapter<Business> {
 
     // Your sent context
     private Context context;
-    List<PlacesNearbySpinnerInfo> data = Collections.emptyList();
+    List<Business> data = Collections.emptyList();
 
-    public PlacesNearbySpinnerAdapter(Context context, int textViewResourceId, List<PlacesNearbySpinnerInfo> data) {
+    public PlacesNearbySpinnerAdapter(Context context, int textViewResourceId, List<Business> data) {
         super(context, textViewResourceId);
         this.context = context;
         this.data = data;
@@ -34,7 +35,7 @@ public class PlacesNearbySpinnerAdapter extends ArrayAdapter<PlacesNearbySpinner
         return data.size();
     }
 
-    public PlacesNearbySpinnerInfo getItem(int position) {
+    public Business getItem(int position) {
         return data.get(position);
     }
 

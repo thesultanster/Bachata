@@ -23,9 +23,7 @@ public class Business implements Serializable{
 
 
     public Business(){
-        this.name = "";
-        this.address = "";
-        this.placeId = "";
+
     }
 
     public Business(Place place)
@@ -40,13 +38,24 @@ public class Business implements Serializable{
 
     }
 
-    public Business(String key)
-    {
-        this.name = key;
-    }
-
     public String getPlaceId(){
         return placeId;
+    }
+
+    public String getPhoneNumber(){
+        return phoneNumber;
+    }
+
+    public String getAddress(){
+        return address;
+    }
+
+    public double getLatitude(){
+        return latitude;
+    }
+
+    public double getLongitude(){
+        return longitude;
     }
 
     public String getName(){

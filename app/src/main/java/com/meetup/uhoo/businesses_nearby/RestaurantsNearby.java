@@ -25,8 +25,6 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
-import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
-import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +38,6 @@ import com.meetup.uhoo.User;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RestaurantsNearby extends NavigationDrawerFramework implements GoogleApiClient.OnConnectionFailedListener {
@@ -116,13 +113,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
                 // If User is not checked in anywhere
-                if (!user.is_checked_in) {
+                if (!user.isCheckedIn) {
 
-                    final PlacesNearbySpinnerInfo place = (PlacesNearbySpinnerInfo) spinnerAdapter.getItem(placesSpinner.getSelectedItemPosition());
+                    // Get Selected Place object
+                    final Business place = (Business) spinnerAdapter.getItem(placesSpinner.getSelectedItemPosition());
 
                     // Add Place Id to GeoFire Table
                     // If it exists already, then atleast it updates new LatLng if it is updated
-                    geoFire.setLocation(place.getPlace().getId(), new GeoLocation(place.getLatitude(), place.getLongitude()), new GeoFire.CompletionListener() {
+                    geoFire.setLocation(place.getPlaceId(), new GeoLocation(place.getLatitude(), place.getLongitude()), new GeoFire.CompletionListener() {
                         @Override
                         public void onComplete(String key, DatabaseError error) {
                             if (error != null) {
@@ -134,18 +132,17 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                 DatabaseReference mDatabase;
 
                                 // Add user to checkin table
-                                mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(place.getPlace().getId());
+                                mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(place.getPlaceId());
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
 
                                 // Update user isCheckedIn state
                                 mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 mDatabase.child("isCheckedIn").setValue(true);
-                                mDatabase.child("checkedInto").setValue(place.getPlace().getId());
+                                mDatabase.child("checkedInto").setValue(place.getPlaceId());
 
                                 // Update restaurant info on restaurant table
                                 mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
-                                Business restaurant = new Business(place.getPlace());
-                                mDatabase.child(place.getPlace().getId()).setValue(restaurant);
+                                mDatabase.child(place.getPlaceId()).setValue(place);
 
 
                                 Refresh();
@@ -157,7 +154,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                 // Else if the user is already checked in
                 else {
-
                     DatabaseReference mDatabase;
 
                     // Remove user to checkin table
@@ -167,14 +163,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     // Update user isCheckedIn state
                     mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     mDatabase.child("isCheckedIn").setValue(false);
-
                 }
             }
         });
-
-
-
-
     }
 
 
@@ -205,7 +196,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
 
-                ArrayList<PlacesNearbySpinnerInfo> placesData = new ArrayList<PlacesNearbySpinnerInfo>();
+                ArrayList<Business> placesData = new ArrayList<Business>();
 
                 int limit = 10;
 
@@ -218,7 +209,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     Log.i("places", String.format("Place '%s' has likelihood: %g",
                             placeLikelihood.getPlace().getName(),
                             placeLikelihood.getLikelihood()));
-                    placesData.add(new PlacesNearbySpinnerInfo(placeLikelihood.getPlace()));
+                    placesData.add(new Business(placeLikelihood.getPlace()));
 
                     limit--;
                 }
@@ -234,14 +225,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
                 placesSpinner.setAdapter(spinnerAdapter); // Set the custom adapter to the spinner
-                // You can create an anonymous listener to handle the event when is selected an spinner item
+                // What to do when restaurant is selected
                 placesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view,
                                                int position, long id) {
                         // Here you get the current item (a User object) that is selected by its position
-                        PlacesNearbySpinnerInfo place = (PlacesNearbySpinnerInfo) spinnerAdapter.getItem(position);
+                        Business place = (Business) spinnerAdapter.getItem(position);
                         // Here you can do the action you want to...
                         Toast.makeText(RestaurantsNearby.this, "Name: " + place.getName(),
                                 Toast.LENGTH_SHORT).show();
@@ -376,9 +367,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                Log.d("user", "isCheckedIn " + user.is_checked_in);
+                Log.d("user", "isCheckedIn " + user.isCheckedIn);
 
-                if (user != null && user.is_checked_in) {
+                if (user != null && user.isCheckedIn) {
                     checkinButton.setText("Check Out");
                     placesSpinner.setVisibility(View.GONE);
                 } else {

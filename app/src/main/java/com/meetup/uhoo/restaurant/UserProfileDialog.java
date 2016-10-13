@@ -8,7 +8,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.plus.People;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
 
@@ -37,8 +36,8 @@ public class UserProfileDialog extends Dialog implements
         name = (TextView) findViewById(R.id.nameText);
         miniBio = (TextView) findViewById(R.id.miniBio);
 
-        name.setText(user.getName_first() + " " + user.getName_last());
-        miniBio.setText(user.getOne_liner());
+        name.setText(user.getFirstName() + " " + user.getLastName());
+        miniBio.setText(user.getOneLiner());
 
         connectButton.setOnClickListener(this);
 
