@@ -4,12 +4,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
@@ -52,6 +56,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     Spinner placesSpinner;
     SpinnerAdapter spinnerAdapter;
 
+    CardView checkinWidget;
+
     // RecyclerView adapter to add/remove rows
     RestaurantsNearbyRecyclerAdapter adapter;
     User user;
@@ -70,7 +76,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_people_nearby);
+        setContentView(R.layout.activity_businesses_nearby);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -186,6 +192,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             }
         });
 
+        checkinWidget = (CardView) findViewById(R.id.checkinWidget);
+
     }
 
     void GetNearbyBusinesses() {
@@ -223,6 +231,11 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         placesData) {
                 };
 
+                //Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.checkin_layout_fade_in);
+                //Set your animation
+                //checkinButton.startAnimation(fadeInAnimation);
+                checkinWidget.setVisibility(View.VISIBLE);
+
 
                 placesSpinner.setAdapter(spinnerAdapter); // Set the custom adapter to the spinner
                 // What to do when restaurant is selected
@@ -242,6 +255,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     public void onNothingSelected(AdapterView<?> adapter) {
                     }
                 });
+
+
 
 
             }
