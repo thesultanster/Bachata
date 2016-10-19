@@ -2,7 +2,17 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     >
+
+    <item
+        android:id="@+id/gps_refresh_icon"
+        android:title="Refresh Location"
+        android:orderInCategory="100"
+        android:icon="@mipmap/gps_refresh_icon"
+        app:showAsAction="always"
+        />
+
 
     <item
         android:id="@+id/create_account_icon"

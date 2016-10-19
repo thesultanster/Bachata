@@ -159,6 +159,11 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
             Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
         }
+        // If user clicks GPS refresh icon
+        else if(item.getItemId() == R.id.gps_refresh_icon){
+            Intent intent = new Intent(this, FindLocation.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 

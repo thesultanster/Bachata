@@ -48,30 +48,28 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
     // Used to manually update list of nearby users
     SwipeRefreshLayout mSwipeRefreshLayout;
-
     // List View to show nearby users
     RecyclerView recyclerView;
-
-    Button checkinButton;
-    Spinner placesSpinner;
-    SpinnerAdapter spinnerAdapter;
-
-    CardView checkinWidget;
-
     // RecyclerView adapter to add/remove rows
     RestaurantsNearbyRecyclerAdapter adapter;
+
+
+    Spinner placesSpinner;
+    SpinnerAdapter spinnerAdapter;
+    Button checkinButton;
+    CardView checkinWidget;
+
     User user;
+    Boolean userLoadFired = false;
 
     GoogleApiClient mGoogleApiClient;
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("restaurant_locations");
     DatabaseReference userRef;
     final GeoFire geoFire = new GeoFire(ref);
     GeoQuery geoQuery;
-
-    Boolean userLoadFired = false;
-
-
     ValueEventListener postListener;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
