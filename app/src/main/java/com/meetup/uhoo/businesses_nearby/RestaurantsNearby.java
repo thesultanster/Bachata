@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 
 import com.firebase.geofire.GeoFire;
@@ -52,6 +53,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     RecyclerView recyclerView;
     // RecyclerView adapter to add/remove rows
     RestaurantsNearbyRecyclerAdapter adapter;
+    ViewSwitcher viewSwitcher;
 
 
     Spinner placesSpinner;
@@ -191,6 +193,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         });
 
         checkinWidget = (CardView) findViewById(R.id.checkinWidget);
+        viewSwitcher = (ViewSwitcher) findViewById(R.id.switcher);
 
     }
 
@@ -311,6 +314,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                                                     adapter.addRow(restaurant);
 
+                                                    // If empty view shown, then switch
+                                                    if (R.id.text_empty == viewSwitcher.getNextView().getId()) {
+                                                        viewSwitcher.showNext();
+                                                    }
                                                 }
 
                                                 @Override
@@ -328,8 +335,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         });
 
 
-                //adapter.addRow(new PeopleNearbyRecyclerInfo(key));
-
             }
 
             @Override
@@ -346,6 +351,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             public void onGeoQueryReady() {
                 System.out.println("All initial data has been loaded and events have been fired!");
                 mSwipeRefreshLayout.setRefreshing(false);
+
+
             }
 
             @Override
@@ -355,6 +362,12 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             }
         });
 
+
+
+        // Default state when refreshing is no businesses around
+        if (R.id.recyclerView == viewSwitcher.getNextView().getId()) {
+            viewSwitcher.showNext();
+        }
 
     }
 

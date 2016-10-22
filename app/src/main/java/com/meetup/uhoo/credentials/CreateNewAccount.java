@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
 import com.meetup.uhoo.profile.SimpleProfileInfo;
+import com.meetup.uhoo.util.FindLocation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,6 +88,10 @@ public class CreateNewAccount extends AppCompatActivity {
                                     SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                                     editor.putString("authType", "EMAIL");
                                     editor.apply();
+
+                                    Intent intent = new Intent(CreateNewAccount.this, FindLocation.class);
+                                    startActivity(intent);
+                                    finish();
 
                                 }
 
