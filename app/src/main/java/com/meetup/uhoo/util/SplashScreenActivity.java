@@ -22,9 +22,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
 
-        //Intent intent = new Intent(SplashScreenActivity.this, FindLocation.class);
-        //startActivity(intent);
-
 
     }
 

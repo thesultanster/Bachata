@@ -194,6 +194,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
         checkinWidget = (CardView) findViewById(R.id.checkinWidget);
         viewSwitcher = (ViewSwitcher) findViewById(R.id.switcher);
+        viewSwitcher.setDisplayedChild(0);
 
     }
 
@@ -315,9 +316,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                                     adapter.addRow(restaurant);
 
                                                     // If empty view shown, then switch
-                                                    if (R.id.text_empty == viewSwitcher.getNextView().getId()) {
-                                                        viewSwitcher.showNext();
-                                                    }
+                                                    //if (R.id.text_empty == viewSwitcher.getNextView().getId()) {
+                                                    //    viewSwitcher.showNext();
+                                                    //}
                                                 }
 
                                                 @Override
@@ -365,9 +366,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
         // Default state when refreshing is no businesses around
-        if (R.id.recyclerView == viewSwitcher.getNextView().getId()) {
-            viewSwitcher.showNext();
-        }
+        //if (R.id.recyclerView == viewSwitcher.getNextView().getId()) {
+            //viewSwitcher.showNext();
+        //}
 
     }
 
