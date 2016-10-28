@@ -44,6 +44,31 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <LinearLayout
+        android:id="@+id/llActivityIcons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+
+
+    </LinearLayout>
+    <GridView
+        android:id="@+id/gvActivityIcons"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        android:columnWidth="100dp"
+        android:drawSelectorOnTop="true"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp"
+        android:focusable="true"
+        android:clickable="true"/>
+
+
     <Button
         android:id="@+id/saveProfileInfoButton"
         android:layout_width="wrap_content"

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="simple_profile_activity_icons">
+        <item>@drawable/uhoo_logo</item>
+        <item>@drawable/uhoo_logo</item>
+        <item>@drawable/uhoo_logo</item>
+    </string-array>
+</resources>

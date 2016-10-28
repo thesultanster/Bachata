@@ -10,6 +10,11 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 import com.meetup.uhoo.restaurant.UserDataFetchListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Created by sultankhan on 9/8/16.
  */
@@ -27,6 +32,7 @@ public class User {
     public double longitude;
     public boolean isCheckedIn;
     public String checkedInto;
+    public ArrayList<String> activityIconList;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -45,6 +51,7 @@ public class User {
         this.oneLiner = "";
         this.isCheckedIn = false;
         this.checkedInto = "";
+
         FetchUserData();
     }
 
@@ -62,10 +69,10 @@ public class User {
     public String getLastName(){
         return lastName;
     }
-
     public String getOneLiner(){
         return oneLiner;
     }
+    public ArrayList<String> getActivityIconList(){ return activityIconList; }
 
     public void FetchUserData(){
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
