@@ -55,7 +55,7 @@ public class SimpleProfileGridViewAdapter extends ArrayAdapter {
         if(item.getSelected()){
             holder.llGridItem.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         } else {
-            holder.llGridItem.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            holder.llGridItem.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent));
         }
 
         return row;

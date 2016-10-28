@@ -16,6 +16,7 @@
     <color name="dividerColor">#B6B6B6</color>
     <color name="cloud">#fbfcfc</color>
     <color name="darkCloud">#f0f4f4</color>
+    <color name="transparent">#00f0f4f4</color>
 
     <color name="flatDarkGreen">#27ae60</color>
     <color name="flatYellow">#f1c40f</color>
