@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="simple_profile_activity_icons">
-        <item>@drawable/uhoo_logo</item>
-        <item>@drawable/uhoo_logo</item>
-        <item>@drawable/uhoo_logo</item>
+        <item>@mipmap/beer</item>
+        <item>@mipmap/coding</item>
+        <item>@mipmap/lemonade</item>
+        <item>@mipmap/movies</item>
+        <item>@mipmap/pencil</item>
+        <item>@mipmap/piano</item>
     </string-array>
 </resources>

@@ -3,6 +3,7 @@ package com.meetup.uhoo.profile;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +53,9 @@ public class SimpleProfileGridViewAdapter extends ArrayAdapter {
 
         // If selected
         if(item.getSelected()){
-            holder.llGridItem.setBackgroundColor(Color.parseColor("#232323"));
+            holder.llGridItem.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         } else {
-            holder.llGridItem.setBackgroundColor(Color.parseColor("#9A9A9A"));
+            holder.llGridItem.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
         }
 
         return row;

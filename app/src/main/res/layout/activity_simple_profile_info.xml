@@ -57,9 +57,9 @@
     <GridView
         android:id="@+id/gvActivityIcons"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:columnWidth="100dp"
+        android:columnWidth="60dp"
         android:drawSelectorOnTop="true"
         android:gravity="center"
         android:numColumns="auto_fit"
