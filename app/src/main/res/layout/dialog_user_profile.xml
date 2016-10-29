@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:customviews="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,6 +16,8 @@
             android:layout_height="50dp"
             android:src="@color/primaryColorLight"/>
 
+
+
         <TextView
             android:id="@+id/nameText"
             android:layout_width="wrap_content"
@@ -25,6 +28,11 @@
 
 
     </LinearLayout>
+
+    <com.meetup.uhoo.ActivityView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        customviews:readOnly="true"/>
 
     <TextView
         android:id="@+id/miniBio"

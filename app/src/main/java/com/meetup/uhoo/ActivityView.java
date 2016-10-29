@@ -27,6 +27,9 @@ public class ActivityView extends FrameLayout {
     private GridView gridView;
     private SimpleProfileGridViewAdapter gridAdapter;
 
+    private ArrayList<String> selectedActivites;
+    private boolean readOnly = false;
+
 
     public ActivityView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -35,6 +38,21 @@ public class ActivityView extends FrameLayout {
 
     public ActivityView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        // Get Attributes
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.ActivitiesView,
+                0, 0
+        );
+
+        // Save attribute values
+        try {
+            readOnly = a.getBoolean(R.styleable.ActivitiesView_readOnly, false);
+        } finally {
+            a.recycle();
+        }
+
         initView();
     }
 
@@ -46,33 +64,44 @@ public class ActivityView extends FrameLayout {
     private void initView() {
         View view = inflate(getContext(), R.layout.custom_view_activity, null);
 
+
+        // Get User Data if it Exists
+        SharedPreferences prefs = getContext().getSharedPreferences("currentUser", 0);
+        Set<String> set = prefs.getStringSet("activityIconList", null);
+        selectedActivites = new ArrayList<String>(set);
+
+
         // Adapter
         gridView = (GridView) view.findViewById(R.id.gvActivityIcons);
         gridAdapter = new SimpleProfileGridViewAdapter(getContext(), R.layout.grid_item_activity_icon, getData());
         gridView.setAdapter(gridAdapter);
 
-
-        // Get User Data if it Exists
-        SharedPreferences prefs = getContext().getSharedPreferences("currentUser", 0);
-        Set<String> set = prefs.getStringSet("activityIconList", null);
-        ArrayList<String> selectedActivites = new ArrayList<String>(set);
-        if(set != null) {
-            for (String activity : selectedActivites) {
-                for (int i = 0; i < gridAdapter.getCount(); i++) {
-                    if (gridAdapter.getSelectedName(i).equals(activity)) {
-                        gridAdapter.SetSelected(i);
+        // If not read only then enable selected backgrounds on saved items
+        if (!readOnly) {
+            if (set != null) {
+                for (String activity : selectedActivites) {
+                    for (int i = 0; i < gridAdapter.getCount(); i++) {
+                        if (gridAdapter.getSelectedName(i).equals(activity)) {
+                            gridAdapter.SetSelected(i);
+                        }
                     }
                 }
             }
         }
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                //SimpleProfileActivityItem item = (SimpleProfileActivityItem) parent.getItemAtPosition(position);
-                gridAdapter.SetSelected(position);
-                gridAdapter.notifyDataSetChanged();
-            }
-        });
+        // If readOnly then dont enable activity selecting
+        if (!readOnly) {
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    //SimpleProfileActivityItem item = (SimpleProfileActivityItem) parent.getItemAtPosition(position);
+                    gridAdapter.SetSelected(position);
+                    gridAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+        gridView.setVerticalScrollBarEnabled(false);
+
         addView(view);
     }
 
@@ -82,12 +111,26 @@ public class ActivityView extends FrameLayout {
         TypedArray imgs = getResources().obtainTypedArray(R.array.simple_profile_activity_icons);
         for (int i = 0; i < imgs.length(); i++) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imgs.getResourceId(i, -1));
-            imageItems.add(new SimpleProfileActivityItem(bitmap, "Image" + i));
+
+            // If not read only then add all items to list
+            if (!readOnly) {
+                imageItems.add(new SimpleProfileActivityItem(bitmap, "Image" + i));
+            } else {
+
+                // If read only then only show the user's saved activity items
+
+                for (String activity : selectedActivites) {
+
+                    if (("Image" + i).equals(activity)) {
+                        imageItems.add(new SimpleProfileActivityItem(bitmap, "Image" + i));
+                    }
+                }
+            }
         }
         return imageItems;
     }
 
-    public void save(){
+    public void save() {
         SharedPreferences.Editor editor = getContext().getSharedPreferences("currentUser", 0).edit();
         Set<String> set = new HashSet<String>();
         set.addAll(gridAdapter.getSelectedItems());
@@ -95,7 +138,7 @@ public class ActivityView extends FrameLayout {
         editor.apply();
     }
 
-    public ArrayList<String> getSelectedItems(){
+    public ArrayList<String> getSelectedItems() {
         return gridAdapter.getSelectedItems();
     }
 
