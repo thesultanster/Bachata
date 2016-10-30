@@ -33,6 +33,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".util.PermissionsActivity"></activity>
+
+        <receiver android:name=".util.NotificationReceiver">
+            <intent-filter>
+                <action android:name="DEALS_ACTION"/>
+                <action android:name="CHECKOUT_ACTION"/>
+                <action android:name="CHECKIN_ACTION"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

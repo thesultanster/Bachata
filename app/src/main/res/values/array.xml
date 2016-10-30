@@ -8,4 +8,13 @@
         <item>@mipmap/pencil</item>
         <item>@mipmap/piano</item>
     </string-array>
+
+    <string-array name="simple_profile_activity_names">
+        <item>beer</item>
+        <item>coding</item>
+        <item>lemonade</item>
+        <item>movies</item>
+        <item>pencil</item>
+        <item>piano</item>
+    </string-array>
 </resources>

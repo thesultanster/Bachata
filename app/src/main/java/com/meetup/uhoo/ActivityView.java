@@ -109,20 +109,20 @@ public class ActivityView extends FrameLayout {
     private ArrayList<SimpleProfileActivityItem> getData() {
         final ArrayList<SimpleProfileActivityItem> imageItems = new ArrayList<>();
         TypedArray imgs = getResources().obtainTypedArray(R.array.simple_profile_activity_icons);
+        TypedArray names = getResources().obtainTypedArray(R.array.simple_profile_activity_names);
         for (int i = 0; i < imgs.length(); i++) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imgs.getResourceId(i, -1));
 
             // If not read only then add all items to list
             if (!readOnly) {
-                imageItems.add(new SimpleProfileActivityItem(bitmap, "Image" + i));
+                imageItems.add(new SimpleProfileActivityItem(bitmap, names.getString(i)));
             } else {
 
                 // If read only then only show the user's saved activity items
-
                 for (String activity : selectedActivites) {
 
-                    if (("Image" + i).equals(activity)) {
-                        imageItems.add(new SimpleProfileActivityItem(bitmap, "Image" + i));
+                    if ((names.getString(i)).equals(activity)) {
+                        imageItems.add(new SimpleProfileActivityItem(bitmap, names.getString(i)));
                     }
                 }
             }

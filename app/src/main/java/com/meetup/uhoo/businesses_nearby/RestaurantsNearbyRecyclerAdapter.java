@@ -7,14 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
+import com.meetup.uhoo.profile.SimpleProfileActivityItem;
+import com.meetup.uhoo.profile.SimpleProfileGridViewAdapter;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
 import com.meetup.uhoo.restaurant.UserDataFetchListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +57,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         final View view = inflator.inflate(R.layout.row_business_nearby, parent, false);
-        MyViewHolder holder = new MyViewHolder(view, new MyViewHolder.MyViewHolderClicks() {
+        MyViewHolder holder = new MyViewHolder(context, view, new MyViewHolder.MyViewHolderClicks() {
 
             public void rowClick(View caller, int position) {
                 Log.d("rowClick", "rowClicks");
@@ -99,20 +103,40 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name, checkinText;
+        Context context;
 
         CircleImageView profileImage;
         public MyViewHolderClicks mListener;
 
-        // itemView will be my own custom layout View of the row
-        public MyViewHolder(View itemView, MyViewHolderClicks listener) {
-            super(itemView);
+        GridView gridView;
+        RestaurantNearbyGridViewAdapter gridAdapter;
 
+        // itemView will be my own custom layout View of the row
+        public MyViewHolder(Context context, View itemView, MyViewHolderClicks listener) {
+            super(itemView);
+            this.context = context;
             mListener = listener;
 
             //Link the objects
             name = (TextView) itemView.findViewById(R.id.name);
             checkinText = (TextView) itemView.findViewById(R.id.checkinText);
             profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
+
+
+            ArrayList<RestaurantNearbyGridViewItem> imageItems = new ArrayList<>();
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+
+
+
+            // Adapter
+            gridView = (GridView) itemView.findViewById(R.id.gvProfileIcons);
+            gridAdapter = new RestaurantNearbyGridViewAdapter(context, R.layout.grid_item_profile_icon, imageItems);
+            gridView.setAdapter(gridAdapter);
+
 
             itemView.setOnClickListener(this);
 

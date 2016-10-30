@@ -1,8 +1,13 @@
 package com.meetup.uhoo.businesses_nearby;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +42,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
@@ -70,7 +76,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     final GeoFire geoFire = new GeoFire(ref);
     GeoQuery geoQuery;
     ValueEventListener postListener;
-
 
 
     @Override
@@ -107,7 +112,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     Log.d("user", "data not loaded yet");
                     return;
                 }
-
 
                 // Get user auth type. If anon user then tell them to create an account
                 SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
@@ -151,6 +155,35 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                 mDatabase.child(place.getPlaceId()).setValue(place);
 
 
+                                SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                                editor.putString("checkedInto", place.getPlaceId());
+                                editor.apply();
+
+
+                                // Create Notifications
+                                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
+                                mBuilder.setSmallIcon(R.mipmap.beer);
+                                mBuilder.setContentTitle("Checked into " + place.getName());
+                                mBuilder.setContentText("You are currently checked into this business");
+                                mBuilder.setOngoing(true);
+                                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                                // Create Broadcast Intent for Deals button
+                                Intent dealsReceive = new Intent();
+                                dealsReceive.setAction(AppConstant.DEALS_ACTION);
+                                PendingIntent pendingIntentYes = PendingIntent.getBroadcast(getApplicationContext(), 12345, dealsReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+                                mBuilder.addAction(R.mipmap.gps_refresh_icon, "Deals", pendingIntentYes);
+
+                                // Create Broadcast Intent for Checkout button
+                                Intent chekoutReceive = new Intent();
+                                chekoutReceive.setAction(AppConstant.CHECKOUT_ACTION);
+                                PendingIntent pendingIntentYes2 = PendingIntent.getBroadcast(getApplicationContext(), 12345, chekoutReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+                                mBuilder.addAction(R.mipmap.gps_refresh_icon, "Check Out", pendingIntentYes2);
+
+                                // notificationID allows you to update the notification later on.
+                                mNotificationManager.notify(AppConstant.CHECKIN_NOTIF, mBuilder.build());
+
+
                                 Refresh();
                             }
                         }
@@ -161,6 +194,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 // Else if the user is already checked in
                 else {
                     DatabaseReference mDatabase;
+
+                    SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                    editor.putString("checkedInto", "");
+                    editor.apply();
 
                     // Remove user to checkin table
                     mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(user.checkedInto);
@@ -257,8 +294,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     public void onNothingSelected(AdapterView<?> adapter) {
                     }
                 });
-
-
 
 
             }
@@ -364,10 +399,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         });
 
 
-
         // Default state when refreshing is no businesses around
         //if (R.id.recyclerView == viewSwitcher.getNextView().getId()) {
-            //viewSwitcher.showNext();
+        //viewSwitcher.showNext();
         //}
 
     }
@@ -377,7 +411,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     protected void onStop() {
         super.onStop();
 
-        if(postListener != null){
+        if (postListener != null) {
             userRef.removeEventListener(postListener);
         }
 
@@ -409,6 +443,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 // Because we are inside an onDataChange method, it will be fired
                 // Everytime a user is updated. We just wanna load list once
                 if (!userLoadFired) {
+                    Log.d("user", "load fired");
                     Refresh();
                     userLoadFired = true;
                 }

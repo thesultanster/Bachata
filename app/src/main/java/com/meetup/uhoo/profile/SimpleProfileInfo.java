@@ -83,6 +83,13 @@ public class SimpleProfileInfo extends NavigationDrawerFramework {
 
                 }
 
+                SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                editor.putString("firstName", firstNameEditText.getText().toString());
+                editor.putString("lastName", lastNameEditText.getText().toString());
+                editor.putString("oneLiner",oneLinerEditText.getText().toString());
+
+                editor.apply();
+
                 activitiesView.save();
 
 
