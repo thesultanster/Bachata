@@ -90,7 +90,15 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
         holder.name.setText(current.getName());
         holder.checkinText.setText(current.getNumUsersCheckedIn() + " users checked in");
+        holder.numUsersCheckedInt = current.getNumUsersCheckedIn();
 
+        for(int i = 0; i < holder.numUsersCheckedInt; i++){
+            holder.gridAdapter.addProfile();
+        }
+
+        if(holder.numUsersCheckedInt == 0){
+            holder.gridView.setVisibility(View.GONE);
+        }
     }
 
 
@@ -104,6 +112,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
         TextView name, checkinText;
         Context context;
+        int numUsersCheckedInt;
 
         CircleImageView profileImage;
         public MyViewHolderClicks mListener;
@@ -124,42 +133,6 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
 
             ArrayList<RestaurantNearbyGridViewItem> imageItems = new ArrayList<>();
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-            imageItems.add(new RestaurantNearbyGridViewItem());
-
 
 
             // Adapter

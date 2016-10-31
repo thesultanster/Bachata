@@ -64,9 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+
         >
 
 
@@ -75,6 +73,9 @@
             android:id="@+id/gvProfileIcons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:columnWidth="16dp"
             android:gravity="center"
             android:numColumns="auto_fit"
@@ -88,7 +89,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider"
+        android:background="@color/primaryColorLight"
         android:visibility="visible" />
 
 

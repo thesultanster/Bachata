@@ -65,5 +65,10 @@ public class RestaurantNearbyGridViewAdapter extends ArrayAdapter {
         LinearLayout llGridItem;
     }
 
+    public void addProfile(){
+        data.add(new RestaurantNearbyGridViewItem());
+        this.notifyDataSetChanged();
+    }
+
 
 }
