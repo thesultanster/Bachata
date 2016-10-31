@@ -10,6 +10,6 @@
         android:id="@+id/ivProfileIcon"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:src="@color/pastelRed"/>
+        android:src="@color/primaryColorLight"/>
 
 </LinearLayout>
