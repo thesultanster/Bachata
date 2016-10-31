@@ -129,6 +129,36 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
             imageItems.add(new RestaurantNearbyGridViewItem());
             imageItems.add(new RestaurantNearbyGridViewItem());
             imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem()); imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
+            imageItems.add(new RestaurantNearbyGridViewItem());
 
 
 

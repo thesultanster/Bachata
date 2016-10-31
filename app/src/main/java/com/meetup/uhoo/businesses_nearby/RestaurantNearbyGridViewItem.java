@@ -8,9 +8,9 @@ import android.graphics.Bitmap;
 public class RestaurantNearbyGridViewItem {
     private Bitmap image;
 
-    public RestaurantNearbyGridViewItem(Bitmap image, String title) {
+    public RestaurantNearbyGridViewItem(String gender) {
         super();
-        this.image = image;
+
     }
 
     public RestaurantNearbyGridViewItem(){
