@@ -96,9 +96,6 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
             holder.gridAdapter.addProfile();
         }
 
-        if(holder.numUsersCheckedInt == 0){
-            holder.gridView.setVisibility(View.GONE);
-        }
     }
 
 

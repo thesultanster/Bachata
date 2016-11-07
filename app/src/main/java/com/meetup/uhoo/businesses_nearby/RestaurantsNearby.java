@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
@@ -64,7 +66,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
     Spinner placesSpinner;
     SpinnerAdapter spinnerAdapter;
-    Button checkinButton;
+    FloatingActionButton fabCheckinCheckout;
+    TextView tvCheckinText;
     CardView checkinWidget;
 
     User user;
@@ -101,112 +104,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         GetNearbyBusinesses();
 
 
-        // Checking In and Out Logic
-        checkinButton.setOnClickListener(new View.OnClickListener() {
+        fabCheckinCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                // If user data has not been loaded
-                if (user == null) {
-                    Log.d("user", "data not loaded yet");
-                    return;
-                }
-
-                // Get user auth type. If anon user then tell them to create an account
-                SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
-                String authType = prefs.getString("authType", null);
-                if (authType != null && authType.equals("ANON")) {
-                    Toast.makeText(RestaurantsNearby.this, "Please Create An Account", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-                // If User is not checked in anywhere
-                if (!user.isCheckedIn) {
-
-                    // Get Selected Place object
-                    final Business place = (Business) spinnerAdapter.getItem(placesSpinner.getSelectedItemPosition());
-
-                    // Add Place Id to GeoFire Table
-                    // If it exists already, then atleast it updates new LatLng if it is updated
-                    geoFire.setLocation(place.getPlaceId(), new GeoLocation(place.getLatitude(), place.getLongitude()), new GeoFire.CompletionListener() {
-                        @Override
-                        public void onComplete(String key, DatabaseError error) {
-                            if (error != null) {
-                                System.err.println("There was an error saving the location to GeoFire: " + error);
-                            } else {
-                                System.out.println("Location ID saved on server successfully!");
-
-
-                                DatabaseReference mDatabase;
-
-                                // Add user to checkin table
-                                mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(place.getPlaceId());
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
-
-                                // Update user isCheckedIn state
-                                mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                mDatabase.child("isCheckedIn").setValue(true);
-                                mDatabase.child("checkedInto").setValue(place.getPlaceId());
-
-                                // Update restaurant info on restaurant table
-                                mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
-                                mDatabase.child(place.getPlaceId()).setValue(place);
-
-
-                                SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-                                editor.putString("checkedInto", place.getPlaceId());
-                                editor.apply();
-
-
-                                // Create Notifications
-                                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-                                mBuilder.setSmallIcon(R.mipmap.beer);
-                                mBuilder.setContentTitle("Checked into " + place.getName());
-                                mBuilder.setContentText("You are currently checked into this business");
-                                mBuilder.setOngoing(true);
-                                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                                // Create Broadcast Intent for Deals button
-                                Intent dealsReceive = new Intent();
-                                dealsReceive.setAction(AppConstant.DEALS_ACTION);
-                                PendingIntent pendingIntentYes = PendingIntent.getBroadcast(getApplicationContext(), 12345, dealsReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-                                mBuilder.addAction(R.mipmap.gps_refresh_icon, "Deals", pendingIntentYes);
-
-                                // Create Broadcast Intent for Checkout button
-                                Intent chekoutReceive = new Intent();
-                                chekoutReceive.setAction(AppConstant.CHECKOUT_ACTION);
-                                PendingIntent pendingIntentYes2 = PendingIntent.getBroadcast(getApplicationContext(), 12345, chekoutReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-                                mBuilder.addAction(R.mipmap.gps_refresh_icon, "Check Out", pendingIntentYes2);
-
-                                // notificationID allows you to update the notification later on.
-                                mNotificationManager.notify(AppConstant.CHECKIN_NOTIF, mBuilder.build());
-
-
-                                Refresh();
-                            }
-                        }
-                    });
-
-                }
-
-                // Else if the user is already checked in
-                else {
-                    DatabaseReference mDatabase;
-
-                    SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-                    editor.putString("checkedInto", "");
-                    editor.apply();
-
-                    // Remove user to checkin table
-                    mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(user.checkedInto);
-                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-
-                    // Update user isCheckedIn state
-                    mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    mDatabase.child("isCheckedIn").setValue(false);
-                }
+               CheckinCheckout();
             }
         });
     }
@@ -220,7 +121,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         placesSpinner = (Spinner) findViewById(R.id.placesSpinner);
-        checkinButton = (Button) findViewById(R.id.checkinButton);
+        fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
+        tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -229,9 +131,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             }
         });
 
-        checkinWidget = (CardView) findViewById(R.id.checkinWidget);
-        viewSwitcher = (ViewSwitcher) findViewById(R.id.switcher);
-        viewSwitcher.setDisplayedChild(0);
+
 
     }
 
@@ -273,7 +173,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 //Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.checkin_layout_fade_in);
                 //Set your animation
                 //checkinButton.startAnimation(fadeInAnimation);
-                checkinWidget.setVisibility(View.VISIBLE);
+                //checkinWidget.setVisibility(View.VISIBLE);
 
 
                 placesSpinner.setAdapter(spinnerAdapter); // Set the custom adapter to the spinner
@@ -431,11 +331,13 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 Log.d("user", "isCheckedIn " + user.isCheckedIn);
 
                 if (user != null && user.isCheckedIn) {
-                    checkinButton.setText("Check Out");
+                    tvCheckinText.setText("Checked In");
                     placesSpinner.setVisibility(View.GONE);
+                    fabCheckinCheckout.setImageResource(R.mipmap.check_out);
                 } else {
-                    checkinButton.setText("Checkin");
+                    tvCheckinText.setText("Not Checked In");
                     placesSpinner.setVisibility(View.VISIBLE);
+                    fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
                 }
 
                 // Load Refresh users when user is once loaded
@@ -464,5 +366,110 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void CheckinCheckout(){
+
+        // If user data has not been loaded
+        if (user == null) {
+            Log.d("user", "data not loaded yet");
+            return;
+        }
+
+        // Get user auth type. If anon user then tell them to create an account
+        SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+        String authType = prefs.getString("authType", null);
+        if (authType != null && authType.equals("ANON")) {
+            Toast.makeText(RestaurantsNearby.this, "Please Create An Account", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        // If User is not checked in anywhere
+        if (!user.isCheckedIn) {
+
+            // Get Selected Place object
+            final Business place = (Business) spinnerAdapter.getItem(placesSpinner.getSelectedItemPosition());
+
+            // Add Place Id to GeoFire Table
+            // If it exists already, then atleast it updates new LatLng if it is updated
+            geoFire.setLocation(place.getPlaceId(), new GeoLocation(place.getLatitude(), place.getLongitude()), new GeoFire.CompletionListener() {
+                @Override
+                public void onComplete(String key, DatabaseError error) {
+                    if (error != null) {
+                        System.err.println("There was an error saving the location to GeoFire: " + error);
+                    } else {
+                        System.out.println("Location ID saved on server successfully!");
+
+
+                        DatabaseReference mDatabase;
+
+                        // Add user to checkin table
+                        mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(place.getPlaceId());
+                        mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+
+                        // Update user isCheckedIn state
+                        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        mDatabase.child("isCheckedIn").setValue(true);
+                        mDatabase.child("checkedInto").setValue(place.getPlaceId());
+
+                        // Update restaurant info on restaurant table
+                        mDatabase = FirebaseDatabase.getInstance().getReference("restaurants");
+                        mDatabase.child(place.getPlaceId()).setValue(place);
+
+
+                        SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                        editor.putString("checkedInto", place.getPlaceId());
+                        editor.apply();
+
+
+                        // Create Notifications
+                        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
+                        mBuilder.setSmallIcon(R.mipmap.beer);
+                        mBuilder.setContentTitle("Checked into " + place.getName());
+                        mBuilder.setContentText("You are currently checked into this business");
+                        mBuilder.setOngoing(true);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                        // Create Broadcast Intent for Deals button
+                        Intent dealsReceive = new Intent();
+                        dealsReceive.setAction(AppConstant.DEALS_ACTION);
+                        PendingIntent pendingIntentYes = PendingIntent.getBroadcast(getApplicationContext(), 12345, dealsReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+                        mBuilder.addAction(R.mipmap.gps_refresh_icon, "Deals", pendingIntentYes);
+
+                        // Create Broadcast Intent for Checkout button
+                        Intent chekoutReceive = new Intent();
+                        chekoutReceive.setAction(AppConstant.CHECKOUT_ACTION);
+                        PendingIntent pendingIntentYes2 = PendingIntent.getBroadcast(getApplicationContext(), 12345, chekoutReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+                        mBuilder.addAction(R.mipmap.gps_refresh_icon, "Check Out", pendingIntentYes2);
+
+                        // notificationID allows you to update the notification later on.
+                        mNotificationManager.notify(AppConstant.CHECKIN_NOTIF, mBuilder.build());
+
+
+                        Refresh();
+                    }
+                }
+            });
+
+        }
+
+        // Else if the user is already checked in
+        else {
+            DatabaseReference mDatabase;
+
+            SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+            editor.putString("checkedInto", "");
+            editor.apply();
+
+            // Remove user to checkin table
+            mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(user.checkedInto);
+            mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+
+            // Update user isCheckedIn state
+            mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            mDatabase.child("isCheckedIn").setValue(false);
+        }
+
     }
 }

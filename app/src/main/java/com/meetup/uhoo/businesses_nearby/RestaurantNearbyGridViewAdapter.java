@@ -50,8 +50,6 @@ public class RestaurantNearbyGridViewAdapter extends ArrayAdapter {
         }
 
         RestaurantNearbyGridViewItem item = data.get(position);
-        //holder.image.setImageBitmap(item.getImage());
-
         return row;
     }
 
