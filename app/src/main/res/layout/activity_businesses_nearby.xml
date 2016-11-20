@@ -59,13 +59,6 @@
 
                 </LinearLayout>
 
-
-                <Button
-                    android:id="@+id/checkinButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:text="Checkin" />
-
             </LinearLayout>
 
             <android.support.design.widget.FloatingActionButton

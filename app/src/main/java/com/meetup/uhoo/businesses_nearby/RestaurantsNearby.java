@@ -1,5 +1,6 @@
 package com.meetup.uhoo.businesses_nearby;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -32,12 +34,14 @@ import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,6 +52,7 @@ import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
+import com.meetup.uhoo.restaurant.RestaurantActivity;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
@@ -62,6 +67,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     // RecyclerView adapter to add/remove rows
     RestaurantsNearbyRecyclerAdapter adapter;
     ViewSwitcher viewSwitcher;
+
+    ArrayList<Business> placesData;
 
 
     Spinner placesSpinner;
@@ -103,10 +110,30 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
         GetNearbyBusinesses();
 
+        int PLACE_PICKER_REQUEST = 1;
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+
 
         fabCheckinCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(user.isCheckedIn){
+
+
+
+
+                    /*
+
+                    // custom dialog
+                    CheckinCafesNearbyDialog dialog = new CheckinCafesNearbyDialog(RestaurantsNearby.this, placesData);
+                    dialog.setContentView(R.layout.dialog_checkin_nearest_cafes);
+                    dialog.show();
+                    */
+                }
+
+
                CheckinCheckout();
             }
         });
@@ -143,7 +170,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
 
-                ArrayList<Business> placesData = new ArrayList<Business>();
+                placesData = new ArrayList<Business>();
 
                 int limit = 10;
 
