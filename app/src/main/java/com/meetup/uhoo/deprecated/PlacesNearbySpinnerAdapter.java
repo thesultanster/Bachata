@@ -1,4 +1,4 @@
-package com.meetup.uhoo.businesses_nearby;
+package com.meetup.uhoo.deprecated;
 
 import android.content.Context;
 import android.graphics.Color;

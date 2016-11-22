@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -19,7 +20,7 @@ import com.meetup.uhoo.R;
 import java.util.ArrayList;
 
 class CheckinCafesNearbyDialog extends Dialog implements
-        android.view.View.OnClickListener {
+        android.view.View.OnClickListener{
 
     public Activity c;
     public Dialog d;
@@ -28,12 +29,15 @@ class CheckinCafesNearbyDialog extends Dialog implements
     RecyclerView recyclerView;
     // RecyclerView adapter to add/remove rows
     CheckinCafesNearbyDialogRecyclerAdapter adapter;
+    // Interface for business row selected
+    CheckinCafesNearbyViewHolderClicks rowClickListener;
 
-    public CheckinCafesNearbyDialog(Activity a, ArrayList<Business> nearbyCafes) {
+    public CheckinCafesNearbyDialog(Activity a, ArrayList<Business> nearbyCafes, CheckinCafesNearbyViewHolderClicks rowClickListener) {
         super(a);
-        // TODO Auto-generated constructor stub
+
         this.c = a;
         this.nearbyCafes = nearbyCafes;
+        this.rowClickListener = rowClickListener;
     }
 
     @Override
@@ -41,10 +45,9 @@ class CheckinCafesNearbyDialog extends Dialog implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_checkin_nearest_cafes);
 
-
         // set the custom dialog components - text, image and button
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        adapter = new CheckinCafesNearbyDialogRecyclerAdapter(c.getApplicationContext(), nearbyCafes);
+        adapter = new CheckinCafesNearbyDialogRecyclerAdapter(c.getApplicationContext(), nearbyCafes, rowClickListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(c.getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
@@ -58,4 +61,6 @@ class CheckinCafesNearbyDialog extends Dialog implements
         }
         dismiss();
     }
+
+
 }

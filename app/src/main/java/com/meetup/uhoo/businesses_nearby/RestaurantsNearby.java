@@ -34,12 +34,16 @@ import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.PlaceTypes;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,11 +75,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     ArrayList<Business> placesData;
 
 
-    Spinner placesSpinner;
-    SpinnerAdapter spinnerAdapter;
     FloatingActionButton fabCheckinCheckout;
+    TextView tvCehckinFABLabel;
     TextView tvCheckinText;
-    CardView checkinWidget;
+
 
     User user;
     Boolean userLoadFired = false;
@@ -86,6 +89,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     final GeoFire geoFire = new GeoFire(ref);
     GeoQuery geoQuery;
     ValueEventListener postListener;
+
+    CheckinCafesNearbyDialog checkinDialog;
 
 
     @Override
@@ -110,31 +115,44 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
         GetNearbyBusinesses();
 
-        int PLACE_PICKER_REQUEST = 1;
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
-
 
         fabCheckinCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(user.isCheckedIn){
+                // If the user is not already checked in
+                // Check them in
+                if(!user.isCheckedIn){
 
 
+                    // Create Custom Checkin Dialog
+                    // Implement rowclick functionality
+                    checkinDialog = new CheckinCafesNearbyDialog(RestaurantsNearby.this, placesData, new CheckinCafesNearbyViewHolderClicks() {
+                        @Override
+                        public void rowClick(View caller, int position) {
+
+                            // Generate business object for logging purposes
+                            Business place =  placesData.get(position);
+                            // Log result
+                            Log.i("Business selected", place.getName());
 
 
-                    /*
+                            CheckInUser(position);
+                        }
+                    });
 
-                    // custom dialog
-                    CheckinCafesNearbyDialog dialog = new CheckinCafesNearbyDialog(RestaurantsNearby.this, placesData);
-                    dialog.setContentView(R.layout.dialog_checkin_nearest_cafes);
-                    dialog.show();
-                    */
+                    checkinDialog.setContentView(R.layout.dialog_checkin_nearest_cafes);
+                    checkinDialog.show();
+
+                }
+                // If the user is already checked in
+                // Check them out
+                else {
+                    CheckOutUser();
                 }
 
 
-               CheckinCheckout();
+
             }
         });
     }
@@ -147,8 +165,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         recyclerView.setAdapter(adapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        placesSpinner = (Spinner) findViewById(R.id.placesSpinner);
         fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
+        tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
         tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -176,51 +194,31 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
 
-                    if (limit <= 0) {
+                    if (limit <= 0 ) {
                         break;
                     }
 
+                    /* //TODO: uncomment this to limit only cafes
+                    // Limit to only cafes
+                    if(placeLikelihood.getPlace().getPlaceTypes().contains(Place.TYPE_CAFE)) {
+                        Log.i("places", String.format("Place '%s' has likelihood: %g",
+                                placeLikelihood.getPlace().getName(),
+                                placeLikelihood.getLikelihood()));
+
+                        placesData.add(new Business(placeLikelihood.getPlace()));
+                    }
+                    */
+
+                    // No Limit to business type
                     Log.i("places", String.format("Place '%s' has likelihood: %g",
                             placeLikelihood.getPlace().getName(),
                             placeLikelihood.getLikelihood()));
+
                     placesData.add(new Business(placeLikelihood.getPlace()));
 
                     limit--;
                 }
                 likelyPlaces.release();
-
-                // Initialize the adapter sending the current context
-                // Send the simple_spinner_item layout
-                // And finally send the Users array (Your data)
-                spinnerAdapter = new PlacesNearbySpinnerAdapter(RestaurantsNearby.this,
-                        R.layout.row_places_nearby,
-                        placesData) {
-                };
-
-                //Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.checkin_layout_fade_in);
-                //Set your animation
-                //checkinButton.startAnimation(fadeInAnimation);
-                //checkinWidget.setVisibility(View.VISIBLE);
-
-
-                placesSpinner.setAdapter(spinnerAdapter); // Set the custom adapter to the spinner
-                // What to do when restaurant is selected
-                placesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view,
-                                               int position, long id) {
-                        // Here you get the current item (a User object) that is selected by its position
-                        Business place = (Business) spinnerAdapter.getItem(position);
-                        // Here you can do the action you want to...
-                        Toast.makeText(RestaurantsNearby.this, "Name: " + place.getName(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapter) {
-                    }
-                });
 
 
             }
@@ -359,11 +357,11 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                 if (user != null && user.isCheckedIn) {
                     tvCheckinText.setText("Checked In");
-                    placesSpinner.setVisibility(View.GONE);
+                    tvCehckinFABLabel.setText("CHECK OUT");
                     fabCheckinCheckout.setImageResource(R.mipmap.check_out);
                 } else {
                     tvCheckinText.setText("Not Checked In");
-                    placesSpinner.setVisibility(View.VISIBLE);
+                    tvCehckinFABLabel.setText("CHECK IN");
                     fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
                 }
 
@@ -395,9 +393,32 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void CheckinCheckout(){
+
+    private void CheckOutUser(){
+
+        // Create database reference
+        // We will use this multiple times to update values to check out user
+        DatabaseReference mDatabase;
+
+        // Locally save user state as not checked into anything
+        SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+        editor.putString("checkedInto", "");
+        editor.apply();
+
+        // Remove user from checkin table on database
+        mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(user.checkedInto);
+        mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+
+        // Update user check in state to false on database
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        mDatabase.child("isCheckedIn").setValue(false);
+    }
+
+
+    private void CheckInUser( int businessPosition ){
 
         // If user data has not been loaded
+        // Don't do anything
         if (user == null) {
             Log.d("user", "data not loaded yet");
             return;
@@ -416,7 +437,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         if (!user.isCheckedIn) {
 
             // Get Selected Place object
-            final Business place = (Business) spinnerAdapter.getItem(placesSpinner.getSelectedItemPosition());
+            final Business place =  placesData.get(businessPosition);
 
             // Add Place Id to GeoFire Table
             // If it exists already, then atleast it updates new LatLng if it is updated
@@ -475,28 +496,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
                         Refresh();
+
                     }
                 }
             });
 
+
         }
 
-        // Else if the user is already checked in
-        else {
-            DatabaseReference mDatabase;
-
-            SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-            editor.putString("checkedInto", "");
-            editor.apply();
-
-            // Remove user to checkin table
-            mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(user.checkedInto);
-            mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-
-            // Update user isCheckedIn state
-            mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-            mDatabase.child("isCheckedIn").setValue(false);
-        }
-
+        checkinDialog.dismiss();
     }
 }

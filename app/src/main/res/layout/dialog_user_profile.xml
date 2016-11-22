@@ -17,7 +17,6 @@
             android:src="@color/primaryColorLight"/>
 
 
-
         <TextView
             android:id="@+id/nameText"
             android:layout_width="wrap_content"

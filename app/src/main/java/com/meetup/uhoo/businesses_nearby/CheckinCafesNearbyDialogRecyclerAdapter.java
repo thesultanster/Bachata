@@ -30,11 +30,13 @@ public class CheckinCafesNearbyDialogRecyclerAdapter extends RecyclerView.Adapte
     List<Business> data = Collections.emptyList();
     LayoutInflater inflator;
     Context context;
+    CheckinCafesNearbyViewHolderClicks rowClickListener;
 
-    public CheckinCafesNearbyDialogRecyclerAdapter(Context context, List<Business> data) {
+    public CheckinCafesNearbyDialogRecyclerAdapter(Context context, List<Business> data, CheckinCafesNearbyViewHolderClicks rowClickListener) {
         this.context = context;
-        inflator = LayoutInflater.from(context);
+        this.inflator = LayoutInflater.from(context);
         this.data = data;
+        this.rowClickListener = rowClickListener;
     }
 
 
@@ -46,9 +48,7 @@ public class CheckinCafesNearbyDialogRecyclerAdapter extends RecyclerView.Adapte
 
     public void clearData() {
         int size = this.data.size();
-
         data.clear();
-
         this.notifyItemRangeRemoved(0, size);
     }
 
@@ -57,17 +57,7 @@ public class CheckinCafesNearbyDialogRecyclerAdapter extends RecyclerView.Adapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         final View view = inflator.inflate(R.layout.row_checkin_nearest_restaurant, parent, false);
-        MyViewHolder holder = new MyViewHolder(context, view, new MyViewHolder.MyViewHolderClicks() {
-
-            public void rowClick(View caller, int position) {
-                Log.d("rowClick", "rowClicks");
-
-                Intent intent = new Intent(context, RestaurantActivity.class);
-                //intent.putExtra("business", data.get(position));
-                //view.getContext().startActivity(intent);
-            }
-
-        });
+        MyViewHolder holder = new MyViewHolder(context, view, rowClickListener);
         return holder;
     }
 
@@ -96,12 +86,12 @@ public class CheckinCafesNearbyDialogRecyclerAdapter extends RecyclerView.Adapte
         int numUsersCheckedInt;
 
         CircleImageView profileImage;
-        public MyViewHolderClicks mListener;
+        public CheckinCafesNearbyViewHolderClicks mListener;
 
         RestaurantNearbyGridViewAdapter gridAdapter;
 
         // itemView will be my own custom layout View of the row
-        public MyViewHolder(Context context, View itemView, MyViewHolderClicks listener) {
+        public MyViewHolder(Context context, View itemView, CheckinCafesNearbyViewHolderClicks listener) {
             super(itemView);
             this.context = context;
             mListener = listener;
@@ -122,10 +112,7 @@ public class CheckinCafesNearbyDialogRecyclerAdapter extends RecyclerView.Adapte
             }
         }
 
-        public interface MyViewHolderClicks {
-            void rowClick(View caller, int position);
 
-        }
     }
 
 
