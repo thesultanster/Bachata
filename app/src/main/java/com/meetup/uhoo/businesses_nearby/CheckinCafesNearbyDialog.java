@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Text;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 
@@ -31,6 +33,8 @@ class CheckinCafesNearbyDialog extends Dialog implements
     CheckinCafesNearbyDialogRecyclerAdapter adapter;
     // Interface for business row selected
     CheckinCafesNearbyViewHolderClicks rowClickListener;
+
+    private TextView tvCancel;
 
     public CheckinCafesNearbyDialog(Activity a, ArrayList<Business> nearbyCafes, CheckinCafesNearbyViewHolderClicks rowClickListener) {
         super(a);
@@ -50,6 +54,14 @@ class CheckinCafesNearbyDialog extends Dialog implements
         adapter = new CheckinCafesNearbyDialogRecyclerAdapter(c.getApplicationContext(), nearbyCafes, rowClickListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(c.getApplicationContext()));
         recyclerView.setAdapter(adapter);
+
+        tvCancel = (TextView) findViewById(R.id.tvCancel);
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
     }
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -190,7 +191,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                 placesData = new ArrayList<Business>();
 
-                int limit = 10;
+                int limit = 5;
 
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
 
@@ -357,10 +358,12 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                 if (user != null && user.isCheckedIn) {
                     tvCheckinText.setText("Checked In");
+                    tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.green_pill));
                     tvCehckinFABLabel.setText("CHECK OUT");
                     fabCheckinCheckout.setImageResource(R.mipmap.check_out);
                 } else {
                     tvCheckinText.setText("Not Checked In");
+                    tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_pill));
                     tvCehckinFABLabel.setText("CHECK IN");
                     fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
                 }
@@ -466,6 +469,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         mDatabase.child(place.getPlaceId()).setValue(place);
 
 
+                        // Save placeId of checked in business locally
                         SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                         editor.putString("checkedInto", place.getPlaceId());
                         editor.apply();
