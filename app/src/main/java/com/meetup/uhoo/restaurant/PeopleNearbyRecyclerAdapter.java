@@ -23,7 +23,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     LayoutInflater inflator;
     Context context;
 
-    public PeopleNearbyRecyclerAdapter(RestaurantActivity context, List<User> data) {
+    public PeopleNearbyRecyclerAdapter(Context context, List<User> data) {
         this.context = context;
         inflator = LayoutInflater.from(context);
         this.data = data;
@@ -66,7 +66,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        final View view = inflator.inflate(R.layout.row_people_nearby, parent, false);
+        final View view = inflator.inflate(R.layout.custom_view_profile_row, parent, false);
         MyViewHolder holder = new MyViewHolder(view, new MyViewHolder.MyViewHolderClicks() {
 
             public void rowClick(View caller, int position) {
@@ -121,7 +121,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
             mListener = listener;
 
             //Link the objects
-            name = (TextView) itemView.findViewById(R.id.name);
+            name = (TextView) itemView.findViewById(R.id.tvFullName);
             miniBio = (TextView) itemView.findViewById(R.id.miniBio);
             profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
 
