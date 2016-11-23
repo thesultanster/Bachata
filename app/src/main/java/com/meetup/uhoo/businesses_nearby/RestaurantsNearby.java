@@ -47,12 +47,14 @@ import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.PlaceTypes;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
@@ -80,9 +82,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     TextView tvCehckinFABLabel;
     TextView tvCheckinText;
 
+    TextView tvBusinessName;
+
 
     User user;
     Boolean userLoadFired = false;
+
+    Business checkedInBusiness;
+
 
     GoogleApiClient mGoogleApiClient;
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("restaurant_locations");
@@ -133,10 +140,13 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         public void rowClick(View caller, int position) {
 
                             // Generate business object for logging purposes
-                            Business place =  placesData.get(position);
+                            Business place = placesData.get(position);
                             // Log result
                             Log.i("Business selected", place.getName());
 
+
+                            // Set Business Data in Checkin bottom sheet
+                            tvBusinessName.setText(place.getName());
 
                             CheckInUser(position);
                         }
@@ -169,6 +179,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
         tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
         tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
+        tvBusinessName = (TextView) findViewById(R.id.tvBusinessName);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -361,10 +372,23 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.green_pill));
                     tvCehckinFABLabel.setText("CHECK OUT");
                     fabCheckinCheckout.setImageResource(R.mipmap.check_out);
+
+                    // Get user auth type. If anon user then tell them to create an account
+                    Gson gson = new Gson();
+                    SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+                    String json = prefs.getString("checkedIntoBusiness", "");
+                    if(!json.equals("")) {
+                        Business CheckedInBusiness = gson.fromJson(json, Business.class);
+                        if (CheckedInBusiness != null) {
+                            tvBusinessName.setText(CheckedInBusiness.getName());
+                        }
+                    }
+
                 } else {
                     tvCheckinText.setText("Not Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_pill));
                     tvCehckinFABLabel.setText("CHECK IN");
+                    tvBusinessName.setText("");
                     fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
                 }
 
@@ -406,6 +430,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         // Locally save user state as not checked into anything
         SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
         editor.putString("checkedInto", "");
+        editor.putString("checkedIntoBusiness", null);
         editor.apply();
 
         // Remove user from checkin table on database
@@ -415,10 +440,11 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         // Update user check in state to false on database
         mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         mDatabase.child("isCheckedIn").setValue(false);
+
     }
 
 
-    private void CheckInUser( int businessPosition ){
+    private void CheckInUser(final int businessPosition ){
 
         // If user data has not been loaded
         // Don't do anything
@@ -470,8 +496,11 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
                         // Save placeId of checked in business locally
+                        Gson gson = new Gson();
+                        String json = gson.toJson(placesData.get(businessPosition));
                         SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                         editor.putString("checkedInto", place.getPlaceId());
+                        editor.putString("checkedIntoBusiness", json);
                         editor.apply();
 
 

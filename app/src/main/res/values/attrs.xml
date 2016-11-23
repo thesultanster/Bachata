@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ActivitiesView">
-        <attr name="readOnly" format="boolean">
+        <attr name="readOnly" format="boolean"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="ProfileRow">
+        <attr name="userFirstName" format="string" />
+        <attr name="userLastName" format="string" />
+        <attr name="visibilityPermission" format="enum">
+            <enum name="None" value="0" />
+            <enum name="Anonymous" value="1" />
+            <enum name="All" value="2" />
         </attr>
     </declare-styleable>
 

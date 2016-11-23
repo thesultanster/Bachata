@@ -15,7 +15,7 @@
             android:id="@+id/profileImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@color/primaryColorLight" />
+            android:src="@mipmap/coffee" />
 
         <LinearLayout
             android:layout_width="wrap_content"
