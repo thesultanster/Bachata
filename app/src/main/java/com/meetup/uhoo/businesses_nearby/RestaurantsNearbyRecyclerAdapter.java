@@ -92,6 +92,9 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
         holder.checkinText.setText(current.getNumUsersCheckedIn() + " users checked in");
         holder.numUsersCheckedInt = current.getNumUsersCheckedIn();
 
+        ArrayList<RestaurantNearbyGridViewItem> imageItems = new ArrayList<>();
+        holder.gridAdapter = new RestaurantNearbyGridViewAdapter(context, R.layout.grid_item_profile_icon, imageItems);
+        holder.gridView.setAdapter(holder.gridAdapter);
         for(int i = 0; i < holder.numUsersCheckedInt; i++){
             holder.gridAdapter.addProfile();
         }
@@ -127,16 +130,7 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
             name = (TextView) itemView.findViewById(R.id.name);
             checkinText = (TextView) itemView.findViewById(R.id.checkinText);
             profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
-
-
-            ArrayList<RestaurantNearbyGridViewItem> imageItems = new ArrayList<>();
-
-
-            // Adapter
             gridView = (GridView) itemView.findViewById(R.id.gvProfileIcons);
-            gridAdapter = new RestaurantNearbyGridViewAdapter(context, R.layout.grid_item_profile_icon, imageItems);
-            gridView.setAdapter(gridAdapter);
-
 
             itemView.setOnClickListener(this);
 
