@@ -21,8 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
-import com.meetup.uhoo.profile.SimpleProfileInfo;
-import com.meetup.uhoo.restaurant.RestaurantActivity;
+import com.meetup.uhoo.profile.ProfileActivity;
 
 
 public class NavigationDrawerFramework extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -201,7 +200,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
                 if(authType.equals("ANON")){
                     intent = new Intent(this, SignIn.class);
                 } else {
-                    intent = new Intent(this, SimpleProfileInfo.class);
+                    intent = new Intent(this, ProfileActivity.class);
                 }
 
                 break;

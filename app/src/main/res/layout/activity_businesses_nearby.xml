@@ -162,6 +162,7 @@
                             app:userFirstName="First"
                             app:userLastName="Last"
                             app:visibilityPermission="All"
+                            app:type="Self"
                             />
 
                     </RelativeLayout>

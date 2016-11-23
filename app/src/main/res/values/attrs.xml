@@ -12,6 +12,10 @@
             <enum name="Anonymous" value="1" />
             <enum name="All" value="2" />
         </attr>
+        <attr name="type" format="enum">
+            <enum name="User" value="0" />
+            <enum name="Self" value="1" />
+        </attr>
     </declare-styleable>
 
 </resources>

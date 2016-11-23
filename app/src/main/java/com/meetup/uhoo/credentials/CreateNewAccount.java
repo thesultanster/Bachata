@@ -12,23 +12,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
-import com.meetup.uhoo.profile.SimpleProfileInfo;
 import com.meetup.uhoo.util.FindLocation;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class CreateNewAccount extends AppCompatActivity {
 
@@ -113,7 +104,7 @@ public class CreateNewAccount extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d("auth", "CreateNewAccount onAuthStateChanged:signed_in:" + user.getUid());
-                    //Intent intent = new Intent(CreateNewAccount.this, SimpleProfileInfo.class);
+                    //Intent intent = new Intent(CreateNewAccount.this, ProfileActivity.class);
                     //startActivity(intent);
                 } else {
                     // User is signed out
