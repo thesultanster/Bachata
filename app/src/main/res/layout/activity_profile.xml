@@ -10,6 +10,7 @@
         android:fitsSystemWindows="true">
 
         <com.meetup.uhoo.ProfileRow
+            android:id="@+id/prCurrentUserProfileRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"
@@ -19,6 +20,11 @@
             app:type="Self"
             />
 
+        <View android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/top_shadow"/>
+
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
@@ -26,6 +32,8 @@
             android:layout_height="50dip"
             android:gravity="bottom"
             app:tabMode="fixed" />
+
+
 
     </android.support.design.widget.AppBarLayout>
 

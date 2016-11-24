@@ -34,7 +34,7 @@
                     android:id="@+id/tvFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="thesultanster"
+                    android:text="First Last"
                     android:textColor="@color/primaryText"
                     android:textSize="25sp" />
 
@@ -43,7 +43,7 @@
                     android:id="@+id/miniBio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="I do programming and c++ and java and Android applications " />
+                    android:text="Example of what I like to do" />
 
 
             </LinearLayout>

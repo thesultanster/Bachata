@@ -22,7 +22,7 @@ import java.util.Set;
 /**
  * Created by sultankhan on 10/28/16.
  */
-public class ActivityView extends FrameLayout {
+public class ActivitiesView extends FrameLayout {
 
     private GridView gridView;
     private SimpleProfileGridViewAdapter gridAdapter;
@@ -31,12 +31,12 @@ public class ActivityView extends FrameLayout {
     private boolean readOnly = false;
 
 
-    public ActivityView(Context context, AttributeSet attrs, int defStyle) {
+    public ActivitiesView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView();
     }
 
-    public ActivityView(Context context, AttributeSet attrs) {
+    public ActivitiesView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // Get Attributes
@@ -56,7 +56,7 @@ public class ActivityView extends FrameLayout {
         initView();
     }
 
-    public ActivityView(Context context) {
+    public ActivitiesView(Context context) {
         super(context);
         initView();
     }

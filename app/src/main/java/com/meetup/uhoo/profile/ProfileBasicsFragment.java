@@ -1,5 +1,7 @@
 package com.meetup.uhoo.profile;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 
 import java.util.HashMap;
@@ -20,7 +23,7 @@ import java.util.Map;
 /**
  * Created by sultankhan on 11/23/16.
  */
-public class BasicInfoFragment extends Fragment{
+public class ProfileBasicsFragment extends Fragment{
 
     private EditText firstNameEditText;
     private EditText lastNameEditText;
@@ -28,21 +31,38 @@ public class BasicInfoFragment extends Fragment{
     private Button saveProfileInfoButton;
 
     private DatabaseReference mDatabase;
+    private Activity activity;
 
-    public BasicInfoFragment() {
+    public ProfileBasicsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        Activity activity;
+
+        if (context instanceof Activity){
+            activity = (Activity) context;
+            this.activity = activity;
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_basic_profile_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile_basics, container, false);
 
         firstNameEditText = (EditText) view.findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) view.findViewById(R.id.lastNameEditText);
@@ -81,6 +101,10 @@ public class BasicInfoFragment extends Fragment{
                 editor.apply();
 
                 //activitiesView.save();
+
+
+                // Trigger Interface
+                ((ProfileActivity) activity).onBasicDataChanged();
 
 
             }

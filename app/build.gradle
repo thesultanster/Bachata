@@ -41,6 +41,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:9.4.0'
     compile 'com.google.android.gms:play-services-auth:9.4.0'
     compile 'com.google.code.gson:gson:2.7'
+    compile 'com.github.rey5137:material:1.2.4'
 }
 
 // ADD THIS AT THE BOTTOM

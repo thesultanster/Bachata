@@ -49,6 +49,7 @@
             android:theme="@style/AppTheme.Dark"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:layout_below="@+id/pendingRequestNotification"
+            android:elevation="4dp"
             />
 
         <FrameLayout

@@ -28,7 +28,7 @@
 
     </LinearLayout>
 
-    <com.meetup.uhoo.ActivityView
+    <com.meetup.uhoo.ActivitiesView
         android:layout_width="match_parent"
         android:layout_height="180dp"
         customviews:readOnly="true"/>

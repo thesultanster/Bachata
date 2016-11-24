@@ -1,46 +1,31 @@
 package com.meetup.uhoo.profile;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
-import com.meetup.uhoo.ActivityView;
+import com.meetup.uhoo.ProfileRow;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
-import com.meetup.uhoo.restaurant.HappeningsFragment;
-import com.meetup.uhoo.restaurant.PeopleCheckedInFragment;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class ProfileActivity extends NavigationDrawerFramework {
+public class ProfileActivity extends NavigationDrawerFramework implements ProfileUpdateInterface{
 
 
-
-    ActivityView activitiesView;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ProfileRow prCurrentUserProfileRow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simple_profile_info);
-
-
-        activitiesView = (ActivityView) findViewById(R.id.av);
+        setContentView(R.layout.activity_profile);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -48,16 +33,29 @@ public class ProfileActivity extends NavigationDrawerFramework {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        prCurrentUserProfileRow = (ProfileRow) findViewById(R.id.prCurrentUserProfileRow);
 
 
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new BasicInfoFragment(), "Basics");
-        adapter.addFragment(new BasicInfoFragment(), "Activities");
-        adapter.addFragment(new BasicInfoFragment(), "Another");
+        adapter.addFragment(new ProfileBasicsFragment(), "Basics");
+        adapter.addFragment(new ProfileActivitiesFragment(), "Activities");
+        adapter.addFragment(new ProfileBasicsFragment(), "Another");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBasicDataChanged() {
+        Log.i("Frag interface","onBasicDataChanged");
+
+        prCurrentUserProfileRow.RefreshCurrentUserData();
+    }
+
+    @Override
+    public void onActivitiesDataChanged() {
+        Log.i("Frag interface","onActivitiesDataChanged");
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

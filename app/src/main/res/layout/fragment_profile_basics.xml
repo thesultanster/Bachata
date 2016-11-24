@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="15dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <EditText
+            android:id="@+id/firstNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/lastNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/oneLinerEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Describe Yourself in One Line" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <RelativeLayout
+        android:id="@+id/llGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
+        
+        <TextView
+            android:layout_toRightOf="@+id/swGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:text="Male"/>
+
+        <com.rey.material.widget.Switch
+            android:id="@+id/swGender"
+            style="@style/Material.Widget.Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:checked="false"/>
+
+        <TextView
+            android:layout_toLeftOf="@+id/swGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:text="Female"/>
+
+    </RelativeLayout>
+
+    <com.rey.material.widget.Slider
+        android:id="@+id/slMasculineSlider"
+        style="@style/Material.Widget.Slider.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:sl_primaryColor="@color/flatBlue"
+        app:sl_minValue="0"
+        app:sl_maxValue="100"
+        app:sl_stepValue="10"
+        app:sl_value="50"
+        app:sl_discreteMode="true"
+        app:sl_travelAnimDuration="75"
+        app:sl_textSize="20sp"
+        android:visibility="gone"
+        />
+
+    <com.rey.material.widget.Slider
+        android:id="@+id/slFeminineSlider"
+        style="@style/Material.Widget.Slider.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:sl_primaryColor="@color/flatRed"
+        app:sl_minValue="0"
+        app:sl_maxValue="100"
+        app:sl_stepValue="10"
+        app:sl_value="50"
+        app:sl_discreteMode="true"
+        app:sl_travelAnimDuration="75"
+        app:sl_textSize="20sp"
+        android:visibility="gone"
+        />
+
+
+
+
+    <Button
+        android:id="@+id/saveProfileInfoButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save" />
+
+
+
+</LinearLayout>

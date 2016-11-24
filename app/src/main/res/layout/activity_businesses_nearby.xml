@@ -228,6 +228,7 @@
                 android:elevation="24dp"
                 android:background="@drawable/red_pill"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 android:text="Not Checked In"
                 />
 
