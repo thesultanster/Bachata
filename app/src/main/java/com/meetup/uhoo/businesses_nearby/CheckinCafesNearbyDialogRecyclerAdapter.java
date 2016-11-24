@@ -1,24 +1,15 @@
 package com.meetup.uhoo.businesses_nearby;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
-import com.meetup.uhoo.profile.SimpleProfileActivityItem;
-import com.meetup.uhoo.profile.SimpleProfileGridViewAdapter;
-import com.meetup.uhoo.restaurant.RestaurantActivity;
-import com.meetup.uhoo.restaurant.UserDataFetchListener;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

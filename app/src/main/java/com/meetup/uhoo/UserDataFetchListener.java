@@ -1,4 +1,4 @@
-package com.meetup.uhoo.restaurant;
+package com.meetup.uhoo;
 
 import com.meetup.uhoo.User;
 

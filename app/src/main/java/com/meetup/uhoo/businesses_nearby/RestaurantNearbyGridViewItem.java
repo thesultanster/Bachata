@@ -7,10 +7,12 @@ import android.graphics.Bitmap;
  */
 public class RestaurantNearbyGridViewItem {
     private Bitmap image;
+    private String gender;
 
     public RestaurantNearbyGridViewItem(String gender) {
         super();
 
+        this.gender = gender;
     }
 
     public RestaurantNearbyGridViewItem(){
@@ -26,6 +28,10 @@ public class RestaurantNearbyGridViewItem {
     public void setImage(Bitmap image) {
         this.image = image;
     }
+
+    public String getGender() { return gender; }
+
+    public void setGender(String gender) { this.gender = gender; }
 
 
 }

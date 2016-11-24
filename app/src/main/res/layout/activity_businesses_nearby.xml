@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="32dp"
                     android:orientation="vertical">
 
 
@@ -95,6 +95,28 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:textSize="32dp"
+                                android:text="3"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Example"/>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="32dp"
                                 android:text="9"/>
 
                             <TextView
@@ -112,7 +134,7 @@
                         android:id="@+id/tvMoreInfoBusiness"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="24dp"
+                        android:paddingTop="32dp"
                         android:paddingBottom="16dp"
                         android:gravity="center"
                         android:textStyle="bold"

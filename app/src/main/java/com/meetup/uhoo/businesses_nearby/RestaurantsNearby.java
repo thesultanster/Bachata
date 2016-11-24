@@ -59,6 +59,7 @@ import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
+import com.meetup.uhoo.UserDataFetchListener;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
@@ -270,7 +271,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                 if (restaurant != null) {
 
                                     // Query the users checked into the restaurant in order to display number of users
-                                    // TODO: Find a way to persist this data when user goes to RestaurantActivity
                                     DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
                                     restaurantsRef.child("checkin").child(restaurant.getPlaceId()).addListenerForSingleValueEvent(
                                             new ValueEventListener() {
@@ -278,19 +278,23 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                                                     // Save users in list
-                                                    List<User> users = new ArrayList<User>();
+                                                    final List<User> users = new ArrayList<User>();
                                                     for (DataSnapshot user : dataSnapshot.getChildren()) {
-                                                        users.add(new User(user.getKey()));
+
+                                                        // Create a user object and sets its ID
+                                                        // This is a placeholder gridview item for the checkedin users gridview
+                                                        // Later on we will use the Ids to query user gender and update gridview
+                                                        User tempUser = new User();
+                                                        tempUser.uid = user.getKey();
+
+                                                        users.add(tempUser);
+
                                                     }
 
+                                                    restaurant.setUsersCheckedIn(users);
                                                     restaurant.setNumUsersCheckedIn(users.size());
 
                                                     adapter.addRow(restaurant);
-
-                                                    // If empty view shown, then switch
-                                                    //if (R.id.text_empty == viewSwitcher.getNextView().getId()) {
-                                                    //    viewSwitcher.showNext();
-                                                    //}
                                                 }
 
                                                 @Override

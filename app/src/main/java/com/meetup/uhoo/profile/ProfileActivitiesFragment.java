@@ -2,6 +2,7 @@ package com.meetup.uhoo.profile;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,8 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.ActivitiesView;
 import com.meetup.uhoo.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sultankhan on 11/23/16.
@@ -21,6 +29,7 @@ public class ProfileActivitiesFragment extends Fragment {
     private Button btnSaveActivities;
 
     private Activity activity;
+    private DatabaseReference mDatabase;
 
     public ProfileActivitiesFragment() {
         // Required empty public constructor
@@ -29,6 +38,8 @@ public class ProfileActivitiesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -55,8 +66,30 @@ public class ProfileActivitiesFragment extends Fragment {
         btnSaveActivities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Save Basic info on database
+                if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("/activityIconList/", activitiesView.getSelectedItems());
+
+                    mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+
+                            }
+                        }
+                    });
+
+                }
+
+                activitiesView.save();
+
+
                 // Trigger Interface
                 ((ProfileActivity) activity).onActivitiesDataChanged();
+
+
             }
         });
 

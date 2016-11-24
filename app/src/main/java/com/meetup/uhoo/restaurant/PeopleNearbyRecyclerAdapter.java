@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
+import com.meetup.uhoo.UserDataFetchListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +37,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
         final int index = getItemCount();
 
-        row.setOnEventListener(new UserDataFetchListener() {
+        row.setOnUserDataFetchListener(new UserDataFetchListener() {
             @Override
             public void onUserFetch(User user) {
 

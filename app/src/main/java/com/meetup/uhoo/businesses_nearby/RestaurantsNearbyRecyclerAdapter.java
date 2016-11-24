@@ -13,12 +13,8 @@ import android.widget.TextView;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
-import com.meetup.uhoo.profile.SimpleProfileActivityItem;
-import com.meetup.uhoo.profile.SimpleProfileGridViewAdapter;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
-import com.meetup.uhoo.restaurant.UserDataFetchListener;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +32,6 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
         inflator = LayoutInflater.from(context);
         this.data = data;
     }
-
 
 
     public void addRow(Business row) {
@@ -85,19 +80,22 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        // This gives us current information list object
-        Business current = data.get(position);
+        // This gives us current business
+        Business currentBusiness = data.get(position);
+        //currentBusiness.setOnUserCheckinListener( );
+        // onFetchUsersCheckedIn ( list of users checekd in)
+        //  holder.adapter.update( list of users checked in)
 
-        holder.name.setText(current.getName());
-        holder.checkinText.setText(current.getNumUsersCheckedIn() + " users checked in");
-        holder.numUsersCheckedInt = current.getNumUsersCheckedIn();
 
-        ArrayList<RestaurantNearbyGridViewItem> imageItems = new ArrayList<>();
-        holder.gridAdapter = new RestaurantNearbyGridViewAdapter(context, R.layout.grid_item_profile_icon, imageItems);
+        List<User> checkedInUsers = currentBusiness.usersCheckedIn;
+
+        holder.name.setText(currentBusiness.getName());
+        holder.checkinText.setText(currentBusiness.getNumUsersCheckedIn() + " users checked in");
+        holder.numUsersCheckedInt = currentBusiness.getNumUsersCheckedIn();
+
+        holder.gridAdapter = new RestaurantNearbyGridViewAdapter(context, R.layout.grid_item_profile_icon, checkedInUsers);
         holder.gridView.setAdapter(holder.gridAdapter);
-        for(int i = 0; i < holder.numUsersCheckedInt; i++){
-            holder.gridAdapter.addProfile();
-        }
+
 
     }
 

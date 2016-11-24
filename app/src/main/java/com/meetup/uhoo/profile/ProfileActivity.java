@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.meetup.uhoo.ProfileRow;
 import com.meetup.uhoo.R;
@@ -51,11 +52,14 @@ public class ProfileActivity extends NavigationDrawerFramework implements Profil
         Log.i("Frag interface","onBasicDataChanged");
 
         prCurrentUserProfileRow.RefreshCurrentUserData();
+        Toast.makeText(ProfileActivity.this, "Basic Info Saved!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onActivitiesDataChanged() {
         Log.i("Frag interface","onActivitiesDataChanged");
+
+        Toast.makeText(ProfileActivity.this, "Activities Saved!", Toast.LENGTH_SHORT).show();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

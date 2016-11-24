@@ -6,26 +6,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
-import com.meetup.uhoo.restaurant.UserDataFetchListener;
 
-import java.lang.reflect.Array;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Created by sultankhan on 9/8/16.
  */
-@IgnoreExtraProperties
-public class User {
+public class User implements Serializable{
 
-    private UserDataFetchListener userDataFetchListener;
+    public UserDataFetchListener userDataFetchListener;
     public String firstName;
     public String lastName;
     public String username;
-    public String email;
+    public String gender;
     public String oneLiner;
     public String uid;
     public double latitude;
@@ -41,6 +36,7 @@ public class User {
         this.oneLiner = "";
         this.isCheckedIn = false;
         this.checkedInto = "";
+        this.gender = "";
 
     }
 
@@ -51,6 +47,7 @@ public class User {
         this.oneLiner = "";
         this.isCheckedIn = false;
         this.checkedInto = "";
+        this.gender = "";
 
         FetchUserData();
     }
@@ -72,6 +69,10 @@ public class User {
     public String getOneLiner(){
         return oneLiner;
     }
+
+    public String getGender(){
+        return gender;
+    }
     public ArrayList<String> getActivityIconList(){ return activityIconList; }
 
     public void FetchUserData(){
@@ -89,9 +90,11 @@ public class User {
                             oneLiner = user.oneLiner;
                             isCheckedIn = user.isCheckedIn;
                             checkedInto = user.checkedInto;
+                            gender = user.gender;
 
+                            // Trigger interface
                             if (userDataFetchListener != null)
-                                userDataFetchListener.onUserFetch(user); // event object :)
+                                userDataFetchListener.onUserFetch(user);
                         }
 
                     }
@@ -104,7 +107,7 @@ public class User {
 
     }
 
-    public void setOnEventListener(UserDataFetchListener listener) {
+    public void setOnUserDataFetchListener(UserDataFetchListener listener) {
         userDataFetchListener = listener;
     }
 

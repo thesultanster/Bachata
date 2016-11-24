@@ -16,10 +16,10 @@ import java.util.List;
 
 public class Business implements Serializable{
 
-    String name, address, placeId, phoneNumber;
-    double latitude, longitude;
-    int numUsersCheckedIn;
-    List<User> users = Collections.emptyList();
+    private String name, address, placeId, phoneNumber;
+    private double latitude, longitude;
+    private int numUsersCheckedIn;
+    public List<User> usersCheckedIn = Collections.emptyList();
 
 
     public Business(){
@@ -68,6 +68,10 @@ public class Business implements Serializable{
 
     public void setNumUsersCheckedIn(int num){
         numUsersCheckedIn = num;
+    }
+
+    public void setUsersCheckedIn( List<User> usersCheckedIn){
+        this.usersCheckedIn = usersCheckedIn;
     }
 
 
