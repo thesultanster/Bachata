@@ -1,5 +1,6 @@
 package com.meetup.uhoo;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  */
 public class User implements Serializable{
 
-    public UserDataFetchListener userDataFetchListener;
+    public transient UserDataFetchListener userDataFetchListener;
     public String firstName;
     public String lastName;
     public String username;

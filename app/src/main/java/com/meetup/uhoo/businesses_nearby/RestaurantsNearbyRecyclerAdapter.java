@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
+import com.meetup.uhoo.UserCheckinListener;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
 
 import java.util.Collections;
@@ -78,13 +79,19 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
     // Setting up the data for each row
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
         // This gives us current business
         Business currentBusiness = data.get(position);
-        //currentBusiness.setOnUserCheckinListener( );
-        // onFetchUsersCheckedIn ( list of users checekd in)
-        //  holder.adapter.update( list of users checked in)
+        currentBusiness.setOnUserCheckinListener(new UserCheckinListener() {
+
+            @Override
+            public void onFetchUsersCheckedIn( List<User> checkedInUsers ) {
+                holder.gridAdapter.update( checkedInUsers );
+            }
+        });
+        currentBusiness.FetchCheckedInUserData();
+
 
 
         List<User> checkedInUsers = currentBusiness.usersCheckedIn;

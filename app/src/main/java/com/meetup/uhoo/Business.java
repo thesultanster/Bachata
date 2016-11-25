@@ -21,6 +21,8 @@ public class Business implements Serializable{
     private int numUsersCheckedIn;
     public List<User> usersCheckedIn = Collections.emptyList();
 
+    public transient UserCheckinListener userCheckinListener;
+
 
     public Business(){
 
@@ -73,6 +75,32 @@ public class Business implements Serializable{
     public void setUsersCheckedIn( List<User> usersCheckedIn){
         this.usersCheckedIn = usersCheckedIn;
     }
+
+    public void setOnUserCheckinListener( UserCheckinListener userCheckinListener){
+        this.userCheckinListener = userCheckinListener;
+    }
+
+
+     public void FetchCheckedInUserData(){
+
+        int position = 0;
+        for( User user : usersCheckedIn){
+            final int finalPosition = position;
+            user.setOnUserDataFetchListener(new UserDataFetchListener() {
+                @Override
+                public void onUserFetch(User user) {
+                    // Update List with new user
+                    usersCheckedIn.set(finalPosition, user);
+                    // Trigger the interface
+                    userCheckinListener.onFetchUsersCheckedIn(usersCheckedIn);
+                }
+            });
+            user.FetchUserData();
+
+            position++;
+        }
+    }
+
 
 
 

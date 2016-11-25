@@ -53,17 +53,6 @@ public class RestaurantNearbyGridViewAdapter extends ArrayAdapter {
             holder.image = (ImageView) row.findViewById(R.id.ivProfileIcon);
             holder.llGridItem = (LinearLayout) row.findViewById(R.id.llgridItemActivity);
 
-            switch (usersCheckedIn.get(position).getGender()){
-                case "MALE":
-                    holder.image.setColorFilter(ContextCompat.getColor(context,R.color.pastelBlue));
-                    break;
-                case "FEMALE":
-                    holder.image.setColorFilter(ContextCompat.getColor(context,R.color.pastelRed));
-                    break;
-                default:
-                    break;
-            }
-
 
             // Save data, later used for recycling
             row.setTag(holder);
@@ -72,6 +61,21 @@ public class RestaurantNearbyGridViewAdapter extends ArrayAdapter {
         else {
             // Fetch old data
             holder = (ViewHolder) row.getTag();
+
+        }
+
+        // Set gender of viewholder objectGender LoafLoadasdfasdsadf
+        if(usersCheckedIn.size() > 0) {
+            switch (usersCheckedIn.get(position).getGender()) {
+                case "MALE":
+                    holder.image.setColorFilter(ContextCompat.getColor(context, R.color.pastelBlue));
+                    break;
+                case "FEMALE":
+                    holder.image.setColorFilter(ContextCompat.getColor(context, R.color.pastelRed));
+                    break;
+                default:
+                    break;
+            }
         }
 
         return row;
@@ -88,27 +92,13 @@ public class RestaurantNearbyGridViewAdapter extends ArrayAdapter {
     }
 
 
-
-    /*
-    public void addRow(User row) {
-
-
-        final int index = usersCheckedIn.size();
-
-        row.setOnEventListener(new UserDataFetchListener() {
-            @Override
-            public void onUserFetch(User user) {
-
-                Log.d("user Fetch complete", user.getFirstName() + " " + user.getLastName());
-                data.set(index,user);
-                updateRows();
-            }
-        });
-
-        usersCheckedIn.add(row);
-        notifyDataSetChanged(usersCheckedIn);
+    public void update(List<User> usersCheckedIn) {
+        //this.usersCheckedIn = Collections.emptyList();
+        //this.notifyDataSetChanged();
+        this.usersCheckedIn = usersCheckedIn;
+        this.notifyDataSetChanged();
     }
-    */
+
 
     public void addProfile(){
         usersCheckedIn.add(new User());
