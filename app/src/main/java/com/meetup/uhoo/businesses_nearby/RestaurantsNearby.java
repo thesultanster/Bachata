@@ -392,7 +392,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     tvCheckinText.setText("Not Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_pill));
                     tvCehckinFABLabel.setText("CHECK IN");
-                    tvBusinessName.setText("");
+                    tvBusinessName.setText(":(");
                     fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
                 }
 
