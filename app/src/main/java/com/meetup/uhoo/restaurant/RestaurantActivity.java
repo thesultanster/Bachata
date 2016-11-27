@@ -1,9 +1,12 @@
 package com.meetup.uhoo.restaurant;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +22,18 @@ import android.widget.Toast;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.User;
+import com.wangjie.androidbucket.utils.ABTextUtil;
+import com.wangjie.androidbucket.utils.imageprocess.ABShape;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantActivity extends AppCompatActivity {
+public class RestaurantActivity extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener{
 
 
     // Used to manually update list of nearby users
@@ -31,6 +41,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    private RapidFloatingActionLayout rfaLayout;
+    private RapidFloatingActionButton rfaBtn;
+    private RapidFloatingActionHelper rfabHelper;
 
     //String restaurantId;
     Business business;
@@ -66,6 +80,53 @@ public class RestaurantActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.fabUserVisibilityMenuLayout);
+        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.fabUserVisibilityMenu);
+
+        RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(getApplicationContext());
+        rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
+        List<RFACLabelItem> items = new ArrayList<>();
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Available")
+                .setResId(R.mipmap.white_ring)
+                .setIconNormalColor(getResources().getColor(R.color.flatDarkGreen))
+                .setIconPressedColor(0xffbf360c)
+                .setWrapper(0)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Check")
+                .setResId(R.mipmap.white_ring)
+                .setIconNormalColor(getResources().getColor(R.color.flatYellow))
+                .setIconPressedColor(0xff1a237e)
+                .setWrapper(1)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Busy")
+                .setResId(R.mipmap.white_ring)
+                .setIconNormalColor(getResources().getColor(R.color.flatRed))
+                .setIconPressedColor(0xff3e2723)
+                .setWrapper(2)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Anonymous")
+                .setResId(R.mipmap.white_ring)
+                .setIconNormalColor(getResources().getColor(R.color.flatBlue))
+                .setIconPressedColor(0xff0d5302)
+                .setWrapper(3)
+        );
+        rfaContent
+                .setItems(items)
+                .setIconShadowRadius(ABTextUtil.dip2px(getApplicationContext(), 5))
+                .setIconShadowColor(0xff888888)
+                .setIconShadowDy(ABTextUtil.dip2px(getApplicationContext(), 5))
+        ;
+        rfabHelper = new RapidFloatingActionHelper(
+                getApplicationContext(),
+                rfaLayout,
+                rfaBtn,
+                rfaContent
+        ).build();
     }
 
     @Override
@@ -84,6 +145,55 @@ public class RestaurantActivity extends AppCompatActivity {
         adapter.addFragment(new HappeningsFragment(), "Happenings");
         adapter.addFragment(new PeopleCheckedInFragment(business.getPlaceId()), "Something Else");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRFACItemLabelClick(int i, RFACLabelItem rfacLabelItem) {
+        Toast.makeText(getApplicationContext(), "clicked label: " + i, Toast.LENGTH_SHORT).show();
+        rfabHelper.toggleContent();
+
+        switch (i){
+            case 0:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_available) );
+                break;
+            case 1:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_check) );
+                break;
+            case 2:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_busy) );
+                break;
+            case 3:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_anonymous) );
+                break;
+            default:
+                break;
+        }
+        rfaBtn.build();
+    }
+
+    @Override
+    public void onRFACItemIconClick(int i, RFACLabelItem rfacLabelItem) {
+        Toast.makeText(getApplicationContext(), "clicked icon: " + i, Toast.LENGTH_SHORT).show();
+        rfabHelper.toggleContent();
+
+        switch (i){
+            case 0:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_available) );
+                break;
+            case 1:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_check) );
+                break;
+            case 2:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_busy) );
+                break;
+            case 3:
+                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_anonymous) );
+                break;
+            default:
+                break;
+        }
+
+        rfaBtn.build();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

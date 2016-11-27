@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.meetup.uhoo.ProfileRow;
+import com.meetup.uhoo.ProfileRowView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
@@ -21,7 +21,7 @@ public class ProfileActivity extends NavigationDrawerFramework implements Profil
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private ProfileRow prCurrentUserProfileRow;
+    private ProfileRowView prCurrentUserProfileRow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class ProfileActivity extends NavigationDrawerFramework implements Profil
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        prCurrentUserProfileRow = (ProfileRow) findViewById(R.id.prCurrentUserProfileRow);
+        prCurrentUserProfileRow = (ProfileRowView) findViewById(R.id.prCurrentUserProfileRow);
 
 
     }

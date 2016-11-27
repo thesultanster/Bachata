@@ -3,21 +3,16 @@ package com.meetup.uhoo;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 /**
  * Created by sultankhan on 11/22/16.
  */
-public class ProfileRow extends FrameLayout {
+public class ProfileRowView extends FrameLayout {
 
     private String firstName;
     private String lastName;
@@ -32,27 +27,27 @@ public class ProfileRow extends FrameLayout {
     private TextView tvOneLiner;
 
 
-    public ProfileRow(Context context, AttributeSet attrs, int defStyle) {
+    public ProfileRowView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView(context);
     }
 
-    public ProfileRow(Context context, AttributeSet attrs) {
+    public ProfileRowView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // Get Attributes
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.ProfileRow,
+                R.styleable.ProfileRowView,
                 0, 0
         );
 
         // Save attribute values
         try {
-            firstName = a.getString(R.styleable.ProfileRow_userFirstName);
-            lastName = a.getString(R.styleable.ProfileRow_userLastName);
-            visibilityPermission = a.getInt(R.styleable.ProfileRow_visibilityPermission,2);
-            type = a.getInt(R.styleable.ProfileRow_type,1);
+            firstName = a.getString(R.styleable.ProfileRowView_userFirstName);
+            lastName = a.getString(R.styleable.ProfileRowView_userLastName);
+            visibilityPermission = a.getInt(R.styleable.ProfileRowView_visibilityPermission,2);
+            type = a.getInt(R.styleable.ProfileRowView_type,1);
         } finally {
             a.recycle();
         }
@@ -60,7 +55,7 @@ public class ProfileRow extends FrameLayout {
         initView(context);
     }
 
-    public ProfileRow(Context context) {
+    public ProfileRowView(Context context) {
         super(context);
         initView(context);
     }

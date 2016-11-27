@@ -149,61 +149,11 @@
                     android:layout_height="1dp"
                     android:background="@color/darkCloud"/>
 
-                <LinearLayout
+                <com.meetup.uhoo.CheckinProfileDetailsView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="16dp"
-                    >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Your Profile As It Appears to Others"/>
-
-                    </RelativeLayout>
-
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/darkCloud"
-                        android:padding="8dp">
-
-                        <com.meetup.uhoo.ProfileRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:userFirstName="First"
-                            app:userLastName="Last"
-                            app:visibilityPermission="All"
-                            app:type="Self"
-                            />
-
-                    </RelativeLayout>
-
-
-                    <TextView
-                        android:id="@+id/tvEditProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorAccent"
-                        android:text="EDIT PROFILE >"/>
-
-
-                </LinearLayout>
+                    />
 
             </LinearLayout>
 

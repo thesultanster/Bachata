@@ -3,8 +3,10 @@
     <declare-styleable name="ActivitiesView">
         <attr name="readOnly" format="boolean"></attr>
     </declare-styleable>
+    <declare-styleable name="CheckinProfileDetailsView">
+    </declare-styleable>
 
-    <declare-styleable name="ProfileRow">
+    <declare-styleable name="ProfileRowView">
         <attr name="userFirstName" format="string" />
         <attr name="userLastName" format="string" />
         <attr name="visibilityPermission" format="enum">

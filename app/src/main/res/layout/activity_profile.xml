@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <com.meetup.uhoo.ProfileRow
+        <com.meetup.uhoo.ProfileRowView
             android:id="@+id/prCurrentUserProfileRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
