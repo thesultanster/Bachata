@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meetup.uhoo.Enum;
+import com.meetup.uhoo.ProfileRowView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
 import com.meetup.uhoo.UserDataFetchListener;
@@ -41,7 +44,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
             @Override
             public void onUserFetch(User user) {
 
-                Log.d("user Fetch complete", user.getFirstName() + " " + user.getLastName());
+                Log.i("user Fetch complete", user.getFirstName() + " " + user.getLastName());
                 data.set(index,user);
                 updateRows();
             }
@@ -67,7 +70,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        final View view = inflator.inflate(R.layout.custom_view_profile_row, parent, false);
+        final View view = inflator.inflate(R.layout.row_people_nearby, parent, false);
         MyViewHolder holder = new MyViewHolder(view, new MyViewHolder.MyViewHolderClicks() {
 
             public void rowClick(View caller, int position) {
@@ -78,15 +81,6 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
             }
 
-            @Override
-            public void bookNow(View caller, int position) {
-
-                //Intent intent = new Intent(context, SendSticker.class);
-                //intent.putExtra("userId", data.get(position).getParseObjectId());
-                //view.getContext().startActivity(intent);
-            }
-
-
         });
         return holder;
     }
@@ -96,8 +90,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // This gives us current information list object
         User current = data.get(position);
-        holder.name.setText(current.getFirstName() + " " + current.getLastName());
-        holder.miniBio.setText(current.getOneLiner());
+        holder.prProfileRow.setData(current);
     }
 
 
@@ -109,10 +102,8 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     // Created my custom view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView name;
-        TextView miniBio;
 
-        CircleImageView profileImage;
+        private ProfileRowView prProfileRow;
         public MyViewHolderClicks mListener;
 
         // itemView will be my own custom layout View of the row
@@ -121,10 +112,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
             mListener = listener;
 
-            //Link the objects
-            name = (TextView) itemView.findViewById(R.id.tvFullName);
-            miniBio = (TextView) itemView.findViewById(R.id.miniBio);
-            profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
+            prProfileRow = (ProfileRowView) itemView.findViewById(R.id.prProfileRow);
 
             itemView.setOnClickListener(this);
 
@@ -142,10 +130,8 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
         public interface MyViewHolderClicks {
             void rowClick(View caller, int position);
-
-            void bookNow(View caller, int position);
-
         }
+
     }
 
 

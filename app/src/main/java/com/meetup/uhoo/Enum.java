@@ -5,6 +5,18 @@ package com.meetup.uhoo;
  */
 public class Enum {
     public enum HappeningType{
-        DEAL, EVENT, COMEDY,VARIETY
+        DEAL, EVENT, COMEDY,VARIETY;
+    }
+
+    public enum CheckinVisibilityState {
+        AVAILABLE(0), CHECK(1), BUSY(2);
+
+        private final int value;
+
+        CheckinVisibilityState(final int newValue) {
+            value = newValue;
+        }
+
+        public int getValue() { return value; }
     }
 }

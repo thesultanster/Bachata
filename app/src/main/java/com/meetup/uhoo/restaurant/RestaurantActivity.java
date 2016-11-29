@@ -19,6 +19,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.meetup.uhoo.CheckinProfileDetailsView;
+import com.meetup.uhoo.Enum;
+import com.meetup.uhoo.ProfileRowView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.Business;
 import com.meetup.uhoo.User;
@@ -45,6 +48,7 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
+    private CheckinProfileDetailsView cpdProfileDetailView;
 
     //String restaurantId;
     Business business;
@@ -81,9 +85,10 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        cpdProfileDetailView = (CheckinProfileDetailsView) findViewById(R.id.cpdProfileDetailView);
+
         rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.fabUserVisibilityMenuLayout);
         rfaBtn = (RapidFloatingActionButton) findViewById(R.id.fabUserVisibilityMenu);
-
         RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(getApplicationContext());
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
         List<RFACLabelItem> items = new ArrayList<>();
@@ -127,6 +132,10 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
                 rfaBtn,
                 rfaContent
         ).build();
+        setRFACItem(cpdProfileDetailView.getCheckinVisibilityState().ordinal());
+
+
+
     }
 
     @Override
@@ -150,31 +159,24 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
     @Override
     public void onRFACItemLabelClick(int i, RFACLabelItem rfacLabelItem) {
         Toast.makeText(getApplicationContext(), "clicked label: " + i, Toast.LENGTH_SHORT).show();
-        rfabHelper.toggleContent();
-
-        switch (i){
-            case 0:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_available) );
-                break;
-            case 1:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_check) );
-                break;
-            case 2:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_busy) );
-                break;
-            case 3:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_anonymous) );
-                break;
-            default:
-                break;
-        }
-        rfaBtn.build();
+        rfacItemClick(i);
     }
 
     @Override
     public void onRFACItemIconClick(int i, RFACLabelItem rfacLabelItem) {
         Toast.makeText(getApplicationContext(), "clicked icon: " + i, Toast.LENGTH_SHORT).show();
+        rfacItemClick(i);
+    }
+
+    private void rfacItemClick(int i){
         rfabHelper.toggleContent();
+        setRFACItem(i);
+        cpdProfileDetailView.setCheckinVisibilityState(Enum.CheckinVisibilityState.values()[i]);
+        cpdProfileDetailView.saveProfileDataToDatabase();
+        cpdProfileDetailView.saveProfileDataToLocalUser();
+    }
+
+    private void setRFACItem(int i){
 
         switch (i){
             case 0:
@@ -186,13 +188,9 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
             case 2:
                 rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_busy) );
                 break;
-            case 3:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_anonymous) );
-                break;
             default:
                 break;
         }
-
         rfaBtn.build();
     }
 

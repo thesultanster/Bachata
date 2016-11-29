@@ -61,6 +61,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/ivCheckinState"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="3"
@@ -68,6 +69,7 @@
                     android:src="@drawable/fab_checkin_status_available"/>
 
                 <TextView
+                    android:id="@+id/tvCheckinState"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"

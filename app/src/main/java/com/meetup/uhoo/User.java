@@ -1,11 +1,11 @@
 package com.meetup.uhoo;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -29,6 +29,7 @@ public class User implements Serializable{
     public boolean isCheckedIn;
     public String checkedInto;
     public ArrayList<String> activityIconList;
+    public Enum.CheckinVisibilityState checkinVisibilityState;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -38,7 +39,7 @@ public class User implements Serializable{
         this.isCheckedIn = false;
         this.checkedInto = "";
         this.gender = "";
-
+        this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE;
     }
 
     public User(String uid) {
@@ -49,7 +50,7 @@ public class User implements Serializable{
         this.isCheckedIn = false;
         this.checkedInto = "";
         this.gender = "";
-
+        this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE;
         FetchUserData();
     }
 
@@ -59,6 +60,7 @@ public class User implements Serializable{
         this.oneLiner = oneLiner;
         this.isCheckedIn = false;
         this.checkedInto = "";
+        this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE;
     }
 
     public String getFirstName(){
@@ -70,11 +72,17 @@ public class User implements Serializable{
     public String getOneLiner(){
         return oneLiner;
     }
-
     public String getGender(){
         return gender;
     }
     public ArrayList<String> getActivityIconList(){ return activityIconList; }
+    // The Firebase data mapper will ignore this
+    @Exclude
+    public Enum.CheckinVisibilityState getCheckinVisibilityState() { return checkinVisibilityState; }
+
+    public void setCheckinVisibilityState(int i){
+        this.checkinVisibilityState =  Enum.CheckinVisibilityState.values()[i];
+    }
 
     public void FetchUserData(){
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();

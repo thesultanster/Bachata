@@ -12,6 +12,8 @@ import android.widget.TextView;
  */
 public class CheckinProfileDetailsView extends FrameLayout {
 
+    ProfileRowView pvProfileRow;
+
     public CheckinProfileDetailsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView(context);
@@ -44,7 +46,23 @@ public class CheckinProfileDetailsView extends FrameLayout {
 
     private void initView(Context context) {
         View view = inflate(getContext(), R.layout.custom_view_checkin_profile_details, null);
-
+        pvProfileRow = (ProfileRowView) view.findViewById(R.id.pvProfileRow);
         addView(view);
+    }
+
+    public void setCheckinVisibilityState(Enum.CheckinVisibilityState visibilityState){
+        pvProfileRow.setCheckinVisibilityState(visibilityState);
+    }
+
+    public void saveProfileDataToDatabase(){
+        pvProfileRow.SaveProfileDataToDatabase();
+    }
+
+    public void saveProfileDataToLocalUser(){
+        pvProfileRow.SaveProfileDataToLocalCurrentUser();
+    }
+
+    public Enum.CheckinVisibilityState getCheckinVisibilityState(){
+        return pvProfileRow.getCheckinVisibilityState();
     }
 }
