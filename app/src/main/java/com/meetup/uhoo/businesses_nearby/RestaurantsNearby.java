@@ -64,7 +64,9 @@ import com.meetup.uhoo.restaurant.RestaurantActivity;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RestaurantsNearby extends NavigationDrawerFramework implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -83,7 +85,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     TextView tvCehckinFABLabel;
     TextView tvCheckinText;
 
+    LinearLayout llCheckedInBusinessDetails;
     TextView tvBusinessName;
+    TextView tvBusinessCheckins;
+    TextView tvBusinessHappenings;
 
 
     User user;
@@ -95,9 +100,11 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     GoogleApiClient mGoogleApiClient;
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("restaurant_locations");
     DatabaseReference userRef;
+    DatabaseReference checkedInBusinessRef;
     final GeoFire geoFire = new GeoFire(ref);
     GeoQuery geoQuery;
     ValueEventListener postListener;
+    ValueEventListener checkedInBusinessListener;
 
     CheckinCafesNearbyDialog checkinDialog;
 
@@ -181,6 +188,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
         tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
         tvBusinessName = (TextView) findViewById(R.id.tvBusinessName);
+        tvBusinessHappenings = (TextView) findViewById(R.id.tvBusinessHappenings);
+        tvBusinessCheckins = (TextView) findViewById(R.id.tvBusinessCheckins);
+        llCheckedInBusinessDetails = (LinearLayout) findViewById(R.id.llCheckedInBusinessDetails);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -293,6 +303,18 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                                                     restaurant.setUsersCheckedIn(users);
                                                     restaurant.setNumUsersCheckedIn(users.size());
+                                                    // TODO: Replace this in future with server side code that tracks num users checked in
+                                                    Map<String, Object> childUpdates = new HashMap<>();
+                                                    childUpdates.put("/numUsersCheckedIn/", users.size());
+                                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                                    mDatabase.child("restaurants").child(restaurant.getPlaceId()).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                                                        @Override
+                                                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                            if (databaseError == null) {
+
+                                                            }
+                                                        }
+                                                    });
 
                                                     adapter.addRow(restaurant);
                                                 }
@@ -352,9 +374,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     protected void onStop() {
         super.onStop();
 
-        if (postListener != null) {
-            userRef.removeEventListener(postListener);
-        }
+        stopCurrentUserListener();
+        stopCheckinBusinessListener();
 
         if (geoQuery != null)
             geoQuery.removeAllListeners();
@@ -364,29 +385,37 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     public void onStart() {
         super.onStart();
 
+        startCurrentUserListener();
+        startCheckedInBusinessListener();
+
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void startCurrentUserListener(){
+        // If one exists, remove it first
+        stopCurrentUserListener();
+
         // Listener for Current User
         postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                Log.d("user", "isCheckedIn " + user.isCheckedIn);
+                Log.i("user", "isCheckedIn " + user.isCheckedIn);
 
+                // If user is checked in
                 if (user != null && user.isCheckedIn) {
                     tvCheckinText.setText("Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.green_pill));
                     tvCehckinFABLabel.setText("CHECK OUT");
                     fabCheckinCheckout.setImageResource(R.mipmap.check_out);
 
-                    // Get user auth type. If anon user then tell them to create an account
-                    Gson gson = new Gson();
-                    SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
-                    String json = prefs.getString("checkedIntoBusiness", "");
-                    if(!json.equals("")) {
-                        Business CheckedInBusiness = gson.fromJson(json, Business.class);
-                        if (CheckedInBusiness != null) {
-                            tvBusinessName.setText(CheckedInBusiness.getName());
-                        }
-                    }
+                    // Show business details in bottom sheet
+                    llCheckedInBusinessDetails.setVisibility(View.VISIBLE);
 
                 } else {
                     tvCheckinText.setText("Not Checked In");
@@ -394,6 +423,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     tvCehckinFABLabel.setText("CHECK IN");
                     tvBusinessName.setText(":(");
                     fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
+
+                    // Hide business details in bottom sheet
+                    llCheckedInBusinessDetails.setVisibility(View.GONE);
                 }
 
                 // Load Refresh users when user is once loaded
@@ -416,12 +448,53 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         };
         userRef = FirebaseDatabase.getInstance().getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
         userRef.addValueEventListener(postListener);
-
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        mSwipeRefreshLayout.setRefreshing(false);
+    private void stopCurrentUserListener(){
+        if (postListener != null) {
+            userRef.removeEventListener(postListener);
+        }
+    }
+
+
+    private void startCheckedInBusinessListener(){
+        // If one exists, remove it first
+        stopCheckinBusinessListener();
+
+        // Check what business user is checked in
+        SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+        String checkedIntoBusinessId = prefs.getString("checkedInto", "");
+        if(!checkedIntoBusinessId.equals("")) {
+
+
+            // Listener for Current User
+            checkedInBusinessListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    checkedInBusiness = dataSnapshot.getValue(Business.class);
+                    Log.i("business", "onDataChange");
+
+                    tvBusinessCheckins.setText(checkedInBusiness.getNumUsersCheckedIn() + "");
+                    tvBusinessHappenings.setText(checkedInBusiness.getNumHappenings() + "");
+                    tvBusinessName.setText(checkedInBusiness.getName());
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Business failed, log a message
+                    Log.e("business", "onCancelled", databaseError.toException());
+                }
+            };
+            checkedInBusinessRef = FirebaseDatabase.getInstance().getReference("restaurants/" + checkedIntoBusinessId);
+            checkedInBusinessRef.addValueEventListener(checkedInBusinessListener);
+        }
+    }
+
+    private void stopCheckinBusinessListener(){
+        if (checkedInBusinessListener != null) {
+            checkedInBusinessRef.removeEventListener(checkedInBusinessListener);
+        }
     }
 
 
@@ -445,6 +518,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         mDatabase.child("isCheckedIn").setValue(false);
 
+        // Stop checkin Business Listener
+        stopCheckinBusinessListener();
+
+        llCheckedInBusinessDetails.setVisibility(View.GONE);
     }
 
 
@@ -531,6 +608,11 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         // notificationID allows you to update the notification later on.
                         mNotificationManager.notify(AppConstant.CHECKIN_NOTIF, mBuilder.build());
 
+                        // After locally saving business ID, start check in listenter
+                        startCheckedInBusinessListener();
+
+                        // Show business details in bottom sheet
+                        llCheckedInBusinessDetails.setVisibility(View.VISIBLE);
 
                         Refresh();
 

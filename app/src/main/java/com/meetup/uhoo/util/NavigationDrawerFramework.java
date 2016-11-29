@@ -214,6 +214,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
                 // Erase cached authType
                 editor.putString("authType", null);
                 editor.commit();
+                editor.clear().commit();
                 intent = new Intent(this, FindLocation.class);
                 break;
 

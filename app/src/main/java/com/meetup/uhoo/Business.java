@@ -3,6 +3,7 @@ package com.meetup.uhoo;
 import android.util.Log;
 
 import com.google.android.gms.location.places.Place;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,13 +13,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Business implements Serializable{
 
     private String name, address, placeId, phoneNumber;
     private double latitude, longitude;
     private int numUsersCheckedIn;
+    private int numHappenings;
     public List<User> usersCheckedIn = Collections.emptyList();
 
     public transient UserCheckinListener userCheckinListener;
@@ -35,7 +39,11 @@ public class Business implements Serializable{
         this.placeId = place.getId();
         this.latitude = place.getLatLng().latitude;
         this.longitude = place.getLatLng().longitude;
-        this.phoneNumber= place.getPhoneNumber().toString();
+        this.phoneNumber = place.getPhoneNumber().toString();
+
+        numUsersCheckedIn = 0;
+        numHappenings = 0;
+
         place.freeze();
 
     }
@@ -68,12 +76,18 @@ public class Business implements Serializable{
         return numUsersCheckedIn;
     }
 
+    public int getNumHappenings(){
+        return numHappenings;
+    }
+
     public void setNumUsersCheckedIn(int num){
         numUsersCheckedIn = num;
     }
 
     public void setUsersCheckedIn( List<User> usersCheckedIn){
         this.usersCheckedIn = usersCheckedIn;
+
+
     }
 
     public void setOnUserCheckinListener( UserCheckinListener userCheckinListener){

@@ -55,96 +55,107 @@
                         />
 
                     <LinearLayout
+                        android:id="@+id/llCheckedInBusinessDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="24dp">
-
+                        android:orientation="vertical">
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="horizontal"
+                            android:layout_marginTop="24dp">
 
-                            <TextView
-                                android:layout_width="match_parent"
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textSize="32dp"
-                                android:text="100"/>
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="match_parent"
+                                <TextView
+                                    android:id="@+id/tvBusinessCheckins"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textSize="32dp"
+                                    android:text="100"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="People Checked in"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="People Checked in"/>
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textSize="32dp"
+                                    android:text="3"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Example"/>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tvBusinessHappenings"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textSize="32dp"
+                                    android:text="9"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Happenings"/>
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
+                        <TextView
+                            android:id="@+id/tvMoreInfoBusiness"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textSize="32dp"
-                                android:text="3"/>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Example"/>
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textSize="32dp"
-                                android:text="9"/>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Happenings"/>
-
-                        </LinearLayout>
-
+                            android:paddingTop="32dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColor="@color/colorAccent"
+                            android:text="MORE INFO >"/>
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tvMoreInfoBusiness"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="32dp"
-                        android:paddingBottom="16dp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorAccent"
-                        android:text="MORE INFO >"/>
+
 
                 </LinearLayout>
 
                 <com.meetup.uhoo.CheckinProfileDetailsView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     />
 
             </LinearLayout>
