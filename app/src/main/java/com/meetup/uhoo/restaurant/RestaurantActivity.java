@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private NestedScrollView nsvBottomSheet;
 
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
@@ -86,6 +88,7 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
         tabLayout.setupWithViewPager(viewPager);
 
         cpdProfileDetailView = (CheckinProfileDetailsView) findViewById(R.id.cpdProfileDetailView);
+        nsvBottomSheet = (NestedScrollView) findViewById(R.id.nsvBottomSheet);
 
         rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.fabUserVisibilityMenuLayout);
         rfaBtn = (RapidFloatingActionButton) findViewById(R.id.fabUserVisibilityMenu);

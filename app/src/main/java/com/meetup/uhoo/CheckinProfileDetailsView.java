@@ -1,11 +1,15 @@
 package com.meetup.uhoo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.vision.text.Text;
+import com.meetup.uhoo.profile.ProfileActivity;
 
 /**
  * Created by sultankhan on 11/26/16.
@@ -13,6 +17,7 @@ import android.widget.TextView;
 public class CheckinProfileDetailsView extends FrameLayout {
 
     ProfileRowView pvProfileRow;
+    TextView tvEditProfile;
 
     public CheckinProfileDetailsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -44,9 +49,17 @@ public class CheckinProfileDetailsView extends FrameLayout {
         initView(context);
     }
 
-    private void initView(Context context) {
+    private void initView(final Context context) {
         View view = inflate(getContext(), R.layout.custom_view_checkin_profile_details, null);
         pvProfileRow = (ProfileRowView) view.findViewById(R.id.pvProfileRow);
+        tvEditProfile = (TextView) view.findViewById(R.id.tvEditProfile);
+        tvEditProfile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(), ProfileActivity.class);
+                context.startActivity(intent);
+            }
+        });
         addView(view);
     }
 

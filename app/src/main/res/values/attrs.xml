@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ActivitiesView">
-        <attr name="readOnly" format="boolean"></attr>
+        <attr name="readOnly" format="boolean"/>
     </declare-styleable>
     <declare-styleable name="CheckinProfileDetailsView">
     </declare-styleable>

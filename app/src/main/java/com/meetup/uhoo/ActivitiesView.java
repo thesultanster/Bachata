@@ -68,7 +68,9 @@ public class ActivitiesView extends FrameLayout {
         // Get User Data if it Exists
         SharedPreferences prefs = getContext().getSharedPreferences("currentUser", 0);
         Set<String> set = prefs.getStringSet("activityIconList", null);
-        selectedActivites = new ArrayList<String>(set);
+        selectedActivites = new ArrayList<>();
+        if(set!=null)
+            selectedActivites = new ArrayList<>(set);
 
 
         // Adapter
@@ -127,6 +129,9 @@ public class ActivitiesView extends FrameLayout {
                 }
             }
         }
+
+        imgs.recycle();
+        names.recycle();
         return imageItems;
     }
 

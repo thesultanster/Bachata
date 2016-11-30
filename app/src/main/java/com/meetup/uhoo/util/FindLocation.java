@@ -140,6 +140,7 @@ public class FindLocation extends Activity {
                             // Get user shared prefs and save account type as ANONYMOUS
                             SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                             editor.putString("authType", "ANON");
+                            editor.putBoolean("isLoggedIn", true);
                             editor.apply();
 
                             // Save location in database

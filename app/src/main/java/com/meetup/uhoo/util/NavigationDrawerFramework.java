@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,7 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
@@ -47,6 +54,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
     @Override
     public void setContentView(final int layoutResID) {
+
         // Your base layout here
         mDrawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.framework_navigation_drawer, null);
         mContent = (FrameLayout) mDrawerLayout.findViewById(R.id.content);
@@ -86,6 +94,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
 
         // Cached User Data
@@ -107,7 +116,7 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
             return true;
 
 
-        if (authType != null && authType.equals("EMAIL")) {
+        if (authType != null && !authType.equals("ANON")) {
             menu.findItem(R.id.create_account_icon).setVisible(false);
             //menu.findItem(R.id.create_account_text).setVisible(false);
         }
@@ -210,10 +219,9 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
             case R.id.logOut:
                 // Sign out user from database
                 FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
 
-                // Erase cached authType
-                editor.putString("authType", null);
-                editor.commit();
+                // Erase cached data
                 editor.clear().commit();
                 intent = new Intent(this, FindLocation.class);
                 break;
@@ -226,7 +234,8 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
 
         }
 
-        startActivity(intent);
+        if(intent != null)
+            startActivity(intent);
 
     }
 

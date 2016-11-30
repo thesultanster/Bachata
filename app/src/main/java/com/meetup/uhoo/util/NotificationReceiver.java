@@ -32,6 +32,12 @@ public class NotificationReceiver extends BroadcastReceiver {
             if(!checkedInto.equals("")) {
                 DatabaseReference mDatabase;
 
+                // Locally save user state as not checked into anything
+                SharedPreferences.Editor editor = context.getSharedPreferences("currentUser", context.MODE_PRIVATE).edit();
+                editor.putString("checkedInto", "");
+                editor.putString("checkedIntoBusiness", null);
+                editor.apply();
+
                 // Remove user to checkin table
                 mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(checkedInto);
                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();

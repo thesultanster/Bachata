@@ -54,40 +54,34 @@ public class CreateNewAccount extends AppCompatActivity {
                 }
 
 
-                // Create new credential for Email/Password
-                AuthCredential credential = EmailAuthProvider.getCredential(
-                        emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-
-                // Link Credential with existing anonymous user
-                mAuth.getCurrentUser().linkWithCredential(credential)
-                        .addOnCompleteListener(CreateNewAccount.this, new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
+                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Log.d("auth", "linkWithCredential:onComplete:" + task.isSuccessful());
+                                Log.d("createNewUserEmail", "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(CreateNewAccount.this, "Authentication failed.",
+                                    Log.w("createNewUserEmail", "createUserWithEmailAndPassword", task.getException());
+                                    Toast.makeText(getApplicationContext(), "Account Creation Failed",
                                             Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(CreateNewAccount.this, "Profile Created!", Toast.LENGTH_SHORT).show();
-
-                                    // Get user shared prefs and save account type
-                                    SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-                                    editor.putString("authType", "EMAIL");
-                                    editor.apply();
-
-                                    Intent intent = new Intent(CreateNewAccount.this, FindLocation.class);
-                                    startActivity(intent);
-                                    finish();
-
                                 }
 
+                                Toast.makeText(CreateNewAccount.this, "Profile Created!", Toast.LENGTH_SHORT).show();
+
+                                // Get user shared prefs and save account type
+                                SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                                editor.putString("authType", "EMAIL");
+                                editor.apply();
+
+                                Intent intent = new Intent(CreateNewAccount.this, FindLocation.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
+
 
             }
 
@@ -104,13 +98,11 @@ public class CreateNewAccount extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d("auth", "CreateNewAccount onAuthStateChanged:signed_in:" + user.getUid());
-                    //Intent intent = new Intent(CreateNewAccount.this, ProfileActivity.class);
-                    //startActivity(intent);
+
                 } else {
                     // User is signed out
                     Log.d("auth", "CreateNewAccount onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
     }

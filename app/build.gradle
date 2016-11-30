@@ -47,6 +47,7 @@ dependencies {
     compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.rey5137:material:1.2.4'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
 
 // ADD THIS AT THE BOTTOM

@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -81,11 +82,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     ArrayList<Business> placesData;
 
 
+
     FloatingActionButton fabCheckinCheckout;
     TextView tvCehckinFABLabel;
     TextView tvCheckinText;
+    NestedScrollView nsvBottomSheet;
 
     LinearLayout llCheckedInBusinessDetails;
+    TextView tvMoreInfoBusiness;
     TextView tvBusinessName;
     TextView tvBusinessCheckins;
     TextView tvBusinessHappenings;
@@ -184,14 +188,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         recyclerView.setAdapter(adapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
-        tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
-        tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
-        tvBusinessName = (TextView) findViewById(R.id.tvBusinessName);
-        tvBusinessHappenings = (TextView) findViewById(R.id.tvBusinessHappenings);
-        tvBusinessCheckins = (TextView) findViewById(R.id.tvBusinessCheckins);
-        llCheckedInBusinessDetails = (LinearLayout) findViewById(R.id.llCheckedInBusinessDetails);
-
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -199,6 +195,25 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             }
         });
 
+        fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
+        tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
+        tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
+        tvBusinessName = (TextView) findViewById(R.id.tvBusinessName);
+        tvBusinessHappenings = (TextView) findViewById(R.id.tvBusinessHappenings);
+        tvBusinessCheckins = (TextView) findViewById(R.id.tvBusinessCheckins);
+        tvMoreInfoBusiness = (TextView) findViewById(R.id.tvMoreInfoBusiness);
+        llCheckedInBusinessDetails = (LinearLayout) findViewById(R.id.llCheckedInBusinessDetails);
+        nsvBottomSheet = (NestedScrollView) findViewById(R.id.nsvBottomSheet);
+
+
+        tvMoreInfoBusiness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                intent.putExtra("business", checkedInBusiness);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -242,6 +257,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     limit--;
                 }
                 likelyPlaces.release();
+
+
+                nsvBottomSheet.setVisibility(View.VISIBLE);
 
 
             }
@@ -597,13 +615,13 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         Intent dealsReceive = new Intent();
                         dealsReceive.setAction(AppConstant.DEALS_ACTION);
                         PendingIntent pendingIntentYes = PendingIntent.getBroadcast(getApplicationContext(), 12345, dealsReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-                        mBuilder.addAction(R.mipmap.gps_refresh_icon, "Deals", pendingIntentYes);
+                        //mBuilder.addAction(R.mipmap.gps_refresh_icon, "Happenings", pendingIntentYes);
 
                         // Create Broadcast Intent for Checkout button
                         Intent chekoutReceive = new Intent();
                         chekoutReceive.setAction(AppConstant.CHECKOUT_ACTION);
                         PendingIntent pendingIntentYes2 = PendingIntent.getBroadcast(getApplicationContext(), 12345, chekoutReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-                        mBuilder.addAction(R.mipmap.gps_refresh_icon, "Check Out", pendingIntentYes2);
+                        mBuilder.addAction(R.mipmap.x_grey, "Check Out", pendingIntentYes2);
 
                         // notificationID allows you to update the notification later on.
                         mNotificationManager.notify(AppConstant.CHECKIN_NOTIF, mBuilder.build());
