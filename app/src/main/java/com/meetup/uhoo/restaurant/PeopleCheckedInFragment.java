@@ -1,5 +1,6 @@
 package com.meetup.uhoo.restaurant;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ public class PeopleCheckedInFragment extends Fragment {
         this.businessId = businessId;
     }
 
+    @SuppressLint("ValidFragment")
     public PeopleCheckedInFragment( String businessId) {
         this.businessId = businessId;
     }

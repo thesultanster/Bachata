@@ -58,6 +58,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.Business;
+import com.meetup.uhoo.CheckinProfileDetailsView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.User;
 import com.meetup.uhoo.UserDataFetchListener;
@@ -82,13 +83,13 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     ArrayList<Business> placesData;
 
 
-
     FloatingActionButton fabCheckinCheckout;
     TextView tvCehckinFABLabel;
     TextView tvCheckinText;
     NestedScrollView nsvBottomSheet;
 
     LinearLayout llCheckedInBusinessDetails;
+    CheckinProfileDetailsView cpdProfileDetailView;
     TextView tvMoreInfoBusiness;
     TextView tvBusinessName;
     TextView tvBusinessCheckins;
@@ -136,13 +137,73 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         GetNearbyBusinesses();
 
 
+        setOnClickListensers();
+
+
+    }
+
+
+    private void InflateVariables() {
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        adapter = new RestaurantsNearbyRecyclerAdapter(RestaurantsNearby.this, new ArrayList<Business>());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Refresh();
+            }
+        });
+
+        fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
+        tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
+        tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
+        tvBusinessName = (TextView) findViewById(R.id.tvBusinessName);
+        tvBusinessHappenings = (TextView) findViewById(R.id.tvBusinessHappenings);
+        tvBusinessCheckins = (TextView) findViewById(R.id.tvBusinessCheckins);
+        tvMoreInfoBusiness = (TextView) findViewById(R.id.tvMoreInfoBusiness);
+        llCheckedInBusinessDetails = (LinearLayout) findViewById(R.id.llCheckedInBusinessDetails);
+        cpdProfileDetailView = (CheckinProfileDetailsView) findViewById(R.id.cpdProfileDetailView);
+        nsvBottomSheet = (NestedScrollView) findViewById(R.id.nsvBottomSheet);
+
+
+        // Get user auth type. If anon user then Hide Profile Details
+        SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+        String authType = prefs.getString("authType", null);
+        if (authType != null && authType.equals("ANON")) {
+            cpdProfileDetailView.setVisibility(View.GONE);
+        }
+
+
+    }
+
+    private void setOnClickListensers() {
+        tvMoreInfoBusiness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                intent.putExtra("business", checkedInBusiness);
+                startActivity(intent);
+            }
+        });
+
         fabCheckinCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // Get user auth type. If anon user then tell them to create an account
+                SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+                String authType = prefs.getString("authType", null);
+                if (authType != null && authType.equals("ANON")) {
+                    Toast.makeText(RestaurantsNearby.this, "Please Create An Account", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // If the user is not already checked in
                 // Check them in
-                if(!user.isCheckedIn){
+                if (!user.isCheckedIn) {
 
 
                     // Create Custom Checkin Dialog
@@ -175,43 +236,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 }
 
 
-
-            }
-        });
-    }
-
-
-    void InflateVariables() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        adapter = new RestaurantsNearbyRecyclerAdapter(RestaurantsNearby.this, new ArrayList<Business>());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Refresh();
-            }
-        });
-
-        fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
-        tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
-        tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
-        tvBusinessName = (TextView) findViewById(R.id.tvBusinessName);
-        tvBusinessHappenings = (TextView) findViewById(R.id.tvBusinessHappenings);
-        tvBusinessCheckins = (TextView) findViewById(R.id.tvBusinessCheckins);
-        tvMoreInfoBusiness = (TextView) findViewById(R.id.tvMoreInfoBusiness);
-        llCheckedInBusinessDetails = (LinearLayout) findViewById(R.id.llCheckedInBusinessDetails);
-        nsvBottomSheet = (NestedScrollView) findViewById(R.id.nsvBottomSheet);
-
-
-        tvMoreInfoBusiness.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
-                intent.putExtra("business", checkedInBusiness);
-                startActivity(intent);
             }
         });
 
@@ -232,7 +256,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
 
-                    if (limit <= 0 ) {
+                    if (limit <= 0) {
                         break;
                     }
 
@@ -414,7 +438,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void startCurrentUserListener(){
+    private void startCurrentUserListener() {
         // If one exists, remove it first
         stopCurrentUserListener();
 
@@ -442,7 +466,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     tvBusinessName.setText(":(");
                     fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
 
-                    // Hide business details in bottom sheet
+                    // Hide business  details in bottom sheet
                     llCheckedInBusinessDetails.setVisibility(View.GONE);
                 }
 
@@ -468,21 +492,21 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         userRef.addValueEventListener(postListener);
     }
 
-    private void stopCurrentUserListener(){
+    private void stopCurrentUserListener() {
         if (postListener != null) {
             userRef.removeEventListener(postListener);
         }
     }
 
 
-    private void startCheckedInBusinessListener(){
+    private void startCheckedInBusinessListener() {
         // If one exists, remove it first
         stopCheckinBusinessListener();
 
         // Check what business user is checked in
         SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
         String checkedIntoBusinessId = prefs.getString("checkedInto", "");
-        if(!checkedIntoBusinessId.equals("")) {
+        if (!checkedIntoBusinessId.equals("")) {
 
 
             // Listener for Current User
@@ -509,14 +533,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         }
     }
 
-    private void stopCheckinBusinessListener(){
+    private void stopCheckinBusinessListener() {
         if (checkedInBusinessListener != null) {
             checkedInBusinessRef.removeEventListener(checkedInBusinessListener);
         }
     }
 
 
-    private void CheckOutUser(){
+    private void CheckOutUser() {
 
         // Create database reference
         // We will use this multiple times to update values to check out user
@@ -543,7 +567,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     }
 
 
-    private void CheckInUser(final int businessPosition ){
+    private void CheckInUser(final int businessPosition) {
 
         // If user data has not been loaded
         // Don't do anything
@@ -565,7 +589,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         if (!user.isCheckedIn) {
 
             // Get Selected Place object
-            final Business place =  placesData.get(businessPosition);
+            final Business place = placesData.get(businessPosition);
 
             // Add Place Id to GeoFire Table
             // If it exists already, then atleast it updates new LatLng if it is updated
