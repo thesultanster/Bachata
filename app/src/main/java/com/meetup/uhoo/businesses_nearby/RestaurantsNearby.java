@@ -485,7 +485,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w("user", "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         };
         userRef = FirebaseDatabase.getInstance().getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid());

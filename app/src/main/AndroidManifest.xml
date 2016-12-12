@@ -15,7 +15,8 @@
         <activity android:name=".businesses_nearby.RestaurantsNearby" />
         <activity android:name=".credentials.CreateNewAccount" />
         <activity android:name=".credentials.SignIn" />
-        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".profile.ProfileActivity"
+            android:windowSoftInputMode="stateHidden"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

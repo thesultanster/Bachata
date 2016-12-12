@@ -6,31 +6,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="15dp">
 
-    <android.support.design.widget.TextInputLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/firstNameEditText"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="First Name" />
+            android:layout_weight="1"
+            >
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/firstNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="First Name"
+                />
+
+        </android.support.design.widget.TextInputLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/lastNameEditText"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Last Name" />
+            android:layout_weight="1">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/lastNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="Last Name" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -40,6 +59,9 @@
             android:id="@+id/oneLinerEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:singleLine="true"
             android:hint="Describe Yourself in One Line" />
 
     </android.support.design.widget.TextInputLayout>

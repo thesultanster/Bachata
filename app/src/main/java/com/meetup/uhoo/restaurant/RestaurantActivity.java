@@ -102,6 +102,7 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
                 .setIconPressedColor(0xffbf360c)
                 .setWrapper(0)
         );
+        /*
         items.add(new RFACLabelItem<Integer>()
                 .setLabel("Check")
                 .setResId(R.mipmap.white_ring)
@@ -109,19 +110,13 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
                 .setIconPressedColor(0xff1a237e)
                 .setWrapper(1)
         );
+        */
         items.add(new RFACLabelItem<Integer>()
                 .setLabel("Busy")
                 .setResId(R.mipmap.white_ring)
                 .setIconNormalColor(getResources().getColor(R.color.flatRed))
                 .setIconPressedColor(0xff3e2723)
                 .setWrapper(2)
-        );
-        items.add(new RFACLabelItem<Integer>()
-                .setLabel("Anonymous")
-                .setResId(R.mipmap.white_ring)
-                .setIconNormalColor(getResources().getColor(R.color.flatBlue))
-                .setIconPressedColor(0xff0d5302)
-                .setWrapper(3)
         );
         rfaContent
                 .setItems(items)

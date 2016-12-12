@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -78,6 +80,8 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
                 UserProfileDialog userDialog = new UserProfileDialog((RestaurantActivity) context, data.get(position));
                 userDialog.show();
+                Window window = userDialog.getWindow();
+                window.setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
             }
 

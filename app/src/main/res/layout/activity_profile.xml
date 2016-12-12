@@ -8,20 +8,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-
+        android:elevation="20dp"
         >
 
-        <com.meetup.uhoo.ProfileRowView
-            android:id="@+id/prCurrentUserProfileRow"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/secondaryText"
-            android:padding="8dp"
-            app:userFirstName="First"
-            app:userLastName="Last"
-            app:visibilityPermission="All"
-            app:type="Self"
-            />
+            android:layout_height="wrap_content"
+            android:background="@color/primaryColorDark"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginBottom="20dp"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <com.meetup.uhoo.ProfileRowView
+                android:id="@+id/prCurrentUserProfileRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/secondaryText"
+                android:padding="8dp"
+                app:userFirstName="First"
+                app:userLastName="Last"
+                app:visibilityPermission="All"
+                app:type="Self"
+                />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
 
         <View android:layout_width="match_parent"
             android:layout_height="5dp"

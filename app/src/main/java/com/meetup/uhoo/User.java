@@ -44,7 +44,7 @@ public class User implements Serializable{
 
     public User(String uid) {
         this.uid = uid;
-        this.firstName = "First Last";
+        this.firstName = "";
         this.lastName = "";
         this.oneLiner = "";
         this.isCheckedIn = false;

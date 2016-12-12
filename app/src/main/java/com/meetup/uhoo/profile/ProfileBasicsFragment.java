@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,26 @@ public class ProfileBasicsFragment extends Fragment{
         lastNameEditText = (EditText) view.findViewById(R.id.lastNameEditText);
         oneLinerEditText = (EditText) view.findViewById(R.id.oneLinerEditText);
         swGender = (Switch) view.findViewById(R.id.swGender);
+
+        firstNameEditText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_SPACE) {
+                    lastNameEditText.setFocusableInTouchMode(true);
+                    lastNameEditText.clearFocus();
+                    lastNameEditText.requestFocus();                }
+                return false;
+            }
+        });
+
+        lastNameEditText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_SPACE) {
+                    oneLinerEditText.setFocusableInTouchMode(true);
+                    oneLinerEditText.requestFocus();
+                }
+                return false;
+            }
+        });
 
         saveProfileInfoButton = (Button) view.findViewById(R.id.saveProfileInfoButton);
         saveProfileInfoButton.setOnClickListener(new View.OnClickListener() {
