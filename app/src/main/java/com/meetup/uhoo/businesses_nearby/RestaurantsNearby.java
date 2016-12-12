@@ -657,6 +657,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                         Refresh();
 
+                        Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                        intent.putExtra("business", place);
+                        startActivity(intent);
+
                     }
                 }
             });
