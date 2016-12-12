@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -22,7 +21,7 @@ import java.util.Set;
 /**
  * Created by sultankhan on 10/28/16.
  */
-public class ActivitiesView extends FrameLayout {
+public class InterestsView extends FrameLayout {
 
     private GridView gridView;
     private SimpleProfileGridViewAdapter gridAdapter;
@@ -31,24 +30,24 @@ public class ActivitiesView extends FrameLayout {
     private boolean readOnly = false;
 
 
-    public ActivitiesView(Context context, AttributeSet attrs, int defStyle) {
+    public InterestsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView();
     }
 
-    public ActivitiesView(Context context, AttributeSet attrs) {
+    public InterestsView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // Get Attributes
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.ActivitiesView,
+                R.styleable.InterestsView,
                 0, 0
         );
 
         // Save attribute values
         try {
-            readOnly = a.getBoolean(R.styleable.ActivitiesView_readOnly, false);
+            readOnly = a.getBoolean(R.styleable.InterestsView_readOnly, false);
         } finally {
             a.recycle();
         }
@@ -56,7 +55,7 @@ public class ActivitiesView extends FrameLayout {
         initView();
     }
 
-    public ActivitiesView(Context context) {
+    public InterestsView(Context context) {
         super(context);
         initView();
     }

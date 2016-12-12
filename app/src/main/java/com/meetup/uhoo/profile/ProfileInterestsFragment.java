@@ -2,7 +2,6 @@ package com.meetup.uhoo.profile;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.meetup.uhoo.ActivitiesView;
+import com.meetup.uhoo.InterestsView;
 import com.meetup.uhoo.R;
 
 import java.util.HashMap;
@@ -23,15 +22,15 @@ import java.util.Map;
 /**
  * Created by sultankhan on 11/23/16.
  */
-public class ProfileActivitiesFragment extends Fragment {
+public class ProfileInterestsFragment extends Fragment {
 
-    private ActivitiesView activitiesView;
+    private InterestsView interestsView;
     private Button btnSaveActivities;
 
     private Activity activity;
     private DatabaseReference mDatabase;
 
-    public ProfileActivitiesFragment() {
+    public ProfileInterestsFragment() {
         // Required empty public constructor
     }
 
@@ -60,7 +59,7 @@ public class ProfileActivitiesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_activities, container, false);
 
-        activitiesView = (ActivitiesView) view.findViewById(R.id.av);
+        interestsView = (InterestsView) view.findViewById(R.id.av);
         btnSaveActivities = (Button) view.findViewById(R.id.btnSaveActivities);
 
         btnSaveActivities.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +69,7 @@ public class ProfileActivitiesFragment extends Fragment {
                 if(FirebaseAuth.getInstance().getCurrentUser() != null) {
 
                     Map<String, Object> childUpdates = new HashMap<>();
-                    childUpdates.put("/activityIconList/", activitiesView.getSelectedItems());
+                    childUpdates.put("/activityIconList/", interestsView.getSelectedItems());
 
                     mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                         @Override
@@ -83,7 +82,7 @@ public class ProfileActivitiesFragment extends Fragment {
 
                 }
 
-                activitiesView.save();
+                interestsView.save();
 
 
                 // Trigger Interface

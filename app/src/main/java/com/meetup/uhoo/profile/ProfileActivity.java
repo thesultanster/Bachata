@@ -48,7 +48,7 @@ public class ProfileActivity extends NavigationDrawerFramework implements Profil
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ProfileBasicsFragment(), "Basics");
-        adapter.addFragment(new ProfileActivitiesFragment(), "Activities");
+        adapter.addFragment(new ProfileInterestsFragment(), "Interests");
         adapter.addFragment(new ProfileBasicsFragment(), "Another");
         viewPager.setAdapter(adapter);
     }
@@ -65,7 +65,7 @@ public class ProfileActivity extends NavigationDrawerFramework implements Profil
     public void onActivitiesDataChanged() {
         Log.i("Frag interface","onActivitiesDataChanged");
 
-        Toast.makeText(ProfileActivity.this, "Activities Saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ProfileActivity.this, "Interests Saved!", Toast.LENGTH_SHORT).show();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
