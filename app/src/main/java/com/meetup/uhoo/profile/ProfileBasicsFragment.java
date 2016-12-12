@@ -73,26 +73,6 @@ public class ProfileBasicsFragment extends Fragment{
         oneLinerEditText = (EditText) view.findViewById(R.id.oneLinerEditText);
         swGender = (Switch) view.findViewById(R.id.swGender);
 
-        firstNameEditText.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_SPACE) {
-                    lastNameEditText.setFocusableInTouchMode(true);
-                    lastNameEditText.clearFocus();
-                    lastNameEditText.requestFocus();                }
-                return false;
-            }
-        });
-
-        lastNameEditText.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_SPACE) {
-                    oneLinerEditText.setFocusableInTouchMode(true);
-                    oneLinerEditText.requestFocus();
-                }
-                return false;
-            }
-        });
-
         saveProfileInfoButton = (Button) view.findViewById(R.id.saveProfileInfoButton);
         saveProfileInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +105,7 @@ public class ProfileBasicsFragment extends Fragment{
                 editor.putString("firstName", firstNameEditText.getText().toString());
                 editor.putString("lastName", lastNameEditText.getText().toString());
                 editor.putString("oneLiner",oneLinerEditText.getText().toString());
+                editor.putString("gender", gender);
                 editor.apply();
 
                 // Trigger Interface
@@ -133,6 +114,26 @@ public class ProfileBasicsFragment extends Fragment{
 
             }
         });
+
+
+        // Get user auth type. If anon user then Hide Profile Details
+        SharedPreferences prefs = getContext().getSharedPreferences("currentUser", getContext().MODE_PRIVATE);
+        String firstName = prefs.getString("firstName", null);
+        String lastName = prefs.getString("lastName", null);
+        String oneLiner = prefs.getString("oneLiner", null);
+        String gender = prefs.getString("gender", null);
+
+        firstNameEditText.setText(firstName);
+        lastNameEditText.setText(lastName);
+        oneLinerEditText.setText(oneLiner);
+        if(gender != null && gender.equals("MALE") ) {
+            swGender.setChecked(true);
+        }
+        else{
+            swGender.setChecked(false);
+        }
+
+
 
         // Inflate the layout for this fragment
         return view;
