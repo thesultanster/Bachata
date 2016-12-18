@@ -181,9 +181,6 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
                 rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_available) );
                 break;
             case 1:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_check) );
-                break;
-            case 2:
                 rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_busy) );
                 break;
             default:

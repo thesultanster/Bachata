@@ -9,14 +9,11 @@ public class Enum {
     }
 
     public enum CheckinVisibilityState {
-        AVAILABLE(0), CHECK(1), BUSY(2);
-
+        AVAILABLE(0),  BUSY(1);
         private final int value;
-
         CheckinVisibilityState(final int newValue) {
             value = newValue;
         }
-
         public int getValue() { return value; }
     }
 }

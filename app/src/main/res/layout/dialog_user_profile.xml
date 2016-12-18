@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textSize="25dp"
-            android:text="First Last"/>
+            android:text="First Last"
+            />
 
 
     </LinearLayout>

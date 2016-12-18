@@ -179,10 +179,12 @@ public class ProfileRowView extends FrameLayout {
                 ivCheckingState.setImageResource(R.drawable.fab_checkin_status_available);
                 tvCheckinState.setText("Available");
                 break;
+            /*
             case CHECK:
                 ivCheckingState.setImageResource(R.drawable.fab_checkin_status_check);
                 tvCheckinState.setText("Check");
                 break;
+                */
             case BUSY:
                 ivCheckingState.setImageResource(R.drawable.fab_checkin_status_busy);
                 tvCheckinState.setText("Busy");
