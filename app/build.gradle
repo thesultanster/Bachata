@@ -9,7 +9,7 @@ android {
         applicationId "com.meetup.uhoo"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 10
+        versionCode 1
         versionName "1.9"
         multiDexEnabled true
     }

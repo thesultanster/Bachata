@@ -1,33 +1,30 @@
 package com.meetup.uhoo.restaurant;
 
-import android.content.Context;
-import android.graphics.Color;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.meetup.uhoo.CheckinProfileDetailsView;
 import com.meetup.uhoo.Enum;
-import com.meetup.uhoo.ProfileRowView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.Business;
-import com.meetup.uhoo.User;
+import com.meetup.uhoo.core.Survey;
+import com.meetup.uhoo.views.SurveyView;
+import com.meetup.uhoo.service.SurveyDataFetchListener;
+import com.meetup.uhoo.service.SurveyService;
 import com.wangjie.androidbucket.utils.ABTextUtil;
-import com.wangjie.androidbucket.utils.imageprocess.ABShape;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -46,6 +43,10 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private NestedScrollView nsvBottomSheet;
+
+    private SurveyView svSurveyView;
+
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
@@ -81,6 +82,21 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
     }
 
     void InflateVariables() {
+
+        // Shitty way to set only one survey
+        SurveyService surveyService = new SurveyService();
+        surveyService.fetchBusinessSurveys(business.getPlaceId(), new SurveyDataFetchListener() {
+            @Override
+            public void onSurveyFetchCompleted(Survey object) {
+                svSurveyView.setVisibility(View.VISIBLE);
+                svSurveyView.setSurvey(object);
+            }
+        });
+
+        svSurveyView = (SurveyView) findViewById(R.id.svSurveyView);
+        svSurveyView.setVisibility(View.GONE);
+
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -89,6 +105,23 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
 
         cpdProfileDetailView = (CheckinProfileDetailsView) findViewById(R.id.cpdProfileDetailView);
         nsvBottomSheet = (NestedScrollView) findViewById(R.id.nsvBottomSheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(nsvBottomSheet);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    rfaLayout.setVisibility(View.GONE);
+                }
+
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    rfaLayout.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onSlide(View bottomSheet, float slideOffset) {
+            }
+        });
 
         rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.fabUserVisibilityMenuLayout);
         rfaBtn = (RapidFloatingActionButton) findViewById(R.id.fabUserVisibilityMenu);

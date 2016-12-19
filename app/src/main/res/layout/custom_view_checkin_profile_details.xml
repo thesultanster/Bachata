@@ -1,50 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/darkCloud"/>
+        android:background="@color/darkCloud"
+        android:visibility="gone"/>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/tvProfileLabel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Profile As It Appears to Others" />
+
+    </RelativeLayout>
 
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <com.meetup.uhoo.ProfileRowView
+            android:id="@+id/pvProfileRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp">
+            app:type="Self"
+            app:userFirstName="First"
+            app:userLastName="Last"
+            app:visibilityPermission="All" />
 
-            <TextView
-                android:id="@+id/tvProfileLabel1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your Profile As It Appears to Others"/>
-
-        </RelativeLayout>
-
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/darkCloud"
-            android:padding="8dp">
-
-            <com.meetup.uhoo.ProfileRowView
-                android:id="@+id/pvProfileRow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:userFirstName="First"
-                app:userLastName="Last"
-                app:visibilityPermission="All"
-                app:type="Self"
-                />
-
-        </RelativeLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,8 +59,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="12sp"
-                android:text="Profile Image"/>
+                android:text="Profile Image"
+                android:textSize="12sp" />
 
             <com.rey.material.widget.Switch
                 android:id="@+id/swVisibilitySwitch1"
@@ -72,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="false"/>
+                android:checked="false" />
 
         </LinearLayout>
 
@@ -86,8 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="12sp"
-                android:text="Full Name"/>
+                android:text="Full Name"
+                android:textSize="12sp" />
 
             <com.rey.material.widget.Switch
                 android:id="@+id/swVisibilitySwitch2"
@@ -95,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="false"/>
+                android:checked="false" />
 
         </LinearLayout>
 
@@ -109,8 +105,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="12sp"
-                android:text="One Liner"/>
+                android:text="One Liner"
+                android:textSize="12sp" />
 
             <com.rey.material.widget.Switch
                 android:id="@+id/swVisibilitySwitch3"
@@ -118,24 +114,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="false"/>
+                android:checked="false" />
 
         </LinearLayout>
 
 
     </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvEditProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="24dp"
-            android:paddingBottom="16dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="@color/colorAccent"
-            android:text="EDIT PROFILE >"/>
+    <TextView
+        android:id="@+id/tvEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:paddingTop="24dp"
+        android:text="EDIT PROFILE >"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>

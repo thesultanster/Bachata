@@ -6,6 +6,10 @@
     <declare-styleable name="CheckinProfileDetailsView">
     </declare-styleable>
 
+    <declare-styleable name="SurveyView"/>
+
+
+
     <declare-styleable name="ProfileRowView">
         <attr name="userFirstName" format="string" />
         <attr name="userLastName" format="string" />
