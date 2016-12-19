@@ -2,6 +2,7 @@ package com.meetup.uhoo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.text.Text;
+import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.profile.ProfileActivity;
 
 /**
@@ -56,7 +58,20 @@ public class CheckinProfileDetailsView extends FrameLayout {
         tvEditProfile.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context.getApplicationContext(), ProfileActivity.class);
+
+                Intent intent;
+
+                SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("currentUser", Context.MODE_PRIVATE);
+                String authType = prefs.getString("authType", "ANON");
+
+                // If user is ANON then make them sign up
+                if(authType.equals("ANON")){
+                    intent = new Intent(context.getApplicationContext(), SignIn.class);
+                } else {
+                    intent = new Intent(context.getApplicationContext(), ProfileActivity.class);
+                }
+
+
                 context.startActivity(intent);
             }
         });

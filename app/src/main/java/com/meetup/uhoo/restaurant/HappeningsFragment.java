@@ -33,10 +33,10 @@ public class HappeningsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         adapter = new HappeningsRecyclerAdapter(getActivity(), new ArrayList<Happening>());
-        adapter.addRow(new Happening("Free Drink","try our new Korean Citron Tea Slushie. Made fresh daily with hand squeezed citron and honey straight from the mouths of korean bees", Enum.HappeningType.DEAL));
-        adapter.addRow(new Happening("Open Mic Night","Open to comics of all colors, orientations, shapes and sizes, and planets of origin", Enum.HappeningType.EVENT));
-        adapter.addRow(new Happening("Pop Up Cafe","For five straight says, the folks from New York Bistro will be selling their handmade cockroach latte made with fresh roach larvee", Enum.HappeningType.COMEDY));
-        adapter.addRow(new Happening("Open Mic Night","This will be a closed off event only for the radical right wing sentiment that is sweeping the nation of Banana Republic", Enum.HappeningType.VARIETY));
+        //adapter.addRow(new Happening("Free Drink","try our new Korean Citron Tea Slushie. Made fresh daily with hand squeezed citron and honey straight from the mouths of korean bees", Enum.HappeningType.DEAL));
+        //adapter.addRow(new Happening("Open Mic Night","Open to comics of all colors, orientations, shapes and sizes, and planets of origin", Enum.HappeningType.EVENT));
+        //adapter.addRow(new Happening("Pop Up Cafe","For five straight says, the folks from New York Bistro will be selling their handmade cockroach latte made with fresh roach larvee", Enum.HappeningType.COMEDY));
+        //adapter.addRow(new Happening("Open Mic Night","This will be a closed off event only for the radical right wing sentiment that is sweeping the nation of Banana Republic", Enum.HappeningType.VARIETY));
 
     }
 

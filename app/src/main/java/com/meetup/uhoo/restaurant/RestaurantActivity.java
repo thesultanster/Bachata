@@ -149,7 +149,7 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
                 .setResId(R.mipmap.white_ring)
                 .setIconNormalColor(getResources().getColor(R.color.flatRed))
                 .setIconPressedColor(0xff3e2723)
-                .setWrapper(2)
+                .setWrapper(1)
         );
         rfaContent
                 .setItems(items)
@@ -183,7 +183,7 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PeopleCheckedInFragment(business.getPlaceId()), "People");
         adapter.addFragment(new HappeningsFragment(), "Happenings");
-        adapter.addFragment(new PeopleCheckedInFragment(business.getPlaceId()), "Something Else");
+        //adapter.addFragment(new PeopleCheckedInFragment(business.getPlaceId()), "Something Else");
         viewPager.setAdapter(adapter);
     }
 
