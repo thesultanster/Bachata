@@ -1,4 +1,4 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.core;
 
 import android.util.Log;
 
@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.lang.*;
 import java.util.ArrayList;
 
 /**

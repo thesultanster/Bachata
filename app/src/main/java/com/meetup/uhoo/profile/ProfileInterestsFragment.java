@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.meetup.uhoo.InterestsView;
+import com.meetup.uhoo.views.InterestsView;
 import com.meetup.uhoo.R;
 
 import java.util.HashMap;

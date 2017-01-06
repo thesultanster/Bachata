@@ -1,7 +1,7 @@
 package com.meetup.uhoo.core;
 
-import com.meetup.uhoo.service.SurveyDataFetchListener;
-import com.meetup.uhoo.service.SurveyService;
+import com.meetup.uhoo.service_layer.SurveyDataFetchListener;
+import com.meetup.uhoo.service_layer.SurveyService;
 
 import java.io.Serializable;
 import java.util.ArrayList;

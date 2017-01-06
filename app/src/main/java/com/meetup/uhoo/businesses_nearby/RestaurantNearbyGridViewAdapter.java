@@ -1,24 +1,17 @@
 package com.meetup.uhoo.businesses_nearby;
 
 import android.content.Context;
-import android.graphics.ColorFilter;
-import android.graphics.LightingColorFilter;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
-import com.meetup.uhoo.UserDataFetchListener;
-import com.meetup.uhoo.profile.SimpleProfileActivityItem;
+import com.meetup.uhoo.core.User;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

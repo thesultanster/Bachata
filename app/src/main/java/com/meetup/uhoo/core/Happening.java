@@ -1,7 +1,7 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.core;
 
 import java.io.Serializable;
-import java.io.StringReader;
+import java.lang.*;
 
 /**
  * Created by sultankhan on 11/26/16.

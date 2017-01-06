@@ -1,4 +1,4 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
+import com.meetup.uhoo.core.Enum;
+import com.meetup.uhoo.R;
 import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.profile.ProfileActivity;
 

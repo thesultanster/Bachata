@@ -1,4 +1,4 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.views;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.meetup.uhoo.core.Enum;
+import com.meetup.uhoo.R;
+import com.meetup.uhoo.core.User;
 
 import java.util.HashMap;
 import java.util.Map;

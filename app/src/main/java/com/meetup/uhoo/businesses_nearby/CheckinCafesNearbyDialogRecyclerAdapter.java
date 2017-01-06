@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.meetup.uhoo.Business;
+import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.R;
 
 import java.util.Collections;

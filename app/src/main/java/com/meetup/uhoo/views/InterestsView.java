@@ -1,4 +1,4 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.views;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 
+import com.meetup.uhoo.R;
 import com.meetup.uhoo.profile.SimpleProfileActivityItem;
 import com.meetup.uhoo.profile.SimpleProfileGridViewAdapter;
 

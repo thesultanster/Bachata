@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.meetup.uhoo.Business;
+import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
-import com.meetup.uhoo.UserCheckinListener;
+import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.core.UserCheckinListener;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
 
 import java.util.Collections;

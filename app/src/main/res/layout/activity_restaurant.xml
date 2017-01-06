@@ -233,7 +233,7 @@
                 </RelativeLayout>
 
 
-                <com.meetup.uhoo.CheckinProfileDetailsView
+                <com.meetup.uhoo.views.CheckinProfileDetailsView
                     android:id="@+id/cpdProfileDetailView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

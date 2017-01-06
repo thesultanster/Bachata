@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.Survey;
-import com.meetup.uhoo.service.SurveyService;
+import com.meetup.uhoo.service_layer.SurveyService;
 
 /**
  * Created by sultankhan on 12/18/16.

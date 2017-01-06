@@ -9,14 +9,10 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
-import com.meetup.uhoo.Business;
+import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.R;
 
 import java.util.ArrayList;

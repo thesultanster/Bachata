@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
+import com.meetup.uhoo.core.User;
 
 /**
  * Created by sultankhan on 9/25/16.

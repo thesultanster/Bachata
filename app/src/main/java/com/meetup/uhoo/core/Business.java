@@ -1,21 +1,10 @@
-package com.meetup.uhoo;
-
-import android.util.Log;
+package com.meetup.uhoo.core;
 
 import com.google.android.gms.location.places.Place;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Business implements Serializable{
 

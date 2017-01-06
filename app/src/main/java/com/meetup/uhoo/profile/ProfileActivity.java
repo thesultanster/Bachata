@@ -15,7 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.meetup.uhoo.ProfileRowView;
+import com.meetup.uhoo.views.ProfileRowView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 

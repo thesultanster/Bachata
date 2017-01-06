@@ -1,4 +1,4 @@
-package com.meetup.uhoo.service;
+package com.meetup.uhoo.service_layer;
 
 import android.util.Log;
 

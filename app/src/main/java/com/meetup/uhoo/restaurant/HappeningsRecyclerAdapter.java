@@ -1,8 +1,6 @@
 package com.meetup.uhoo.restaurant;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.Circle;
-import com.meetup.uhoo.Happening;
+import com.meetup.uhoo.core.Happening;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
-import com.meetup.uhoo.UserDataFetchListener;
 
 import java.util.Collections;
 import java.util.List;

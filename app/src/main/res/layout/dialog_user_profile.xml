@@ -29,7 +29,7 @@
 
     </LinearLayout>
 
-    <com.meetup.uhoo.InterestsView
+    <com.meetup.uhoo.views.InterestsView
         android:layout_width="match_parent"
         android:layout_height="180dp"
         customviews:readOnly="true"/>

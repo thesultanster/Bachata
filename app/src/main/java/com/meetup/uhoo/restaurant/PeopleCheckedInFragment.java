@@ -1,7 +1,6 @@
 package com.meetup.uhoo.restaurant;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
+import com.meetup.uhoo.core.User;
 
 import java.util.ArrayList;
 

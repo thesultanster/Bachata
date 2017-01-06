@@ -1,6 +1,4 @@
-package com.meetup.uhoo;
-
-import com.meetup.uhoo.User;
+package com.meetup.uhoo.core;
 
 /**
  * Created by sultankhan on 9/25/16.

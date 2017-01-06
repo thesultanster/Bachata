@@ -69,7 +69,7 @@
 
 
 
-        <com.meetup.uhoo.ExpandedGridView
+        <com.meetup.uhoo.views.ExpandedGridView
             android:id="@+id/gvProfileIcons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

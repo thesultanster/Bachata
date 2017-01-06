@@ -1,4 +1,4 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.core;
 
 /**
  * Created by sultankhan on 11/26/16.

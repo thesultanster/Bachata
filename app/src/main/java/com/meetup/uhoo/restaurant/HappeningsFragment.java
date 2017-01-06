@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.meetup.uhoo.Enum;
-import com.meetup.uhoo.Happening;
+import com.meetup.uhoo.core.Happening;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
 
 import java.util.ArrayList;
 

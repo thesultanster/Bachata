@@ -8,19 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.meetup.uhoo.Enum;
-import com.meetup.uhoo.ProfileRowView;
+import com.meetup.uhoo.views.ProfileRowView;
 import com.meetup.uhoo.R;
-import com.meetup.uhoo.User;
-import com.meetup.uhoo.UserDataFetchListener;
+import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.core.UserDataFetchListener;
 
 import java.util.Collections;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNearbyRecyclerAdapter.MyViewHolder> {
 

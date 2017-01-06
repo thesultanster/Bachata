@@ -1,4 +1,4 @@
-package com.meetup.uhoo;
+package com.meetup.uhoo.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
