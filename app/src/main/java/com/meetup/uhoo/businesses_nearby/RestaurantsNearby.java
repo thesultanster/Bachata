@@ -78,6 +78,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     TextView tvBusinessCheckins;
     TextView tvBusinessHappenings;
 
+    String hil;
+
 
     User user;
     Boolean userLoadFired = false;

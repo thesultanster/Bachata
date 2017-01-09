@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@color/darkText"/>
+        android:drawable="@color/primaryColorDark"/>
 
-    <item>
+    <item
+        >
         <bitmap
-
             android:gravity="center"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/uhoo_icon" />
     </item>
 
 </layer-list>
