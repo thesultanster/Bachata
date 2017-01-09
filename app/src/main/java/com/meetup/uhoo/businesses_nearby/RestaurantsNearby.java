@@ -548,6 +548,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         stopCheckinBusinessListener();
 
         llCheckedInBusinessDetails.setVisibility(View.GONE);
+
+        Refresh();
     }
 
 
@@ -613,7 +615,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                         // Create Notifications
                         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-                        mBuilder.setSmallIcon(R.mipmap.beer);
+                        mBuilder.setSmallIcon(R.mipmap.uhoo_icon);
                         mBuilder.setContentTitle("Checked into " + place.getName());
                         mBuilder.setContentText("You are currently checked into this business");
                         mBuilder.setOngoing(true);

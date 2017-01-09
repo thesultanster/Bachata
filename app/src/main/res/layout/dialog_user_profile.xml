@@ -14,7 +14,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@color/primaryColorLight"/>
+            android:src="@color/md_grey_200"/>
 
 
         <TextView

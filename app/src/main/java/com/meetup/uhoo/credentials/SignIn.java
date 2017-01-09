@@ -1,6 +1,7 @@
 package com.meetup.uhoo.credentials;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -27,6 +28,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.core.UserDataFetchListener;
 import com.meetup.uhoo.util.FindLocation;
 
 public class SignIn extends AppCompatActivity {
@@ -160,12 +163,12 @@ public class SignIn extends AppCompatActivity {
     // Checks if email and password lengths are 0
     Boolean ValidationCheck() {
         if (emailEditText.getText().length() == 0) {
-            Toast.makeText(SignIn.this, "Please Enter an Email", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SignIn.this, "Please Enter an Email", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (passwordEditText.getText().length() == 0) {
-            Toast.makeText(SignIn.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SignIn.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -204,6 +207,10 @@ public class SignIn extends AppCompatActivity {
         Log.d("Facebook Login", "handleFacebookAccessToken:" + token);
 
 
+        final ProgressDialog pd = new ProgressDialog(SignIn.this);
+        pd.setMessage("Logging In");
+        pd.show();
+
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener( this, new OnCompleteListener<AuthResult>() {
@@ -215,6 +222,8 @@ public class SignIn extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
+                            pd.hide();
+
                             Log.w("Facebook Login", "signInWithCredential", task.getException());
                             Toast.makeText(SignIn.this, "Facebook Authentication Failed",
                                     Toast.LENGTH_SHORT).show();
@@ -222,14 +231,30 @@ public class SignIn extends AppCompatActivity {
                             return;
                         }
 
-                        // Get user shared prefs and save account type
-                        SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-                        editor.putString("authType", "FACEBOOK");
-                        editor.apply();
 
-                        Intent intent = new Intent(SignIn.this, FindLocation.class);
-                        startActivity(intent);
-                        finish();
+                        User user = new User(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        user.setOnUserDataFetchListener(new UserDataFetchListener() {
+                            @Override
+                            public void onUserFetch(User user) {
+
+                                pd.hide();
+
+                                // Get user shared prefs and save account type
+                                SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                                editor.putString("firstName", user.getFirstName());
+                                editor.putString("lastName", user.getLastName());
+                                editor.putString("oneLiner", user.getOneLiner());
+                                editor.putString("gender", user.getGender());
+                                editor.putString("authType", "FACEBOOK");
+                                editor.apply();
+
+                                Intent intent = new Intent(SignIn.this, FindLocation.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+
+
 
                     }
                 });

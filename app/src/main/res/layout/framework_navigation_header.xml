@@ -4,7 +4,7 @@
     android:layout_height="130dp"
     android:paddingTop="40dp"
     android:orientation="vertical"
-    android:background="#404041"
+    android:background="@color/primaryColorDark"
     >
 
 
