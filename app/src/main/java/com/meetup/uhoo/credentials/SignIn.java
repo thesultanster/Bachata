@@ -45,6 +45,8 @@ public class SignIn extends AppCompatActivity {
 
     private CallbackManager mCallbackManager;
 
+    ProgressDialog pd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class SignIn extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
+        pd = new ProgressDialog(SignIn.this);
 
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.btnFacebookLogin);
@@ -144,10 +147,36 @@ public class SignIn extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
+                FirebaseUser mUser = firebaseAuth.getCurrentUser();
+                if (mUser != null) {
                     // User is signed in
-                    Log.d("auth", "onAuthStateChanged:signed_in:" + user.getUid());
+                    Log.d("auth", "onAuthStateChanged:signed_in:" + mUser.getUid());
+
+
+                    pd.setMessage("Fetching Data");
+
+                    User user = new User(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    user.setOnUserDataFetchListener(new UserDataFetchListener() {
+                        @Override
+                        public void onUserFetch(User user) {
+
+                            pd.hide();
+
+                            // Get user shared prefs and save account type
+                            SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                            editor.putString("firstName", user.getFirstName());
+                            editor.putString("lastName", user.getLastName());
+                            editor.putString("oneLiner", user.getOneLiner());
+                            editor.putString("gender", user.getGender());
+                            editor.putString("authType", "FACEBOOK");
+                            editor.apply();
+
+                            Intent intent = new Intent(SignIn.this, FindLocation.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+
 
                 } else {
                     // User is signed out
@@ -187,6 +216,8 @@ public class SignIn extends AppCompatActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+
+        pd.dismiss();
     }
 
     @Override
@@ -207,13 +238,13 @@ public class SignIn extends AppCompatActivity {
         Log.d("Facebook Login", "handleFacebookAccessToken:" + token);
 
 
-        final ProgressDialog pd = new ProgressDialog(SignIn.this);
+
         pd.setMessage("Logging In");
         pd.show();
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener( this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("Facebook Login", "signInWithCredential:onComplete:" + task.isSuccessful());
@@ -232,27 +263,6 @@ public class SignIn extends AppCompatActivity {
                         }
 
 
-                        User user = new User(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        user.setOnUserDataFetchListener(new UserDataFetchListener() {
-                            @Override
-                            public void onUserFetch(User user) {
-
-                                pd.hide();
-
-                                // Get user shared prefs and save account type
-                                SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-                                editor.putString("firstName", user.getFirstName());
-                                editor.putString("lastName", user.getLastName());
-                                editor.putString("oneLiner", user.getOneLiner());
-                                editor.putString("gender", user.getGender());
-                                editor.putString("authType", "FACEBOOK");
-                                editor.apply();
-
-                                Intent intent = new Intent(SignIn.this, FindLocation.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
 
 
 
