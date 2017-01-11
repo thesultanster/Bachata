@@ -21,7 +21,7 @@ public class User implements Serializable{
     public transient UserDataFetchListener userDataFetchListener;
     public String firstName;
     public String lastName;
-    public String username;
+    public String photoUrl;
     public String gender;
     public String oneLiner;
     public String uid;
@@ -40,6 +40,7 @@ public class User implements Serializable{
         this.isCheckedIn = false;
         this.checkedInto = "";
         this.gender = "";
+        this.photoUrl = "";
         this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE;
     }
 
@@ -76,6 +77,7 @@ public class User implements Serializable{
     public String getGender(){
         return gender;
     }
+    public String getPhotoUrl(){ return photoUrl; }
     public ArrayList<String> getActivityIconList(){ return activityIconList; }
     // The Firebase data mapper will ignore this
     @Exclude

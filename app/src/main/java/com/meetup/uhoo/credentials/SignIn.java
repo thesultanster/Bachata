@@ -18,6 +18,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +33,9 @@ import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
 import com.meetup.uhoo.util.FindLocation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SignIn extends AppCompatActivity {
 
@@ -70,12 +75,45 @@ public class SignIn extends AppCompatActivity {
 
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.btnFacebookLogin);
-        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.setReadPermissions("email", "public_profile", "user_about_me");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
                 Log.i("Facebook Login", "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
+
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+
+
+                                try {
+
+                                    String url = "https://graph.facebook.com/" + object.getString("id") + "/picture?type=small";
+
+                                    // Get user shared prefs and save account type
+                                    SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                                    editor.putString("facebookId", object.getString("id"));
+                                    editor.putString("photoUrl", url);
+                                    editor.apply();
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.i("Facebook Graph", "data:" + response.toString());
+                                handleFacebookAccessToken(loginResult.getAccessToken());
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                request.setParameters(parameters);
+                request.executeAsync();
+
+
             }
 
             @Override
@@ -118,6 +156,7 @@ public class SignIn extends AppCompatActivity {
                                     Toast.makeText(SignIn.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
+
 
                                 // Get user shared prefs and save account type
                                 SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
@@ -238,7 +277,6 @@ public class SignIn extends AppCompatActivity {
         Log.d("Facebook Login", "handleFacebookAccessToken:" + token);
 
 
-
         pd.setMessage("Logging In");
         pd.show();
 
@@ -261,9 +299,6 @@ public class SignIn extends AppCompatActivity {
 
                             return;
                         }
-
-
-
 
 
                     }

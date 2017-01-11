@@ -3,7 +3,11 @@ package com.meetup.uhoo.views;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -17,8 +21,13 @@ import com.meetup.uhoo.core.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -30,6 +39,7 @@ public class ProfileRowView extends FrameLayout {
     private String lastName;
     private String oneLiner;
     private String userId;
+    private String profileUrl;
     private int visibilityPermission;
     private int type;
     private Enum.CheckinVisibilityState checkinVisibilityState;
@@ -42,6 +52,7 @@ public class ProfileRowView extends FrameLayout {
     private TextView tvOneLiner;
     private TextView tvCheckinState;
     private ImageView ivCheckingState;
+    private CircleImageView profileImage;
 
 
     public ProfileRowView(Context context, AttributeSet attrs, int defStyle) {
@@ -92,6 +103,7 @@ public class ProfileRowView extends FrameLayout {
         tvOneLiner = (TextView) view.findViewById(R.id.miniBio);
         tvCheckinState = (TextView) view.findViewById(R.id.tvCheckinState);
         ivCheckingState = (ImageView) view.findViewById(R.id.ivCheckinState);
+        profileImage = (CircleImageView) view.findViewById(R.id.profileImage);
 
         // If the type is Self, then load current user data
         if(type == 1) {
@@ -109,8 +121,42 @@ public class ProfileRowView extends FrameLayout {
         oneLiner = sharedPrefs.getString("oneLiner", "");
         firstName = sharedPrefs.getString("firstName","");
         lastName = sharedPrefs.getString("lastName", "");
+        profileUrl = sharedPrefs.getString("photoUrl","");
+
+        Log.d("photoUrl", profileUrl);
+
         setCheckinVisibilityState (Enum.CheckinVisibilityState.values()[ sharedPrefs.getInt("checkinVisibilityState",0)]);
 
+
+
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+
+                URL img_value = null;
+                Bitmap mIcon1 =  null;
+
+                try {
+                    img_value = new URL(profileUrl);
+                    mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                final Bitmap finalMIcon = mIcon1;
+                handler.post(new Runnable(){
+                    public void run() {
+                        profileImage.setImageBitmap(finalMIcon);
+                    }
+                });
+
+            }
+        };
+        new Thread(runnable).start();
 
         // Populate user data
         tvFullName.setText(firstName + " " + lastName);
