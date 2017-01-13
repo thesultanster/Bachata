@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.meetup.uhoo.core.Enum;
+import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.profile.ProfileActivity;

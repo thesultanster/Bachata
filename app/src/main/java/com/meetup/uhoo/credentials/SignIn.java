@@ -29,9 +29,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
+import com.meetup.uhoo.service_layer.current_user_data_services.CurrentUserDataService;
 import com.meetup.uhoo.util.FindLocation;
 
 import org.json.JSONException;
@@ -50,6 +52,8 @@ public class SignIn extends AppCompatActivity {
 
     private CallbackManager mCallbackManager;
 
+    private CurrentUserDataService currentUserDataService;
+
     ProgressDialog pd;
 
     @Override
@@ -64,6 +68,9 @@ public class SignIn extends AppCompatActivity {
 
         // Log out of anonymous user
         FirebaseAuth.getInstance().signOut();
+
+        // Init User Data
+        currentUserDataService = new CurrentUserDataService();
 
         // Inflate variables
         loginButton = (Button) findViewById(R.id.loginButton);
@@ -82,6 +89,10 @@ public class SignIn extends AppCompatActivity {
                 Log.i("Facebook Login", "facebook:onSuccess:" + loginResult);
 
 
+                // Set Auth Type and pass in Access token
+                currentUserDataService.setAuthType(Enum.AuthType.FACEBOOK, loginResult.getAccessToken().getToken());
+
+
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -91,21 +102,28 @@ public class SignIn extends AppCompatActivity {
                                     GraphResponse response) {
 
 
+                                Log.i("Facebook Graph", "data:" + response.toString());
+
                                 try {
 
                                     String url = "https://graph.facebook.com/" + object.getString("id") + "/picture?type=small";
 
-                                    // Get user shared prefs and save account type
+                                    // Get user shared prefs and save photo url locally
                                     SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                                     editor.putString("facebookId", object.getString("id"));
                                     editor.putString("photoUrl", url);
                                     editor.apply();
 
 
+
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                Log.i("Facebook Graph", "data:" + response.toString());
+
+
+
+
                                 handleFacebookAccessToken(loginResult.getAccessToken());
                             }
                         });
@@ -189,27 +207,17 @@ public class SignIn extends AppCompatActivity {
                 FirebaseUser mUser = firebaseAuth.getCurrentUser();
                 if (mUser != null) {
                     // User is signed in
-                    Log.d("auth", "onAuthStateChanged:signed_in:" + mUser.getUid());
-
+                    Log.i("auth", "onAuthStateChanged:signed_in:" + mUser.getUid());
 
                     pd.setMessage("Fetching Data");
 
-                    User user = new User(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    user.setOnUserDataFetchListener(new UserDataFetchListener() {
+                    currentUserDataService.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                    currentUserDataService.getFirebaseUserData(new UserDataFetchListener() {
                         @Override
                         public void onUserFetch(User user) {
+                            currentUserDataService.saveUserDataLocally(getApplicationContext());
 
-                            pd.hide();
-
-                            // Get user shared prefs and save account type
-                            SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-                            editor.putString("firstName", user.getFirstName());
-                            editor.putString("lastName", user.getLastName());
-                            editor.putString("oneLiner", user.getOneLiner());
-                            editor.putString("gender", user.getGender());
-                            editor.putString("authType", "FACEBOOK");
-                            editor.apply();
-
+                            // Sign Up Process is Done
                             Intent intent = new Intent(SignIn.this, FindLocation.class);
                             startActivity(intent);
                             finish();
@@ -219,7 +227,7 @@ public class SignIn extends AppCompatActivity {
 
                 } else {
                     // User is signed out
-                    Log.d("auth", "onAuthStateChanged:signed_out");
+                    Log.i("auth", "onAuthStateChanged:signed_out");
                 }
             }
         };

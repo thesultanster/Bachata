@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.meetup.uhoo.Enum;
 
 import java.io.Serializable;
 import java.lang.*;
@@ -79,6 +80,7 @@ public class User implements Serializable{
     }
     public String getPhotoUrl(){ return photoUrl; }
     public ArrayList<String> getActivityIconList(){ return activityIconList; }
+
     // The Firebase data mapper will ignore this
     @Exclude
     public Enum.CheckinVisibilityState getCheckinVisibilityState() { return checkinVisibilityState; }

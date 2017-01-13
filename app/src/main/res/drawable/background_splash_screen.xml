@@ -8,7 +8,7 @@
         >
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash" />
+            android:src="@mipmap/uhoo_icon" />
     </item>
 
 </layer-list>

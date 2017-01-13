@@ -1,4 +1,4 @@
-package com.meetup.uhoo.core;
+package com.meetup.uhoo;
 
 /**
  * Created by sultankhan on 11/26/16.
@@ -16,4 +16,9 @@ public class Enum {
         }
         public int getValue() { return value; }
     }
+
+    public enum AuthType{
+        FACEBOOK, FIREBASE;
+    }
+
 }

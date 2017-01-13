@@ -7,7 +7,7 @@
     <application
         android:name=".util.App"
         android:allowBackup="true"
-        android:icon="@mipmap/uhoo_icon"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Dark">
@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyATKkC-_FIGAMEW035gfrA7pHO948RwRTc" />
+            android:value="AIzaSyCVJ91aZoDBZyvyr3FEaLwHJhm3F-VSlPU" />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

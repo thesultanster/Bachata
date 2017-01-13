@@ -1,5 +1,7 @@
 package com.meetup.uhoo.core;
 
+import com.meetup.uhoo.Enum;
+
 import java.io.Serializable;
 import java.lang.*;
 

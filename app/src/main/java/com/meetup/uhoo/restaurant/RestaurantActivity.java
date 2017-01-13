@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.meetup.uhoo.views.CheckinProfileDetailsView;
-import com.meetup.uhoo.core.Enum;
+import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.core.Survey;
