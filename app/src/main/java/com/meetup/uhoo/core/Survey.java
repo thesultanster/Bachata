@@ -14,7 +14,7 @@ public class Survey implements Serializable {
 
 
     private String surveyId, businessId, title, body;
-    private List<Object> options;
+    private List<SurveyOption> options;
 
 
 
@@ -49,7 +49,7 @@ public class Survey implements Serializable {
         return businessId;
     }
 
-    public List<Object> getOptions(){
+    public List<SurveyOption> getOptions(){
         return options;
     }
 
@@ -57,7 +57,7 @@ public class Survey implements Serializable {
 
 
 
-    public void setOptions(ArrayList<Object> options){
+    public void setOptions(ArrayList<SurveyOption> options){
         this.options = options;
     }
 
@@ -77,16 +77,4 @@ public class Survey implements Serializable {
         this.body = body;
     }
 
-
-
-
-    public Survey persist(){
-        SurveyService surveyService = new SurveyService(this);
-        return surveyService.upload();
-    }
-
-    public void fetch( SurveyDataFetchListener surveyDataFetchListener){
-        SurveyService surveyService = new SurveyService(this);
-        surveyService.fetch(surveyDataFetchListener);
-    }
 }

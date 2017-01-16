@@ -83,18 +83,17 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
     void InflateVariables() {
 
         // Shitty way to set only one survey
-        SurveyService surveyService = new SurveyService();
-        surveyService.fetchBusinessSurveys(business.getPlaceId(), new SurveyDataFetchListener() {
-            @Override
-            public void onSurveyFetchCompleted(Survey object) {
-                svSurveyView.setVisibility(View.VISIBLE);
-                svSurveyView.setSurvey(object);
-            }
-        });
+        // SurveyService surveyService = new SurveyService();
+        //surveyService.fetchBusinessSurveys(business.getPlaceId(), new SurveyDataFetchListener() {
+        //    @Override
+        //    public void onSurveyFetchCompleted(Survey object) {
+        //        //svSurveyView.setVisibility(View.VISIBLE);
+        //        //svSurveyView.setSurvey(object);
+        //    }
+        //});
 
         svSurveyView = (SurveyView) findViewById(R.id.svSurveyView);
-        svSurveyView.setVisibility(View.GONE);
-
+        svSurveyView.setBusiness(business.getPlaceId());
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);

@@ -7,9 +7,17 @@ public class SurveyOption {
     String title;
     Boolean value;
 
+    public SurveyOption(){
+
+    }
+
     public SurveyOption(String title, Boolean value){
         this.title = title;
         this.value = value;
+    }
+
+    public String getTitle(){
+        return this.title;
     }
 
 }

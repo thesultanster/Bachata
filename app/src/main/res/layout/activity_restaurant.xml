@@ -163,6 +163,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -200,7 +201,7 @@
                    <com.meetup.uhoo.views.SurveyView
                        android:id="@+id/svSurveyView"
                        android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
+                       android:layout_height="224dp"
                        />
 
 
