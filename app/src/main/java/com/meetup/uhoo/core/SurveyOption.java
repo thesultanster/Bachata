@@ -20,4 +20,8 @@ public class SurveyOption {
         return this.title;
     }
 
+    public void setValue(boolean value){
+        this.value = value;
+    }
+
 }

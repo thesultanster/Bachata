@@ -23,11 +23,13 @@ public class SurveyFragmentListAdapter extends RecyclerView.Adapter<SurveyFragme
     List<SurveyOption> data = Collections.emptyList();
     LayoutInflater inflator;
     Context context;
+    SurveyAnswerInterface surveyAnswerInterface;
 
-    public SurveyFragmentListAdapter(Context context, List<SurveyOption> data) {
+    public SurveyFragmentListAdapter(Context context, List<SurveyOption> data, SurveyAnswerInterface surveyAnswerInterface) {
         this.context = context;
         inflator = LayoutInflater.from(context);
         this.data = data;
+        this.surveyAnswerInterface = surveyAnswerInterface;
     }
 
 
@@ -64,7 +66,8 @@ public class SurveyFragmentListAdapter extends RecyclerView.Adapter<SurveyFragme
             public void rowClick(View caller, int position) {
                 Log.d("rowClick", "rowClicks");
 
-
+                // When answer is clicked, we let the SurveyFragment know
+                surveyAnswerInterface.onSingleAnswerSelected(position);
             }
 
 

@@ -57,7 +57,7 @@ public class Survey implements Serializable {
 
 
 
-    public void setOptions(ArrayList<SurveyOption> options){
+    public void setOptions(List<SurveyOption> options){
         this.options = options;
     }
 

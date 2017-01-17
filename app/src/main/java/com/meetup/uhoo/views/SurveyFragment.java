@@ -29,8 +29,6 @@ public class SurveyFragment extends Fragment {
     private Survey survey;
     private TextView tvSurveyTitle;
     private TextView tvSurveyBody;
-    private TextView btnYes;
-    private TextView btnNo;
 
     private RecyclerView recyclerView;
     private SurveyFragmentListAdapter adapter;
@@ -55,8 +53,6 @@ public class SurveyFragment extends Fragment {
 
         tvSurveyBody = (TextView) view.findViewById(R.id.tvSurveyBody);
         tvSurveyTitle = (TextView) view.findViewById(R.id.tvSurveyTitle);
-        btnNo = (TextView) view.findViewById(R.id.tvNo);
-        btnYes = (TextView) view.findViewById(R.id.tvYes);
 
 
         if(survey != null){
@@ -65,24 +61,26 @@ public class SurveyFragment extends Fragment {
 
             surveyOptionList = survey.getOptions();
 
-
         }
 
-        btnNo.setOnClickListener(new View.OnClickListener() {
+        adapter = new SurveyFragmentListAdapter(getActivity(), surveyOptionList, new SurveyAnswerInterface() {
             @Override
-            public void onClick(View view) {
-                answerSurvey(false);
+            public void onSingleAnswerSelected(int position) {
+                SurveyService surveyService = new SurveyService();
+
+                // Set options list
+                surveyOptionList.get(position).setValue(true);
+                survey.setOptions(surveyOptionList);
+
+                // Create Survey Report on Database
+                surveyService.generateSurveyReport(survey);
+            }
+
+            @Override
+            public void onMultiAnswerSelected() {
+
             }
         });
-
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                answerSurvey(true);
-            }
-        });
-
-        adapter = new SurveyFragmentListAdapter(getActivity(), surveyOptionList);
         recyclerView = (RecyclerView) view.findViewById(R.id.rvSurveyAnswers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -103,10 +101,6 @@ public class SurveyFragment extends Fragment {
         this.survey = survey;
     }
 
-    private void answerSurvey(boolean answer) {
-        SurveyService surveyService = new SurveyService(survey);
-        surveyService.answerSurvey(answer);
-    }
 
 
 }
