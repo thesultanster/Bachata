@@ -34,6 +34,8 @@ public class SurveyFragment extends Fragment {
     private SurveyFragmentListAdapter adapter;
     private List<SurveyOption> surveyOptionList;
 
+    private SurveyAnswerCompleteListener surveyAnswerCompleteListener;
+
     public SurveyFragment() {
         // Required empty public constructor
     }
@@ -73,13 +75,14 @@ public class SurveyFragment extends Fragment {
                 survey.setOptions(surveyOptionList);
 
                 // Create Survey Report on Database
-                surveyService.generateSurveyReport(survey);
+                surveyService.generateSurveyReport(survey, surveyAnswerCompleteListener);
             }
 
             @Override
             public void onMultiAnswerSelected() {
 
             }
+
         });
         recyclerView = (RecyclerView) view.findViewById(R.id.rvSurveyAnswers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -89,9 +92,10 @@ public class SurveyFragment extends Fragment {
     }
 
 
-    public static SurveyFragment newInstance(Survey survey) {
+    public static SurveyFragment newInstance(Survey survey, SurveyAnswerCompleteListener surveyAnswerCompleteListener) {
         SurveyFragment fragment = new SurveyFragment();
         fragment.setSurvey(survey);
+        fragment.setSurveyAnswerCompleteListener(surveyAnswerCompleteListener);
 
         return fragment;
     }
@@ -99,6 +103,10 @@ public class SurveyFragment extends Fragment {
 
     public void setSurvey(Survey survey) {
         this.survey = survey;
+    }
+
+    public void setSurveyAnswerCompleteListener( SurveyAnswerCompleteListener surveyAnswerCompleteListener){
+        this.surveyAnswerCompleteListener = surveyAnswerCompleteListener;
     }
 
 

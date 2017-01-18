@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.meetup.uhoo.core.Survey;
 import com.meetup.uhoo.core.SurveyOption;
 import com.meetup.uhoo.core.SurveyReport;
+import com.meetup.uhoo.views.SurveyAnswerCompleteListener;
+import com.meetup.uhoo.views.SurveyAnswerInterface;
 
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +102,7 @@ public class SurveyService {
     }
 
 
-    public void generateSurveyReport(Survey survey) {
+    public void generateSurveyReport(Survey survey, final SurveyAnswerCompleteListener surveyAnswerCompleteListener) {
 
         SurveyReport surveyReport = new SurveyReport(survey.getSurveyId(), survey.getBusinessId(), FirebaseAuth.getInstance().getCurrentUser().getUid().toString(), survey.getOptions());
 
@@ -117,6 +119,7 @@ public class SurveyService {
                         }
 
                         Log.i("Survey Report", "onComplete:Success");
+                        surveyAnswerCompleteListener.onComplete();
                     }
                 });
 

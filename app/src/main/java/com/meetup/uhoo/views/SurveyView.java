@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
@@ -89,16 +90,27 @@ public class SurveyView extends FrameLayout {
             @Override
             public void onSurveyFetched(Survey object) {
                 Log.i("setBusiness", "onSurveyFetched:surveyTitle: " + object.getTitle());
+                adapter.addFragment(SurveyFragment.newInstance(object, new SurveyAnswerCompleteListener() {
 
+                    @Override
+                    public void onComplete() {
 
-                adapter.addFragment(SurveyFragment.newInstance(object), "");
+                        // Remove current fragment(survey) and if all fragments removed then hide
+                        // the SurveyView
+                        adapter.remove(vpSurveyViewPager.getCurrentItem());
+                        if(adapter.getCount() == 0){
+                            setVisibility(GONE);
+                        }
+                    }
+
+                }), "");
             }
         });
     }
 
 
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -123,8 +135,23 @@ public class SurveyView extends FrameLayout {
         }
 
         @Override
+        public int getItemPosition(Object object) {
+            int index = mFragmentList.indexOf (object);
+
+            if (index == -1)
+                return POSITION_NONE;
+            else
+                return index;
+        }
+
+        @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
+        }
+
+        public void remove(int position){
+            mFragmentList.remove(position);
+            notifyDataSetChanged();
         }
     }
 
