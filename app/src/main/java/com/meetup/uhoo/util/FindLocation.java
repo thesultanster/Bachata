@@ -102,6 +102,7 @@ public class FindLocation extends Activity {
 
 
 
+    // TODO: RENAME THIS METHOD
     private void LoginAnonymousUser(final Location loc) {
 
         // Get User shared prefs
@@ -112,7 +113,11 @@ public class FindLocation extends Activity {
         if (user != null) {
 
             // cache user logged in state
+            // Get user shared prefs and save account uid
+            editor.putString("uid", user.getUid());
             editor.putBoolean("isLoggedIn", true);
+            editor.putString("latitude", Double.valueOf(loc.getLatitude()).toString());
+            editor.putString("longitude", Double.valueOf(loc.getLongitude()).toString());
             editor.apply();
 
             // Save location in database

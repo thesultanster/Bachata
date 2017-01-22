@@ -165,7 +165,7 @@ public class ProfileRowView extends FrameLayout {
 
 
 
-    //
+
     public void SaveProfileDataToDatabase(){
 
         Map<String, Object> childUpdates = new HashMap<>();
@@ -248,7 +248,7 @@ public class ProfileRowView extends FrameLayout {
         setFirstName( user.getFirstName());
         setLastName( user.getLastName());
         setOneLiner( user.getOneLiner());
-        setCheckinVisibilityState( user.getCheckinVisibilityState());
+        setCheckinVisibilityState(Enum.CheckinVisibilityState.values()[ user.getCheckinVisibilityState()]);
     }
 
 

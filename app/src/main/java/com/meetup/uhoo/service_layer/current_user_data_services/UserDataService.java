@@ -3,9 +3,15 @@ package com.meetup.uhoo.service_layer.current_user_data_services;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sultankhan on 1/12/17.
@@ -29,6 +35,7 @@ public class UserDataService {
         editor.putString("lastName", user.getLastName());
         editor.putString("oneLiner", user.getOneLiner());
         editor.putString("gender", user.getGender());
+        editor.putInt("checkinVisibilityState", user.getCheckinVisibilityState());
         editor.apply();
     }
 
@@ -43,6 +50,8 @@ public class UserDataService {
         });
 
     }
+
+
 
 
 

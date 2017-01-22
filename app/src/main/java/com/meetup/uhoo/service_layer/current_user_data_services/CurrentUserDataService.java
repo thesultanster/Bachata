@@ -3,12 +3,21 @@ package com.meetup.uhoo.service_layer.current_user_data_services;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
 import com.meetup.uhoo.util.FindLocation;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sultankhan on 1/12/17.
@@ -19,11 +28,40 @@ public class CurrentUserDataService {
     private String authToken;
     private String uid;
     private User currentUser;
+    private Context context;
 
-    public void CurrentUserDataService(){
-
+    public  CurrentUserDataService(Context context){
+        this.context = context;
+        getLocalUserData();
     }
 
+    public User getLocalUserData(){
+
+        // Get User Data if it Exists
+        SharedPreferences sharedPrefs = context.getSharedPreferences("currentUser", 0);
+
+        String oneLiner = sharedPrefs.getString("oneLiner", "");
+        String firstName = sharedPrefs.getString("firstName","");
+        String lastName = sharedPrefs.getString("lastName", "");
+        String profileUrl = sharedPrefs.getString("photoUrl","");
+        String gender = sharedPrefs.getString("gender","");
+        String authType = sharedPrefs.getString("authType", "");
+        String uid = sharedPrefs.getString("uid","");
+        int checkinVisibilityState = sharedPrefs.getInt("checkinVisibilityState",0);
+
+        double longitude = Double.parseDouble(sharedPrefs.getString("longitude",""));
+        double latitude = Double.parseDouble(sharedPrefs.getString("latitude",""));
+
+        this.uid = uid;
+        this.authType = Enum.AuthType.valueOf(authType);
+        currentUser = new User(firstName, lastName, oneLiner, profileUrl, gender, checkinVisibilityState);
+        currentUser.longitude = longitude;
+        currentUser.latitude = latitude;
+
+        return currentUser;
+
+
+    }
 
     // Saves user data locally
     public void saveUserDataLocally(Context context){
@@ -34,7 +72,11 @@ public class CurrentUserDataService {
         editor.putString("lastName", currentUser.getLastName());
         editor.putString("oneLiner", currentUser.getOneLiner());
         editor.putString("gender", currentUser.getGender());
+        editor.putString("latitude", Double.valueOf(currentUser.latitude).toString());
+        editor.putString("longitude", Double.valueOf(currentUser.longitude).toString());
         editor.putString("authType", authType.name());
+        editor.putString("photoUrl", currentUser.getPhotoUrl());
+        editor.putInt("checkinVisibilityState", currentUser.getCheckinVisibilityState());
         editor.apply();
     }
 
@@ -52,6 +94,36 @@ public class CurrentUserDataService {
     }
 
 
+    public void saveUserToDatabase(){
+
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/firstName/", currentUser.getFirstName() );
+        childUpdates.put("/lastName/", currentUser.getLastName());
+        childUpdates.put("/oneLiner/", currentUser.getOneLiner());
+        childUpdates.put("/gender/", currentUser.getGender());
+        childUpdates.put("/checkinVisibilityState/", currentUser.getCheckinVisibilityState());
+        childUpdates.put("/photoUrl/", currentUser.getPhotoUrl());
+
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(uid).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    // After saving on database, save locally
+                    saveUserDataLocally(context);
+                }
+            }
+        });
+
+
+
+
+    }
+
+
+
 
     /* Helpers
     /**************************************************************/
@@ -60,7 +132,9 @@ public class CurrentUserDataService {
 
     /* Getters
     /**************************************************************/
-
+    public User getCurrentUser(){
+        return currentUser;
+    }
 
     /* Setters
     /**************************************************************/
@@ -69,6 +143,12 @@ public class CurrentUserDataService {
         this.authToken = authToken;
     }
 
+    public void setCurrentUser(User currentUser){
+        this.currentUser = currentUser;
+    }
+    public void setPhotoUrl( String photoUrl){
+        currentUser.photoUrl = photoUrl;
+    }
     public void setUid( String uid){
         this.uid = uid;
     }

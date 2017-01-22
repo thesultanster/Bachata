@@ -72,6 +72,9 @@ public class SurveyView extends FrameLayout {
         tabLayout.setupWithViewPager(vpSurveyViewPager, true);
 
         addView(view);
+
+        // Gone by default
+        setVisibility(GONE);
     }
 
 
@@ -90,6 +93,10 @@ public class SurveyView extends FrameLayout {
             @Override
             public void onSurveyFetched(Survey object) {
                 Log.i("setBusiness", "onSurveyFetched:surveyTitle: " + object.getTitle());
+
+                // Show the survey view since there is a survey to show
+                setVisibility(VISIBLE);
+
                 adapter.addFragment(SurveyFragment.newInstance(object, new SurveyAnswerCompleteListener() {
 
                     @Override
@@ -106,6 +113,7 @@ public class SurveyView extends FrameLayout {
                 }), "");
             }
         });
+
     }
 
 

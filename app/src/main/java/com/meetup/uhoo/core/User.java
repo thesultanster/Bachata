@@ -31,10 +31,38 @@ public class User implements Serializable{
     public boolean isCheckedIn;
     public String checkedInto;
     public ArrayList<String> activityIconList;
-    public Enum.CheckinVisibilityState checkinVisibilityState;
+    public int checkinVisibilityState;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
+       init();
+    }
+
+    public User(String uid) {
+        init();
+        this.uid = uid;
+        FetchUserData();
+    }
+
+    public User(String firstName, String lastName, String oneLiner) {
+        init();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.oneLiner = oneLiner;
+    }
+
+    public User(String firstName, String lastName, String oneLiner, String photoUrl, String gender, int checkinVisibilityState) {
+        init();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.oneLiner = oneLiner;
+        this.photoUrl = photoUrl;
+        this.gender = gender;
+        this.checkinVisibilityState = checkinVisibilityState;
+    }
+
+    // Initialize user data with default values
+    private void init(){
         this.firstName = "";
         this.lastName = "";
         this.oneLiner = "";
@@ -42,28 +70,7 @@ public class User implements Serializable{
         this.checkedInto = "";
         this.gender = "";
         this.photoUrl = "";
-        this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE;
-    }
-
-    public User(String uid) {
-        this.uid = uid;
-        this.firstName = "";
-        this.lastName = "";
-        this.oneLiner = "";
-        this.isCheckedIn = false;
-        this.checkedInto = "";
-        this.gender = "";
-        this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE;
-        FetchUserData();
-    }
-
-    public User(String firstName, String lastName, String oneLiner) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.oneLiner = oneLiner;
-        this.isCheckedIn = false;
-        this.checkedInto = "";
-        this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE;
+        this.checkinVisibilityState = Enum.CheckinVisibilityState.AVAILABLE.getValue();
     }
 
     public String getFirstName(){
@@ -79,15 +86,9 @@ public class User implements Serializable{
         return gender;
     }
     public String getPhotoUrl(){ return photoUrl; }
+    public int getCheckinVisibilityState(){ return checkinVisibilityState; }
     public ArrayList<String> getActivityIconList(){ return activityIconList; }
 
-    // The Firebase data mapper will ignore this
-    @Exclude
-    public Enum.CheckinVisibilityState getCheckinVisibilityState() { return checkinVisibilityState; }
-
-    public void setCheckinVisibilityState(int i){
-        this.checkinVisibilityState =  Enum.CheckinVisibilityState.values()[i];
-    }
 
     public void FetchUserData(){
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();

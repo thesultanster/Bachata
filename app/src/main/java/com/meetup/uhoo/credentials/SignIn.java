@@ -70,7 +70,7 @@ public class SignIn extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
 
         // Init User Data
-        currentUserDataService = new CurrentUserDataService();
+        currentUserDataService = new CurrentUserDataService(getApplicationContext());
 
         // Inflate variables
         loginButton = (Button) findViewById(R.id.loginButton);
@@ -208,6 +208,11 @@ public class SignIn extends AppCompatActivity {
                 if (mUser != null) {
                     // User is signed in
                     Log.i("auth", "onAuthStateChanged:signed_in:" + mUser.getUid());
+
+                    // Get user shared prefs and save account uid
+                    SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+                    editor.putString("uid", mUser.getUid());
+                    editor.apply();
 
                     pd.setMessage("Fetching Data");
 
