@@ -110,6 +110,8 @@ public class ProfileRowView extends FrameLayout {
             RefreshCurrentUserData();
         }
 
+
+
         addView(view);
     }
 
@@ -126,9 +128,6 @@ public class ProfileRowView extends FrameLayout {
         Log.d("photoUrl", profileUrl);
 
         setCheckinVisibilityState (Enum.CheckinVisibilityState.values()[ sharedPrefs.getInt("checkinVisibilityState",0)]);
-
-
-
 
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -220,6 +219,39 @@ public class ProfileRowView extends FrameLayout {
         this.tvOneLiner.setText(oneLiner);
     }
 
+    public void setProfileUrl(final String profileUrl){
+        this.profileUrl = profileUrl;
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+
+                URL img_value = null;
+                Bitmap mIcon1 =  null;
+
+                try {
+                    img_value = new URL(profileUrl);
+                    mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
+                    final Bitmap finalMIcon = mIcon1;
+                    handler.post(new Runnable(){
+                        public void run() {
+                            profileImage.setImageBitmap(finalMIcon);
+                        }
+                    });
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        };
+        new Thread(runnable).start();
+    }
+
     public void setCheckinVisibilityState(Enum.CheckinVisibilityState checkinVisibilityState){
         this.checkinVisibilityState = checkinVisibilityState;
 
@@ -249,6 +281,7 @@ public class ProfileRowView extends FrameLayout {
         setLastName( user.getLastName());
         setOneLiner( user.getOneLiner());
         setCheckinVisibilityState(Enum.CheckinVisibilityState.values()[ user.getCheckinVisibilityState()]);
+        setProfileUrl(user.getPhotoUrl());
     }
 
 

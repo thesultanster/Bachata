@@ -277,15 +277,14 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
 
     private void Refresh() {
-        adapter.clearData();
-
-
-        if (user == null) {
+        if (user == null || adapter == null ) {
             Log.d("refresh", "user not loaded");
             mSwipeRefreshLayout.setRefreshing(false);
             return;
         }
 
+
+        adapter.clearData();
 
         // Given Manual Location, query for changes in all object in a 0.6ki radius
         geoQuery = geoFire.queryAtLocation(new GeoLocation(user.latitude, user.longitude), 0.6);
@@ -388,12 +387,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             }
         });
 
-
-        // Default state when refreshing is no businesses around
-        //if (R.id.recyclerView == viewSwitcher.getNextView().getId()) {
-        //viewSwitcher.showNext();
-        //}
-
     }
 
 
@@ -415,6 +408,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         startCurrentUserListener();
         startCheckedInBusinessListener();
 
+        Refresh();
 
     }
 
