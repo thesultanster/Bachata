@@ -42,6 +42,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.core.Business;
+import com.meetup.uhoo.service_layer.business_nearby.BusinessNearbyListener;
+import com.meetup.uhoo.service_layer.business_nearby.BusinessNearbyService;
 import com.meetup.uhoo.views.CheckinProfileDetailsView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
@@ -78,7 +80,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     TextView tvBusinessCheckins;
     TextView tvBusinessHappenings;
 
-    String hil;
+    BusinessNearbyService businessNearbyService;
 
 
     User user;
@@ -228,6 +230,10 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
     }
 
     void GetNearbyBusinesses() {
+
+        businessNearbyService =  BusinessNearbyService.getInstance();
+
+
         // TODO: Security Permission will crash app if user doesnt allow location
         // Query Nearby Locations and populate spinner
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
@@ -286,106 +292,21 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
         adapter.clearData();
 
-        // Given Manual Location, query for changes in all object in a 0.6ki radius
-        geoQuery = geoFire.queryAtLocation(new GeoLocation(user.latitude, user.longitude), 0.6);
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+
+
+        businessNearbyService.startNearbyService(user.longitude, user.latitude, new BusinessNearbyListener() {
             @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-                System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-
-
-                // After Querying the Key then query restaurant information
-                DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
-                restaurantsRef.child("restaurants").child(key).addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                // Bind Business object
-                                final Business restaurant = dataSnapshot.getValue(Business.class);
-
-                                if (restaurant != null) {
-
-                                    // Query the users checked into the restaurant in order to display number of users
-                                    DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
-                                    restaurantsRef.child("checkin").child(restaurant.getPlaceId()).addListenerForSingleValueEvent(
-                                            new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                                    // Save users in list
-                                                    final List<User> users = new ArrayList<User>();
-                                                    for (DataSnapshot user : dataSnapshot.getChildren()) {
-
-                                                        // Create a user object and sets its ID
-                                                        // This is a placeholder gridview item for the checkedin users gridview
-                                                        // Later on we will use the Ids to query user gender and update gridview
-                                                        User tempUser = new User();
-                                                        tempUser.uid = user.getKey();
-
-                                                        users.add(tempUser);
-
-                                                    }
-
-                                                    restaurant.setUsersCheckedIn(users);
-                                                    restaurant.setNumUsersCheckedIn(users.size());
-                                                    // TODO: Replace this in future with server side code that tracks num users checked in
-                                                    Map<String, Object> childUpdates = new HashMap<>();
-                                                    childUpdates.put("/numUsersCheckedIn/", users.size());
-                                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                                                    mDatabase.child("restaurants").child(restaurant.getPlaceId()).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
-                                                        @Override
-                                                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                                            if (databaseError == null) {
-
-                                                            }
-                                                        }
-                                                    });
-
-                                                    adapter.addRow(restaurant);
-                                                }
-
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-                                                    Log.w("restaurant checkin", "getRestaurant:onCancelled", databaseError.toException());
-                                                }
-                                            });
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.w("restaurant", "getRestaurant:onCancelled", databaseError.toException());
-                            }
-                        });
-
-
+            public void onBusinessFetched(Business object) {
+                adapter.addRow(object);
             }
 
             @Override
-            public void onKeyExited(String key) {
-                System.out.println(String.format("Key %s is no longer in the search area", key));
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-                System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-                System.out.println("All initial data has been loaded and events have been fired!");
+            public void onFetchComplete() {
                 mSwipeRefreshLayout.setRefreshing(false);
 
-
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
-                System.err.println("There was an error with this query: " + error);
-                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
 
     }
 
@@ -397,8 +318,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         stopCurrentUserListener();
         stopCheckinBusinessListener();
 
-        if (geoQuery != null)
-            geoQuery.removeAllListeners();
+        businessNearbyService.stopNearbyListeners();
+
     }
 
     @Override
