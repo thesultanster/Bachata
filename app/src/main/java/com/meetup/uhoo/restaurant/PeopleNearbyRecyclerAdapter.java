@@ -37,6 +37,9 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
         final int index = getItemCount();
 
+        data.add(row);
+        notifyItemInserted(index);
+
         row.setOnUserDataFetchListener(new UserDataFetchListener() {
             @Override
             public void onUserFetch(User user) {
@@ -47,8 +50,7 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
             }
         });
 
-        data.add(row);
-        notifyItemInserted(getItemCount() - 1);
+
     }
 
     public void updateRows(){

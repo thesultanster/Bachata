@@ -21,7 +21,6 @@
         android:id="@+id/nsvBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:behavior_peekHeight="108dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
@@ -180,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/checkin_white"
+                    android:src="@mipmap/check_out"
                     android:visibility="visible" />
 
                 <TextView
@@ -189,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
-                    android:text="CHECK IN"
+                    android:text="CHECK OUT"
                     android:textSize="14sp" />
 
             </LinearLayout>

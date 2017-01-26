@@ -48,7 +48,6 @@ public class ProfileRowView extends FrameLayout {
     private SharedPreferences sharedPrefs;
     private DatabaseReference mDatabase;
 
-    private TextView tvFullName;
     private TextView tvOneLiner;
     private TextView tvCheckinState;
     private ImageView ivCheckingState;
@@ -99,7 +98,6 @@ public class ProfileRowView extends FrameLayout {
         sharedPrefs = context.getSharedPreferences("name", 0);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        tvFullName = (TextView) view.findViewById(R.id.tvFullName);
         tvOneLiner = (TextView) view.findViewById(R.id.miniBio);
         tvCheckinState = (TextView) view.findViewById(R.id.tvCheckinState);
         ivCheckingState = (ImageView) view.findViewById(R.id.ivCheckinState);
@@ -158,7 +156,6 @@ public class ProfileRowView extends FrameLayout {
         new Thread(runnable).start();
 
         // Populate user data
-        tvFullName.setText(firstName + " " + lastName);
         tvOneLiner.setText(oneLiner);
     }
 
@@ -204,15 +201,6 @@ public class ProfileRowView extends FrameLayout {
         this.userId = userId;
     }
 
-    public void setFirstName(String firstName){
-        this.firstName = firstName;
-        this.tvFullName.setText(firstName + " " + lastName);
-    }
-
-    public void setLastName(String lastName){
-        this.lastName = lastName;
-        this.tvFullName.setText(firstName + " " + lastName);
-    }
 
     public void setOneLiner(String oneLiner){
         this.oneLiner = oneLiner;
@@ -277,8 +265,6 @@ public class ProfileRowView extends FrameLayout {
     }
 
     public void setData(User user){
-        setFirstName( user.getFirstName());
-        setLastName( user.getLastName());
         setOneLiner( user.getOneLiner());
         setCheckinVisibilityState(Enum.CheckinVisibilityState.values()[ user.getCheckinVisibilityState()]);
         setProfileUrl(user.getPhotoUrl());

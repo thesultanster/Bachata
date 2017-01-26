@@ -25,14 +25,8 @@ import android.widget.ViewSwitcher;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
-import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,8 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.core.Business;
-import com.meetup.uhoo.service_layer.business_nearby.BusinessNearbyListener;
-import com.meetup.uhoo.service_layer.business_nearby.BusinessNearbyService;
+import com.meetup.uhoo.service_layer.business_services.BusinessNearbyListener;
+import com.meetup.uhoo.service_layer.business_services.BusinessNearbyService;
 import com.meetup.uhoo.views.CheckinProfileDetailsView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
@@ -51,9 +45,6 @@ import com.meetup.uhoo.restaurant.RestaurantActivity;
 import com.meetup.uhoo.util.NavigationDrawerFramework;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RestaurantsNearby extends NavigationDrawerFramework implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -106,12 +97,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_businesses_nearby);
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
 
 
         // Set Toolbar title
@@ -233,52 +218,6 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
         businessNearbyService =  BusinessNearbyService.getInstance();
 
-
-        // TODO: Security Permission will crash app if user doesnt allow location
-        // Query Nearby Locations and populate spinner
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
-        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-            @Override
-            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-
-                placesData = new ArrayList<Business>();
-
-                int limit = 5;
-
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-
-                    if (limit <= 0) {
-                        break;
-                    }
-
-                    /* //TODO: uncomment this to limit only cafes
-                    // Limit to only cafes
-                    if(placeLikelihood.getPlace().getPlaceTypes().contains(Place.TYPE_CAFE)) {
-                        Log.i("places", String.format("Place '%s' has likelihood: %g",
-                                placeLikelihood.getPlace().getName(),
-                                placeLikelihood.getLikelihood()));
-
-                        placesData.add(new Business(placeLikelihood.getPlace()));
-                    }
-                    */
-
-                    // No Limit to business type
-                    Log.i("places", String.format("Place '%s' has likelihood: %g",
-                            placeLikelihood.getPlace().getName(),
-                            placeLikelihood.getLikelihood()));
-
-                    placesData.add(new Business(placeLikelihood.getPlace()));
-
-                    limit--;
-                }
-                likelyPlaces.release();
-
-
-                nsvBottomSheet.setVisibility(View.VISIBLE);
-
-
-            }
-        });
     }
 
 
@@ -305,7 +244,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 mSwipeRefreshLayout.setRefreshing(false);
 
             }
-        });
+        }, this, this, this);
 
 
     }
@@ -353,8 +292,8 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 if (user != null && user.isCheckedIn) {
                     tvCheckinText.setText("Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.green_pill));
-                    tvCehckinFABLabel.setText("CHECK OUT");
-                    fabCheckinCheckout.setImageResource(R.mipmap.check_out);
+                    tvCehckinFABLabel.setVisibility(View.VISIBLE);
+                    fabCheckinCheckout.setVisibility(View.VISIBLE);
 
                     // Show business details in bottom sheet
                     llCheckedInBusinessDetails.setVisibility(View.VISIBLE);
@@ -362,9 +301,9 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                 } else {
                     tvCheckinText.setText("Not Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_pill));
-                    tvCehckinFABLabel.setText("CHECK IN");
+                    tvCehckinFABLabel.setVisibility(View.GONE);
                     tvBusinessName.setText(":(");
-                    fabCheckinCheckout.setImageResource(R.mipmap.checkin_white);
+                    fabCheckinCheckout.setVisibility(View.GONE);
 
                     // Hide business  details in bottom sheet
                     llCheckedInBusinessDetails.setVisibility(View.GONE);

@@ -15,6 +15,7 @@ import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserCheckinListener;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
+import com.meetup.uhoo.service_layer.business_services.BusinessService;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +37,28 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
 
     public void addRow(Business row) {
+        if( exists(row) ){
+            return;
+        }
+
+        // Get index of new row
+        final int index = getItemCount();
+
         data.add(row);
-        notifyItemInserted(getItemCount() - 1);
+        notifyItemInserted(index);
+
+        BusinessService businessService = new BusinessService(row);
+        businessService.fetchCheckedInUserData(new UserCheckinListener() {
+            @Override
+            public void onFetchUsersCheckedIn(List<User> checkedInUsers) {
+                data.get(index).setUsersCheckedIn(checkedInUsers);
+                notifyItemChanged(index);
+            }
+        });
+
+
+
+
     }
 
     public void clearData() {
@@ -83,15 +104,14 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
         // This gives us current business
         Business currentBusiness = data.get(position);
-        currentBusiness.setOnUserCheckinListener(new UserCheckinListener() {
 
+        BusinessService businessService = new BusinessService(currentBusiness);
+        businessService.fetchCheckedInUserData(new UserCheckinListener() {
             @Override
-            public void onFetchUsersCheckedIn( List<User> checkedInUsers ) {
-                holder.gridAdapter.update( checkedInUsers );
+            public void onFetchUsersCheckedIn(List<User> checkedInUsers) {
+               holder.gridAdapter.update(checkedInUsers);
             }
         });
-        currentBusiness.FetchCheckedInUserData();
-
 
 
         List<User> checkedInUsers = currentBusiness.usersCheckedIn;
@@ -157,6 +177,20 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
             void bookNow(View caller, int position);
 
         }
+    }
+
+
+    private boolean exists(Business row){
+
+        for ( Business business : data){
+            if(row.getPlaceId().equals(business.getPlaceId())){
+
+
+                return true;
+            }
+        }
+        return false;
+
     }
 
 

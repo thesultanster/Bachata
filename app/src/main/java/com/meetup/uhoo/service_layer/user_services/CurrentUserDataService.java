@@ -1,20 +1,14 @@
-package com.meetup.uhoo.service_layer.current_user_data_services;
+package com.meetup.uhoo.service_layer.user_services;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
-import com.meetup.uhoo.util.FindLocation;
 
 import java.util.HashMap;
 import java.util.Map;

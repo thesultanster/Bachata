@@ -1,4 +1,4 @@
-package com.meetup.uhoo.service_layer.current_user_data_services;
+package com.meetup.uhoo.service_layer.user_services;
 
 import com.meetup.uhoo.core.User;
 

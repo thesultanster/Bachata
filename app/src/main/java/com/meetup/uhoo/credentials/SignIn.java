@@ -1,6 +1,5 @@
 package com.meetup.uhoo.credentials;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,7 +32,7 @@ import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
-import com.meetup.uhoo.service_layer.current_user_data_services.CurrentUserDataService;
+import com.meetup.uhoo.service_layer.user_services.CurrentUserDataService;
 import com.meetup.uhoo.util.FindLocation;
 
 import org.json.JSONException;

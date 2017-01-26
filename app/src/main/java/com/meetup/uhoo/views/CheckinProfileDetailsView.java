@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.profile.ProfileActivity;
-import com.meetup.uhoo.service_layer.current_user_data_services.CurrentUserDataService;
+import com.meetup.uhoo.service_layer.user_services.CurrentUserDataService;
 import com.rey.material.widget.Switch;
 
 /**

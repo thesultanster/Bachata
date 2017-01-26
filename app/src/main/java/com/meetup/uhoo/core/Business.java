@@ -1,6 +1,7 @@
 package com.meetup.uhoo.core;
 
 import com.google.android.gms.location.places.Place;
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -13,8 +14,6 @@ public class Business implements Serializable{
     private int numUsersCheckedIn;
     private int numHappenings;
     public List<User> usersCheckedIn = Collections.emptyList();
-
-    public transient UserCheckinListener userCheckinListener;
 
 
     public Business(){
@@ -77,31 +76,6 @@ public class Business implements Serializable{
         this.usersCheckedIn = usersCheckedIn;
 
 
-    }
-
-    public void setOnUserCheckinListener( UserCheckinListener userCheckinListener){
-        this.userCheckinListener = userCheckinListener;
-    }
-
-
-     public void FetchCheckedInUserData(){
-
-        int position = 0;
-        for( User user : usersCheckedIn){
-            final int finalPosition = position;
-            user.setOnUserDataFetchListener(new UserDataFetchListener() {
-                @Override
-                public void onUserFetch(User user) {
-                    // Update List with new user
-                    usersCheckedIn.set(finalPosition, user);
-                    // Trigger the interface
-                    userCheckinListener.onFetchUsersCheckedIn(usersCheckedIn);
-                }
-            });
-            user.FetchUserData();
-
-            position++;
-        }
     }
 
 

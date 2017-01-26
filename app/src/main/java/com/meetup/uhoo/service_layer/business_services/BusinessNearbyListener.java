@@ -1,4 +1,4 @@
-package com.meetup.uhoo.service_layer.business_nearby;
+package com.meetup.uhoo.service_layer.business_services;
 
 
 import com.meetup.uhoo.core.Business;
