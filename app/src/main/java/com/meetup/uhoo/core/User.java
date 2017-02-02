@@ -51,8 +51,9 @@ public class User implements Serializable{
         this.oneLiner = oneLiner;
     }
 
-    public User(String firstName, String lastName, String oneLiner, String photoUrl, String gender, int checkinVisibilityState) {
+    public User(String uid, String firstName, String lastName, String oneLiner, String photoUrl, String gender, int checkinVisibilityState) {
         init();
+        this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.oneLiner = oneLiner;
@@ -86,6 +87,7 @@ public class User implements Serializable{
         return gender;
     }
     public String getPhotoUrl(){ return photoUrl; }
+    public String getUid(){ return uid; }
     public int getCheckinVisibilityState(){ return checkinVisibilityState; }
     public ArrayList<String> getActivityIconList(){ return activityIconList; }
 

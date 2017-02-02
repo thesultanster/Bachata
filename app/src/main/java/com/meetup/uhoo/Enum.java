@@ -18,7 +18,7 @@ public class Enum {
     }
 
     public enum AuthType{
-        FACEBOOK, FIREBASE;
+        FACEBOOK, FIREBASE, ANON;
     }
 
 }

@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
+import com.meetup.uhoo.service_layer.auto_checkin_services.AutoCheckinService;
 import com.meetup.uhoo.util.location.FallbackLocationTracker;
 import com.meetup.uhoo.util.location.LocationTracker;
 
@@ -119,6 +120,20 @@ public class FindLocation extends Activity {
             editor.putString("latitude", Double.valueOf(loc.getLatitude()).toString());
             editor.putString("longitude", Double.valueOf(loc.getLongitude()).toString());
             editor.apply();
+
+
+            // If the user is not anonymous, then start autocheckin service
+            SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("currentUser", 0);
+            String authType = sharedPrefs.getString("authType", "");
+            if(!authType.equals("ANON") && !authType.equals("")){
+                Log.d("AutoCheckinService", "Not Started ANON user found");
+
+                // use this to start and trigger a autocheckin
+                Intent i = new Intent(getApplicationContext(), AutoCheckinService.class);
+                i.putExtra("uid", user.getUid());
+                startService(i);
+            }
+
 
             // Save location in database
             SaveLocationInDatabase(loc);

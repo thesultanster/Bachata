@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.meetup.uhoo.Enum;
+import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
 
@@ -21,6 +23,9 @@ public class CurrentUserDataService {
     private Enum.AuthType authType;
     private String authToken;
     private String uid;
+    private String checkedInto;
+    //private Business checkedIntoBusiness;
+
     private User currentUser;
     private Context context;
 
@@ -43,12 +48,14 @@ public class CurrentUserDataService {
         String uid = sharedPrefs.getString("uid","");
         int checkinVisibilityState = sharedPrefs.getInt("checkinVisibilityState",0);
 
-        double longitude = Double.parseDouble(sharedPrefs.getString("longitude",""));
-        double latitude = Double.parseDouble(sharedPrefs.getString("latitude",""));
+        double longitude = Double.parseDouble(sharedPrefs.getString("longitude","0.0"));
+        double latitude = Double.parseDouble(sharedPrefs.getString("latitude","0.0"));
 
         this.uid = uid;
         this.authType = Enum.AuthType.valueOf(authType);
-        currentUser = new User(firstName, lastName, oneLiner, profileUrl, gender, checkinVisibilityState);
+        this.checkedInto = sharedPrefs.getString("checkedInto","");
+
+        currentUser = new User(uid, firstName, lastName, oneLiner, profileUrl, gender, checkinVisibilityState);
         currentUser.longitude = longitude;
         currentUser.latitude = latitude;
 
@@ -62,6 +69,7 @@ public class CurrentUserDataService {
 
         // Get user shared prefs and save account data locally
         SharedPreferences.Editor editor = context.getSharedPreferences("currentUser", context.MODE_PRIVATE).edit();
+        editor.putString("uid", currentUser.getUid());
         editor.putString("firstName", currentUser.getFirstName());
         editor.putString("lastName", currentUser.getLastName());
         editor.putString("oneLiner", currentUser.getOneLiner());
@@ -71,6 +79,13 @@ public class CurrentUserDataService {
         editor.putString("authType", authType.name());
         editor.putString("photoUrl", currentUser.getPhotoUrl());
         editor.putInt("checkinVisibilityState", currentUser.getCheckinVisibilityState());
+
+        // Save placeId of checked in business locally
+        //Gson gson = new Gson();
+        //String json = gson.toJson(checkedIntoBusiness);
+        editor.putString("checkedInto", checkedInto);
+        //editor.putString("checkedIntoBusiness", json);
+
         editor.apply();
     }
 
@@ -92,6 +107,7 @@ public class CurrentUserDataService {
 
 
         Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/uid/", currentUser.getUid() );
         childUpdates.put("/firstName/", currentUser.getFirstName() );
         childUpdates.put("/lastName/", currentUser.getLastName());
         childUpdates.put("/oneLiner/", currentUser.getOneLiner());
@@ -146,6 +162,7 @@ public class CurrentUserDataService {
     public void setUid( String uid){
         this.uid = uid;
     }
+    public void setCheckedInto(String checkedInto){ this.checkedInto = checkedInto; }
 
 
 }

@@ -15,25 +15,34 @@ import com.meetup.uhoo.core.User;
 public class FirebaseUserData {
 
     private String uid;
-    private FirebaseDataFetchListener firebaseDataFetchListener;
 
     public FirebaseUserData(String uid) {
         this.uid = uid;
     }
 
 
-    public void FirebaseUserData() {}
-
-
 
     public void getUserData(final FirebaseDataFetchListener firebaseDataFetchListener) {
-        this.firebaseDataFetchListener = firebaseDataFetchListener;
+        Log.i("FirebaseUserData", "getUserData:uid: " + uid);
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference();
         userRef.child("users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.i("FirebaseUserData", "onDataChange:exists: " + dataSnapshot.exists());
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            if (child.getKey().equals("firstName")) {
+                                Log.i("FirebaseUserData", "child: " + child.getValue().toString());
+                            }
+                            if (child.getKey().equals("lastName")) {
+                                Log.i("FirebaseUserData", "child: " + child.getValue().toString());
+                            }
+                            if (child.getKey().equals("isCheckedIn")) {
+                                Log.i("FirebaseUserData", "child: " + child.getValue().toString());
+                            }
+
+                        }
 
                         User user = dataSnapshot.getValue(User.class);
 

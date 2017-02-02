@@ -52,7 +52,7 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantActivity extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener{
+public class RestaurantActivity extends AppCompatActivity {
 
 
     // Used to manually update list of nearby users
@@ -78,9 +78,6 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
 
     private BottomSheetBehavior mBottomSheetBehavior;
 
-    private RapidFloatingActionLayout rfaLayout;
-    private RapidFloatingActionButton rfaBtn;
-    private RapidFloatingActionHelper rfabHelper;
     private CheckinProfileDetailsView cpdProfileDetailView;
 
     //String restaurantId;
@@ -113,16 +110,6 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
 
     void InflateVariables() {
 
-        // Shitty way to set only one survey
-        // SurveyService surveyService = new SurveyService();
-        //surveyService.fetchBusinessSurveys(business.getPlaceId(), new SurveyDataFetchListener() {
-        //    @Override
-        //    public void onSurveyFetchCompleted(Survey object) {
-        //        //svSurveyView.setVisibility(View.VISIBLE);
-        //        //svSurveyView.setSurvey(object);
-        //    }
-        //});
-
         svSurveyView = (SurveyView) findViewById(R.id.svSurveyView);
         svSurveyView.setBusiness(business.getPlaceId());
 
@@ -139,64 +126,8 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
         cpdProfileDetailView = (CheckinProfileDetailsView) findViewById(R.id.cpdProfileDetailView);
         nsvBottomSheet = (NestedScrollView) findViewById(R.id.nsvBottomSheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(nsvBottomSheet);
-        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    rfaLayout.setVisibility(View.GONE);
-                }
 
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    rfaLayout.setVisibility(View.GONE);
-                }
-            }
 
-            @Override
-            public void onSlide(View bottomSheet, float slideOffset) {
-            }
-        });
-
-        rfaLayout = (RapidFloatingActionLayout) findViewById(R.id.fabUserVisibilityMenuLayout);
-        rfaBtn = (RapidFloatingActionButton) findViewById(R.id.fabUserVisibilityMenu);
-        RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(getApplicationContext());
-        rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
-        List<RFACLabelItem> items = new ArrayList<>();
-        items.add(new RFACLabelItem<Integer>()
-                .setLabel("Available")
-                .setResId(R.mipmap.white_ring)
-                .setIconNormalColor(getResources().getColor(R.color.flatDarkGreen))
-                .setIconPressedColor(0xffbf360c)
-                .setWrapper(0)
-        );
-        /*
-        items.add(new RFACLabelItem<Integer>()
-                .setLabel("Check")
-                .setResId(R.mipmap.white_ring)
-                .setIconNormalColor(getResources().getColor(R.color.flatYellow))
-                .setIconPressedColor(0xff1a237e)
-                .setWrapper(1)
-        );
-        */
-        items.add(new RFACLabelItem<Integer>()
-                .setLabel("Busy")
-                .setResId(R.mipmap.white_ring)
-                .setIconNormalColor(getResources().getColor(R.color.flatRed))
-                .setIconPressedColor(0xff3e2723)
-                .setWrapper(1)
-        );
-        rfaContent
-                .setItems(items)
-                .setIconShadowRadius(ABTextUtil.dip2px(getApplicationContext(), 5))
-                .setIconShadowColor(0xff888888)
-                .setIconShadowDy(ABTextUtil.dip2px(getApplicationContext(), 5))
-        ;
-        rfabHelper = new RapidFloatingActionHelper(
-                getApplicationContext(),
-                rfaLayout,
-                rfaBtn,
-                rfaContent
-        ).build();
-        setRFACItem(cpdProfileDetailView.getCheckinVisibilityState().ordinal());
 
 
         fabCheckinCheckout.setOnClickListener(new View.OnClickListener() {
@@ -434,40 +365,6 @@ public class RestaurantActivity extends AppCompatActivity implements RapidFloati
         startCurrentUserListener();
     }
 
-    @Override
-    public void onRFACItemLabelClick(int i, RFACLabelItem rfacLabelItem) {
-        Toast.makeText(getApplicationContext(), "clicked label: " + i, Toast.LENGTH_SHORT).show();
-        rfacItemClick(i);
-    }
-
-    @Override
-    public void onRFACItemIconClick(int i, RFACLabelItem rfacLabelItem) {
-        Toast.makeText(getApplicationContext(), "clicked icon: " + i, Toast.LENGTH_SHORT).show();
-        rfacItemClick(i);
-    }
-
-    private void rfacItemClick(int i){
-        rfabHelper.toggleContent();
-        setRFACItem(i);
-        cpdProfileDetailView.setCheckinVisibilityState(Enum.CheckinVisibilityState.values()[i]);
-        cpdProfileDetailView.saveProfileDataToDatabase();
-        cpdProfileDetailView.saveProfileDataToLocalUser();
-    }
-
-    private void setRFACItem(int i){
-
-        switch (i){
-            case 0:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_available) );
-                break;
-            case 1:
-                rfaBtn.setButtonDrawable(getResources().getDrawable(R.drawable.fab_checkin_status_busy) );
-                break;
-            default:
-                break;
-        }
-        rfaBtn.build();
-    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

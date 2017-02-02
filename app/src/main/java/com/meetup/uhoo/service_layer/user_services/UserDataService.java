@@ -12,24 +12,9 @@ import com.meetup.uhoo.core.UserDataFetchListener;
 public class UserDataService {
 
     private String uid;
-    private User user;
 
-    public void UserDataService(){
-
-    }
-
-
-    // Saves user data locally
-    public void saveUserDataLocally(Context context){
-
-        // Get user shared prefs and save account data locally
-        SharedPreferences.Editor editor = context.getSharedPreferences("currentUser", context.MODE_PRIVATE).edit();
-        editor.putString("firstName", user.getFirstName());
-        editor.putString("lastName", user.getLastName());
-        editor.putString("oneLiner", user.getOneLiner());
-        editor.putString("gender", user.getGender());
-        editor.putInt("checkinVisibilityState", user.getCheckinVisibilityState());
-        editor.apply();
+    public UserDataService(String uid){
+        this.uid = uid;
     }
 
     public void getFirebaseUserData(final UserDataFetchListener userDataFetchListener){

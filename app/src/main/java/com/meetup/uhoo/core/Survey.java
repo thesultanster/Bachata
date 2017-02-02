@@ -13,7 +13,7 @@ import java.util.List;
 public class Survey implements Serializable {
 
 
-    private String surveyId, businessId, title, body;
+    private String surveyId, businessId, title, body, type;
     private List<SurveyOption> options;
 
 
@@ -22,15 +22,8 @@ public class Survey implements Serializable {
         this.options = new ArrayList<>();
         options.add(new SurveyOption("Yes", Boolean.FALSE ));
         options.add(new SurveyOption("No", Boolean.FALSE ));
+        this.type = "SINGLE_SELECT";
     }
-
-    public Survey(String businessId, String title, String body) {
-        this.businessId = businessId;
-        this.title = title;
-        this.body = body;
-    }
-
-
 
 
     public String getSurveyId(){
@@ -48,6 +41,8 @@ public class Survey implements Serializable {
     public String getBusinessId(){
         return businessId;
     }
+
+    public String getType() { return type; }
 
     public List<SurveyOption> getOptions(){
         return options;
@@ -76,5 +71,7 @@ public class Survey implements Serializable {
     public void setBody(String body){
         this.body = body;
     }
+
+    public void setType(String type) { this.type = type; }
 
 }

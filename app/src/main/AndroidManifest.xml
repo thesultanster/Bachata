@@ -3,6 +3,13 @@
     package="com.meetup.uhoo">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.ACCESS_WIFI_STATE"
+        android:required="true" />
+
 
     <application
         android:name=".util.App"
@@ -45,6 +52,21 @@
                 <action android:name="CHECKIN_ACTION"/>
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".service_layer.auto_checkin_services.AutoCheckinService"
+            android:icon="@drawable/icon"
+            android:label="AutoCheckinService"
+            >
+        </service>
+
+        <receiver android:name=".service_layer.auto_checkin_services.WifiListener">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>
