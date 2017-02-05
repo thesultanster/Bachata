@@ -29,10 +29,6 @@
 
     </LinearLayout>
 
-    <com.meetup.uhoo.views.InterestsView
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        customviews:readOnly="true"/>
 
     <TextView
         android:id="@+id/miniBio"

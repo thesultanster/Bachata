@@ -297,16 +297,18 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
 
                     // Show business details in bottom sheet
                     llCheckedInBusinessDetails.setVisibility(View.VISIBLE);
+                    startCheckedInBusinessListener();
 
                 } else {
                     tvCheckinText.setText("Not Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_pill));
                     tvCehckinFABLabel.setVisibility(View.GONE);
-                    tvBusinessName.setText(":(");
+                    tvBusinessName.setText("Pick a business to check in!");
                     fabCheckinCheckout.setVisibility(View.GONE);
 
                     // Hide business  details in bottom sheet
                     llCheckedInBusinessDetails.setVisibility(View.GONE);
+                    stopCheckinBusinessListener();
                 }
 
                 // Load Refresh users when user is once loaded
@@ -344,6 +346,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         // Check what business user is checked in
         SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
         String checkedIntoBusinessId = prefs.getString("checkedInto", "");
+
         if (!checkedIntoBusinessId.equals("")) {
 
 
@@ -398,11 +401,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         mDatabase = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         mDatabase.child("isCheckedIn").setValue(false);
 
-        // Stop checkin Business Listener
-        stopCheckinBusinessListener();
 
-        llCheckedInBusinessDetails.setVisibility(View.GONE);
-        tvBusinessName.setText("Pick a business to check in!");
 
         Refresh();
     }
@@ -494,8 +493,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                         // After locally saving business ID, start check in listenter
                         startCheckedInBusinessListener();
 
-                        // Show business details in bottom sheet
-                        llCheckedInBusinessDetails.setVisibility(View.VISIBLE);
+
 
                         Refresh();
 

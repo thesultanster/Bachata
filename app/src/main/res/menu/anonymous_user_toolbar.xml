@@ -9,7 +9,7 @@
         android:id="@+id/gps_refresh_icon"
         android:title="Refresh Location"
         android:orderInCategory="100"
-        android:icon="@mipmap/gps_refresh_icon"
+        android:icon="@mipmap/gps_refresh"
         app:showAsAction="always"
         />
 
@@ -18,7 +18,7 @@
         android:id="@+id/create_account_icon"
         android:title="create_account_icon"
         android:orderInCategory="200"
-        android:icon="@drawable/ic_person_add_black_24dp"
+        android:icon="@mipmap/ic_person_add_white"
         app:showAsAction="ifRoom"
         />
 
