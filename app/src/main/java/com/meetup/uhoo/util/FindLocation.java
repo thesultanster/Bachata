@@ -14,10 +14,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -43,12 +49,35 @@ public class FindLocation extends Activity {
     private FirebaseAuth mAuth;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
 
+    private Button btnPickLocation;
+    int PLACE_PICKER_REQUEST = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_location);
         //get the shared instance of the FirebaseAuth object
         mAuth = FirebaseAuth.getInstance();
+
+        btnPickLocation = (Button) findViewById(R.id.btnPickLocation);
+        btnPickLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(fallbackLocationTracker != null)
+                    fallbackLocationTracker.stop();
+
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build( FindLocation.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // Start Location Tracker
         fallbackLocationTracker = new FallbackLocationTracker(this);
@@ -74,6 +103,26 @@ public class FindLocation extends Activity {
         super.onStop();
 
         fallbackLocationTracker.stop();
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                Log.d("Find Location", "onActivityResult:BusinessId:" + place.getId());
+
+                Location location = new Location("");
+                location.setLatitude(place.getLatLng().latitude);
+                location.setLongitude(place.getLatLng().longitude);
+
+                if(fallbackLocationTracker != null)
+                    fallbackLocationTracker.stop();
+
+                LoginAnonymousUser(location);
+            }
+        }
     }
 
 

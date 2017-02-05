@@ -157,10 +157,10 @@ public class UserCheckinService {
         DatabaseReference mDatabase;
 
         // Locally save user state as not checked into anything
-        //SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-        //editor.putString("checkedInto", "");
+        SharedPreferences.Editor editor = context.getSharedPreferences("currentUser", context.MODE_PRIVATE).edit();
+        editor.putString("checkedInto", "");
         //editor.putString("checkedIntoBusiness", null);
-        //editor.apply();
+        editor.apply();
 
         // Remove user from checkin table on database
         mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(user.checkedInto);
@@ -205,10 +205,10 @@ public class UserCheckinService {
         // Save placeId of checked in business locally
         //Gson gson = new Gson();
         // String json = gson.toJson(business);
-        //SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
-        //editor.putString("checkedInto", place.getPlaceId());
+        SharedPreferences.Editor editor = context.getSharedPreferences("currentUser", context.MODE_PRIVATE).edit();
+        editor.putString("checkedInto", businessId);
         //editor.putString("checkedIntoBusiness", json);
-        //editor.apply();
+        editor.apply();
 
 
         buildNotification(businessId);

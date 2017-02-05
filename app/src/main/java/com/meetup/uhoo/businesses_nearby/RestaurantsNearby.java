@@ -402,6 +402,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         stopCheckinBusinessListener();
 
         llCheckedInBusinessDetails.setVisibility(View.GONE);
+        tvBusinessName.setText("Pick a business to check in!");
 
         Refresh();
     }
