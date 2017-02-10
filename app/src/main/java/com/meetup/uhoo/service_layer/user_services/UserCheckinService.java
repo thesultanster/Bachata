@@ -250,6 +250,11 @@ public class UserCheckinService {
             public void onFetchComplete() {
 
             }
+
+            @Override
+            public void onBusinessDoesntExist() {
+
+            }
         });
 
 

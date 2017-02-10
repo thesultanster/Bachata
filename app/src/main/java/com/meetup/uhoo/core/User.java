@@ -93,6 +93,12 @@ public class User implements Serializable{
 
 
     public void FetchUserData(){
+        if (uid == null){
+            // Trigger interface
+            if (userDataFetchListener != null)
+                userDataFetchListener.onUserFetch(new User());
+        }
+
         DatabaseReference restaurantsRef = FirebaseDatabase.getInstance().getReference();
         restaurantsRef.child("users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {

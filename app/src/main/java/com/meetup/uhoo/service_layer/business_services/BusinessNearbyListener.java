@@ -9,4 +9,5 @@ import com.meetup.uhoo.core.Business;
 public interface BusinessNearbyListener {
     void onBusinessFetched(Business object);
     void onFetchComplete();
+    void onBusinessDoesntExist();
 }

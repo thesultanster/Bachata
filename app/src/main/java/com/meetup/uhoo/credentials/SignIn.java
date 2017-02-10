@@ -105,7 +105,7 @@ public class SignIn extends AppCompatActivity {
 
                                 try {
 
-                                    String url = "https://graph.facebook.com/" + object.getString("id") + "/picture?type=normal";
+                                    String url = "https://graph.facebook.com/" + object.getString("id") + "/picture?type=small";
 
                                     // Get user shared prefs and save photo url locally
                                     SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();

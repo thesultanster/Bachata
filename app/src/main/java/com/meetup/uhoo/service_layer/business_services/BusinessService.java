@@ -39,6 +39,13 @@ public class BusinessService {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.i("BusinessService", "onDataChange:exists " + dataSnapshot.exists());
+
+                        // If datasnapshot returns null, then business doesnt exist on database
+                        if( !dataSnapshot.exists()){
+                            businessNearbyListener.onBusinessDoesntExist();
+                        }
+
 
                         // Bind Business object
                         final Business restaurant = dataSnapshot.getValue(Business.class);
@@ -96,6 +103,7 @@ public class BusinessService {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w("BusinessService", "Fetch Data Failed", databaseError.toException());
+                        businessNearbyListener.onFetchComplete();
                     }
                 });
     }
@@ -105,6 +113,16 @@ public class BusinessService {
 
         int position = 0;
         for( User user : business.usersCheckedIn){
+            //Log.i("BusinessService", "fetchCheckedInUserData:user " + user.getUid());
+
+            if(user.getUid() == null){
+                business.usersCheckedIn.set(position, new User());
+                // Trigger the interface
+                userCheckinListener.onFetchUsersCheckedIn(business.usersCheckedIn);
+                position++;
+                return;
+            }
+
             final int finalPosition = position;
             user.setOnUserDataFetchListener(new UserDataFetchListener() {
                 @Override

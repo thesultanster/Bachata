@@ -236,12 +236,18 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         businessNearbyService.startNearbyService(user.longitude, user.latitude, new BusinessNearbyListener() {
             @Override
             public void onBusinessFetched(Business object) {
+                Log.i("businessNearbyService", "onBusinessFetched: " + object.getName());
                 adapter.addRow(object);
             }
 
             @Override
             public void onFetchComplete() {
                 mSwipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onBusinessDoesntExist() {
 
             }
         }, this, this, this);

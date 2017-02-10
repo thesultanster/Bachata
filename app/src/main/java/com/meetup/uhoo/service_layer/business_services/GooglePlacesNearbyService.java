@@ -10,6 +10,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
+import com.meetup.uhoo.core.Business;
 
 /**
  * Created by sultankhan on 1/25/17.
@@ -43,7 +44,7 @@ public class GooglePlacesNearbyService {
 
                 int limit = 5;
 
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                for (final PlaceLikelihood placeLikelihood : likelyPlaces) {
 
                     if (limit <= 0) {
                         break;
@@ -65,8 +66,25 @@ public class GooglePlacesNearbyService {
                             placeLikelihood.getPlace().getName(),
                             placeLikelihood.getLikelihood()));
 
+                    final Business tempBusiness = new Business(placeLikelihood.getPlace());
+
                     BusinessService businessService = new BusinessService();
-                    businessService.fetchBusiness(placeLikelihood.getPlace().getId(), businessNearbyListener);
+                    businessService.fetchBusiness(placeLikelihood.getPlace().getId(), new BusinessNearbyListener() {
+                        @Override
+                        public void onBusinessFetched(Business object) {
+                            businessNearbyListener.onBusinessFetched(object);
+                        }
+
+                        @Override
+                        public void onFetchComplete() {
+                            businessNearbyListener.onFetchComplete();
+                        }
+
+                        @Override
+                        public void onBusinessDoesntExist() {
+                            businessNearbyListener.onBusinessFetched(tempBusiness);
+                        }
+                    });
 
                     limit--;
                 }

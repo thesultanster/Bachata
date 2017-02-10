@@ -9,8 +9,8 @@ android {
         applicationId "com.meetup.uhoo"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 19
-        versionName "2.1"
+        versionCode 21
+        versionName "2.1.2"
         multiDexEnabled true
     }
     buildTypes {

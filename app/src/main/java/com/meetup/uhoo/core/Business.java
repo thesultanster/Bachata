@@ -29,6 +29,7 @@ public class Business implements Serializable{
         this.longitude = place.getLatLng().longitude;
         this.phoneNumber = place.getPhoneNumber().toString();
 
+        usersCheckedIn = Collections.emptyList();
         numUsersCheckedIn = 0;
         numHappenings = 0;
 

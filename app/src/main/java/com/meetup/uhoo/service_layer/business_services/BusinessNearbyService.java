@@ -39,7 +39,9 @@ public class BusinessNearbyService {
     }
 
     public void stopNearbyListeners(){
-        firebaseBusinessNearbyService.stopNearbyListerner();
+        if(firebaseBusinessNearbyService != null) {
+            firebaseBusinessNearbyService.stopNearbyListerner();
+        }
     }
 
     // Return Instance

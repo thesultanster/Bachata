@@ -151,11 +151,15 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
             this.context = context;
             mListener = listener;
 
+            List<User> checkedInUsers = Collections.emptyList();
+
             //Link the objects
             name = (TextView) itemView.findViewById(R.id.name);
             checkinText = (TextView) itemView.findViewById(R.id.checkinText);
             profileImage = (CircleImageView) itemView.findViewById(R.id.profileImage);
             gridView = (GridView) itemView.findViewById(R.id.gvProfileIcons);
+            gridAdapter = new RestaurantNearbyGridViewAdapter(context, R.layout.grid_item_profile_icon, checkedInUsers);
+
 
             itemView.setOnClickListener(this);
 
