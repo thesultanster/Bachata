@@ -17,9 +17,13 @@ import com.meetup.uhoo.core.SurveyReport;
 import com.meetup.uhoo.views.SurveyAnswerCompleteListener;
 import com.meetup.uhoo.views.SurveyAnswerInterface;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by sultankhan on 12/18/16.
@@ -101,6 +105,42 @@ public class SurveyService {
                 });
     }
 
+    public void fetchCheckinSurvey(String businessId, final SurveyDataFetchListener surveyDataFetchListener) {
+        Log.i("fetchCheckinSurvey", "businessID: " + businessId);
+
+        // Query Dashboard items by only checking surveys right now
+        mDatabase.child("business_survey_relation").child(businessId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.i("onDataChange", "surveys exist: " + dataSnapshot.exists());
+
+                        // If there are no surveys at all then trigger interface
+                        if(!dataSnapshot.exists()){
+                            surveyDataFetchListener.onNoSurveys();
+                            return;
+                        }
+
+                        ArrayList<String> surveys = new ArrayList<String>();
+                        // Go through evey survey, change it to Dashboarditem format and trigger
+                        for (DataSnapshot survey : dataSnapshot.getChildren()) {
+
+                            surveys.add(survey.getKey());
+                        }
+
+                        // Randomize Surveys
+                        String survey = surveys.get(new Random().nextInt(surveys.size()));
+
+                        fetchSurveyFromDatabase(survey, surveyDataFetchListener);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("fetchCheckinSurvey", "fetchBusinessSurveys:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
 
     public void generateSurveyReport(Survey survey, final SurveyAnswerCompleteListener surveyAnswerCompleteListener) {
 
@@ -119,6 +159,7 @@ public class SurveyService {
                         }
 
                         Log.i("Survey Report", "onComplete:Success");
+
                         surveyAnswerCompleteListener.onComplete();
                     }
                 });

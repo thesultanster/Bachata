@@ -218,6 +218,7 @@ public class ProfileRowView extends FrameLayout {
                 Bitmap mIcon1 =  null;
 
                 try {
+                    Log.i("profileUrl", profileUrl);
                     img_value = new URL(profileUrl);
                     mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
                     final Bitmap finalMIcon = mIcon1;
@@ -228,8 +229,10 @@ public class ProfileRowView extends FrameLayout {
                     });
 
                 } catch (MalformedURLException e) {
+                    Log.e("MalformedURLException", profileUrl);
                     e.printStackTrace();
                 } catch (IOException e) {
+                    Log.e("IOException", profileUrl);
                     e.printStackTrace();
                 }
 

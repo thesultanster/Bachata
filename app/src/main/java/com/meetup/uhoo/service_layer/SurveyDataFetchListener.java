@@ -8,4 +8,5 @@ import com.meetup.uhoo.core.Survey;
  */
 public interface SurveyDataFetchListener {
     void onSurveyFetched(Survey object);
+    void onNoSurveys();
 }

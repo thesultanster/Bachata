@@ -16,12 +16,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +39,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.service_layer.SurveyDataFetchListener;
+import com.meetup.uhoo.service_layer.SurveyService;
 import com.meetup.uhoo.views.CheckinProfileDetailsView;
 import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.core.Survey;
+import com.meetup.uhoo.views.SurveyAnswerCompleteListener;
+import com.meetup.uhoo.views.SurveyFragment;
 import com.meetup.uhoo.views.SurveyView;
 import com.wangjie.androidbucket.utils.ABTextUtil;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -128,8 +135,6 @@ public class RestaurantActivity extends AppCompatActivity {
         mBottomSheetBehavior = BottomSheetBehavior.from(nsvBottomSheet);
 
 
-
-
         fabCheckinCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,28 +147,64 @@ public class RestaurantActivity extends AppCompatActivity {
                     return;
                 }
 
+
+
                 // If the user is not already checked in
                 // Check them in
                 if (!user.isCheckedIn) {
 
-                    CheckInUser();
+                    final AlertDialog alertDialog = new AlertDialog.Builder(RestaurantActivity.this).create();
+                    alertDialog.setTitle("Updating");
+                    alertDialog.setMessage("Please Wait");
+                    alertDialog.show();
+
+                    final SurveyService surveyService = new SurveyService();
+                    surveyService.fetchCheckinSurvey(business.getPlaceId(), new SurveyDataFetchListener() {
+                        @Override
+                        public void onSurveyFetched(Survey object) {
+                            Log.i("SurveyDialog","survey: " + object.getTitle());
+
+                            alertDialog.dismiss();
+                            SurveyDialog surveyDialog = null;
+                            surveyDialog = SurveyDialog.newInstance(object, new SurveyAnswerCompleteListener() {
+                                @Override
+                                public void onComplete() {
+                                    CheckInUser();
+                                    Refresh();
+                                }
+                            });
+                            surveyDialog.show(getSupportFragmentManager(), "surveyDialog");
+
+                        }
+
+
+                        @Override
+                        public void onNoSurveys() {
+                            Log.i("SurveyDialog","No Surveys");
+                            alertDialog.dismiss();
+                            CheckInUser();
+                            Refresh();
+
+                        }
+                    });
 
                 }
                 // If the user is already checked in
                 // Check them out
                 else {
                     CheckOutUser();
+                    Refresh();
                 }
 
-                Refresh();
+
+
+
 
             }
         });
 
 
-
     }
-
 
     private void CheckOutUser() {
 
@@ -272,7 +313,6 @@ public class RestaurantActivity extends AppCompatActivity {
                         mNotificationManager.notify(AppConstant.CHECKIN_NOTIF, mBuilder.build());
 
 
-
                     }
                 }
             });
@@ -319,7 +359,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     fabCheckinCheckout.setImageResource(R.mipmap.check_out);
 
 
-
                 } else {
                     tvCheckinText.setText("Not Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_pill));
@@ -347,8 +386,8 @@ public class RestaurantActivity extends AppCompatActivity {
         }
     }
 
-    private void Refresh(){
-        ((PeopleCheckedInFragment)adapter.getItem(0)).Refresh();
+    private void Refresh() {
+        ((PeopleCheckedInFragment) adapter.getItem(0)).Refresh();
     }
 
     @Override

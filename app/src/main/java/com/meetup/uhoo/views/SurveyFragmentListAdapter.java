@@ -86,7 +86,15 @@ public class SurveyFragmentListAdapter extends RecyclerView.Adapter<SurveyFragme
 
     @Override
     public int getItemCount() {
-        return data.size();
+        try{
+            return data.size();
+        }
+        catch (Exception e){
+
+        }
+
+        return 0;
+
     }
 
     // Created my custom view holder

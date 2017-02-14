@@ -15,6 +15,7 @@ public class Survey implements Serializable {
 
     private String surveyId, businessId, title, body, type;
     private List<SurveyOption> options;
+    private boolean isCheckin;
 
 
 
@@ -23,6 +24,7 @@ public class Survey implements Serializable {
         options.add(new SurveyOption("Yes", Boolean.FALSE ));
         options.add(new SurveyOption("No", Boolean.FALSE ));
         this.type = "SINGLE_SELECT";
+        this.isCheckin = false;
     }
 
 
@@ -47,6 +49,8 @@ public class Survey implements Serializable {
     public List<SurveyOption> getOptions(){
         return options;
     }
+
+    public boolean getIsCheckin() { return isCheckin;}
 
 
 
@@ -73,5 +77,7 @@ public class Survey implements Serializable {
     }
 
     public void setType(String type) { this.type = type; }
+
+    public void setIsCheckin(boolean isCheckin) { this.isCheckin = isCheckin;}
 
 }

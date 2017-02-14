@@ -80,8 +80,17 @@ public class SurveyView extends FrameLayout {
 
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewPagerAdapter(((AppCompatActivity) context).getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+
+        try {
+            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+            adapter = new ViewPagerAdapter(fragmentManager);
+            viewPager.setAdapter(adapter);
+        } catch (ClassCastException e) {
+            Log.e("survey view", "Can't get fragment manager");
+
+
+        }
+
     }
 
 
@@ -111,6 +120,47 @@ public class SurveyView extends FrameLayout {
                     }
 
                 }), "");
+            }
+
+            @Override
+            public void onNoSurveys() {
+
+            }
+        });
+
+    }
+
+    public void fetchBusinessCheckinSurveys(String businessId, final SurveyDataFetchListener surveyDataFetchListener) {
+        Log.i("setBusiness", "businessId: " + businessId);
+
+        final SurveyService surveyService = new SurveyService();
+        surveyService.fetchCheckinSurvey(businessId, new SurveyDataFetchListener() {
+            @Override
+            public void onSurveyFetched(Survey object) {
+                Log.i("setBusiness", "onSurveyFetched:surveyTitle: " + object.getTitle());
+
+                // Show the survey view since there is a survey to show
+                setVisibility(VISIBLE);
+
+                adapter.addFragment(SurveyFragment.newInstance(object, new SurveyAnswerCompleteListener() {
+
+                    @Override
+                    public void onComplete() {
+
+                        // Remove current fragment(survey) and if all fragments removed then hide
+                        // the SurveyView
+                        adapter.remove(vpSurveyViewPager.getCurrentItem());
+                        if(adapter.getCount() == 0){
+                            setVisibility(GONE);
+                        }
+                    }
+
+                }), "");
+            }
+
+            @Override
+            public void onNoSurveys() {
+                surveyDataFetchListener.onNoSurveys();
             }
         });
 
