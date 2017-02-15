@@ -28,6 +28,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
@@ -37,6 +40,9 @@ import com.meetup.uhoo.util.FindLocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignIn extends AppCompatActivity {
 
@@ -104,14 +110,15 @@ public class SignIn extends AppCompatActivity {
                                 Log.i("Facebook Graph", "data:" + response.toString());
 
                                 try {
-
-                                    String url = "https://graph.facebook.com/" + object.getString("id") + "/picture?type=small";
+                                    String url = "https://graph.facebook.com/" + object.getString("id") +  "/picture?height=500";
 
                                     // Get user shared prefs and save photo url locally
                                     SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
                                     editor.putString("facebookId", object.getString("id"));
                                     editor.putString("photoUrl", url);
                                     editor.apply();
+
+                                    currentUserDataService.setPhotoUrl(url);
 
 
 
@@ -215,18 +222,34 @@ public class SignIn extends AppCompatActivity {
 
                     pd.setMessage("Fetching Data");
 
-                    currentUserDataService.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-                    currentUserDataService.getFirebaseUserData(new UserDataFetchListener() {
+                    // Save profile url on database
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("/photoUrl/", currentUserDataService.getCurrentUser().getPhotoUrl());
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                         @Override
-                        public void onUserFetch(User user) {
-                            currentUserDataService.saveUserDataLocally(getApplicationContext());
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
 
-                            // Sign Up Process is Done
-                            Intent intent = new Intent(SignIn.this, FindLocation.class);
-                            startActivity(intent);
-                            finish();
+                                currentUserDataService.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                                currentUserDataService.getFirebaseUserData(new UserDataFetchListener() {
+                                    @Override
+                                    public void onUserFetch(User user) {
+                                        currentUserDataService.saveUserDataLocally(getApplicationContext());
+
+                                        // Sign Up Process is Done
+                                        Intent intent = new Intent(SignIn.this, FindLocation.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+
+                            }
                         }
                     });
+
+
+
 
 
                 } else {
