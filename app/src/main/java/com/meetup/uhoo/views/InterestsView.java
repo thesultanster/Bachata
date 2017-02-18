@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.profile.SimpleProfileActivityItem;
 import com.meetup.uhoo.profile.SimpleProfileGridViewAdapter;
 
@@ -29,6 +30,9 @@ public class InterestsView extends FrameLayout {
 
     private ArrayList<String> selectedActivites;
     private boolean readOnly = false;
+
+    private User user;
+
 
 
     public InterestsView(Context context, AttributeSet attrs, int defStyle) {
@@ -60,6 +64,7 @@ public class InterestsView extends FrameLayout {
         super(context);
         initView();
     }
+
 
     private void initView() {
         View view = inflate(getContext(), R.layout.custom_view_activity, null);
@@ -120,6 +125,10 @@ public class InterestsView extends FrameLayout {
                 imageItems.add(new SimpleProfileActivityItem(bitmap, names.getString(i)));
             } else {
 
+                if(selectedActivites == null || selectedActivites.size() == 0){
+                    return imageItems;
+                }
+
                 // If read only then only show the user's saved activity items
                 for (String activity : selectedActivites) {
 
@@ -145,6 +154,14 @@ public class InterestsView extends FrameLayout {
 
     public ArrayList<String> getSelectedItems() {
         return gridAdapter.getSelectedItems();
+    }
+    public void setSelectedItems(User user){
+
+
+        selectedActivites = user.getActivityIconList();
+        gridAdapter = new SimpleProfileGridViewAdapter(getContext(), R.layout.grid_item_activity_icon, getData());
+        gridView.setAdapter(gridAdapter);
+
     }
 
 }

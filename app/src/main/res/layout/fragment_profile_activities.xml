@@ -8,7 +8,7 @@
     <com.meetup.uhoo.views.InterestsView
         android:id="@+id/av"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         app:readOnly="false"
         />
 

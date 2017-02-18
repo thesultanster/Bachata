@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.views.InterestsView;
 
 /**
  * Created by sultankhan on 9/25/16.
@@ -20,6 +21,7 @@ public class UserProfileDialog extends Dialog implements
     Button connectButton;
     User user;
     TextView name, miniBio;
+    InterestsView ivUserInterests;
 
     public UserProfileDialog(Activity a, User user) {
         super(a);
@@ -35,6 +37,9 @@ public class UserProfileDialog extends Dialog implements
         connectButton = (Button) findViewById(R.id.connectButton);
         name = (TextView) findViewById(R.id.nameText);
         miniBio = (TextView) findViewById(R.id.miniBio);
+        ivUserInterests = (InterestsView) findViewById(R.id.ivUserInterests);
+
+        ivUserInterests.setSelectedItems(user);
 
         name.setText(user.getFirstName() + " " + user.getLastName());
         miniBio.setText(user.getOneLiner());

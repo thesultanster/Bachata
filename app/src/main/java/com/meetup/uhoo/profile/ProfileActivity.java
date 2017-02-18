@@ -48,6 +48,8 @@ public class ProfileActivity extends NavigationDrawerFramework implements Profil
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ProfileBasicsFragment(), "Basics");
+        adapter.addFragment(new ProfileInterestsFragment(), "Interests");
+        //adapter.addFragment(new ProfileBasicsFragment(), "Another");
         viewPager.setAdapter(adapter);
     }
 

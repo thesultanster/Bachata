@@ -7,6 +7,45 @@
         <item>@mipmap/movies</item>
         <item>@mipmap/pencil</item>
         <item>@mipmap/piano</item>
+
+        <item>@drawable/stockmarket</item>
+        <item>@drawable/ninties</item>
+        <item>@drawable/accounting</item>
+        <item>@drawable/artist</item>
+        <item>@drawable/biology</item>
+        <item>@drawable/drawing</item>
+
+        <item>@drawable/blogger</item>
+        <item>@drawable/business</item>
+        <item>@drawable/comics</item>
+        <item>@mipmap/pencil</item>
+        <item>@drawable/economics</item>
+        <item>@drawable/imagination</item>
+
+        <item>@drawable/engineering</item>
+        <item>@drawable/ninties</item>
+        <item>@drawable/management</item>
+        <item>@mipmap/piano</item>
+        <item>@drawable/philosophy</item>
+        <item>@drawable/photography</item>
+
+        <item>@drawable/politics</item>
+        <item>@drawable/sales</item>
+        <item>@drawable/science</item>
+        <item>@drawable/socialite</item>
+        <item>@drawable/sociology</item>
+        <item>@drawable/space</item>
+
+        <item>@drawable/television</item>
+        <item>@drawable/travel</item>
+        <item>@drawable/traveler</item>
+        <item>@drawable/worldissues</item>
+        <item>@mipmap/pencil</item>
+        <item>@drawable/magic</item>
+
+        <item>@drawable/outdoors</item>
+        <item>@drawable/engineering</item>
+        <item>@drawable/gardening</item>
     </string-array>
 
     <string-array name="simple_profile_activity_names">
@@ -16,5 +55,45 @@
         <item>movies</item>
         <item>pencil</item>
         <item>piano</item>
+
+        <item>stocks</item>
+        <item>90\'s</item>
+        <item>accounting</item>
+        <item>art</item>
+        <item>biology</item>
+        <item>blog</item>
+
+        <item>blogger</item>
+        <item>business</item>
+        <item>comics</item>
+        <item>drawing</item>
+        <item>economics</item>
+        <item>imagination</item>
+
+        <item>innovation</item>
+        <item>stream</item>
+        <item>management</item>
+        <item>musician</item>
+        <item>philosophy</item>
+        <item>photography</item>
+
+        <item>politics</item>
+        <item>sales</item>
+        <item>science</item>
+        <item>socialite</item>
+        <item>sociology</item>
+        <item>space</item>
+
+        <item>television</item>
+        <item>travel</item>
+        <item>traveler</item>
+        <item>world issues</item>
+        <item>writing</item>
+        <item>magic</item>
+
+        <item>outdoors</item>
+        <item>engineering</item>
+        <item>gardening</item>
+
     </string-array>
 </resources>
