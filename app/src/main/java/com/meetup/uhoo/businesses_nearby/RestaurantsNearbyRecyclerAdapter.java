@@ -188,8 +188,6 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
 
         for ( Business business : data){
             if(row.getPlaceId().equals(business.getPlaceId())){
-
-
                 return true;
             }
         }

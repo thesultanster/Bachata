@@ -1,5 +1,6 @@
 package com.meetup.uhoo.restaurant;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.meetup.uhoo.core.Happening;
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.service_layer.happening_services.HappeningDataFetchListener;
+import com.meetup.uhoo.service_layer.happening_services.HappeningService;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,12 @@ public class HappeningsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private HappeningsRecyclerAdapter adapter;
+    private String businessId;
+
+    @SuppressLint("ValidFragment")
+    public HappeningsFragment( String businessId) {
+        this.businessId = businessId;
+    }
 
     public HappeningsFragment() {
         // Required empty public constructor
@@ -31,6 +40,15 @@ public class HappeningsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         adapter = new HappeningsRecyclerAdapter(getActivity(), new ArrayList<Happening>());
+
+        HappeningService happeningService = new HappeningService();
+        happeningService.fetchHappenings(businessId, new HappeningDataFetchListener() {
+            @Override
+            public void onHappeningFetched(Happening object) {
+                adapter.addRow(object);
+            }
+        });
+
         //adapter.addRow(new Happening("Free Drink","try our new Korean Citron Tea Slushie. Made fresh daily with hand squeezed citron and honey straight from the mouths of korean bees", Enum.HappeningType.DEAL));
         //adapter.addRow(new Happening("Open Mic Night","Open to comics of all colors, orientations, shapes and sizes, and planets of origin", Enum.HappeningType.EVENT));
         //adapter.addRow(new Happening("Pop Up Cafe","For five straight says, the folks from New York Bistro will be selling their handmade cockroach latte made with fresh roach larvee", Enum.HappeningType.COMEDY));

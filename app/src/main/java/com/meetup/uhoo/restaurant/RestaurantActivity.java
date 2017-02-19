@@ -335,7 +335,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PeopleCheckedInFragment(business.getPlaceId()), "People");
-        adapter.addFragment(new HappeningsFragment(), "Happenings");
+        adapter.addFragment(new HappeningsFragment(business.getPlaceId()), "Happenings");
         //adapter.addFragment(new PeopleCheckedInFragment(business.getPlaceId()), "Something Else");
         viewPager.setAdapter(adapter);
     }

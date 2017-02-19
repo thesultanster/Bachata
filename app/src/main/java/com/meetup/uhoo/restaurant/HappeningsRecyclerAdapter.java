@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Text;
 import com.meetup.uhoo.core.Happening;
 import com.meetup.uhoo.R;
 
@@ -88,19 +89,22 @@ public class HappeningsRecyclerAdapter extends RecyclerView.Adapter<HappeningsRe
         // This gives us current information list object
         Happening current = data.get(position);
         holder.title.setText(current.getTitle());
-        holder.description.setText(current.getDescription());
+        holder.body.setText(current.getBody());
+        holder.tvDate.setText(current.getTime());
 
         switch(current.getType()){
-            case DEAL:
-                holder.tvType.setText("Deal");
+
+            case "offer":
+                holder.tvType.setText("Offer");
                 holder.tvType.setTextColor(context.getResources().getColorStateList(R.color.flatRed));
                 holder.ivHappeningIcon.setImageResource(R.color.flatRed);
                 break;
-            case EVENT:
+            case "event":
                 holder.tvType.setText("Event");
                 holder.tvType.setTextColor(context.getResources().getColorStateList(R.color.flatBlue));
                 holder.ivHappeningIcon.setImageResource(R.color.flatBlue);
                 break;
+            /*
             case COMEDY:
                 holder.tvType.setText("Comedy");
                 holder.tvType.setTextColor(context.getResources().getColorStateList(R.color.flatDarkGreen));
@@ -111,6 +115,9 @@ public class HappeningsRecyclerAdapter extends RecyclerView.Adapter<HappeningsRe
                 holder.tvType.setTextColor(context.getResources().getColorStateList(R.color.flatYellow));
                 holder.ivHappeningIcon.setImageResource(R.color.flatYellow);
                 break;
+                */
+
+
             default:
                 break;
         }
@@ -128,7 +135,8 @@ public class HappeningsRecyclerAdapter extends RecyclerView.Adapter<HappeningsRe
 
         TextView title;
         TextView tvType;
-        TextView description;
+        TextView body;
+        TextView tvDate;
         CircleImageView ivHappeningIcon;
 
         public MyViewHolderClicks mListener;
@@ -141,8 +149,9 @@ public class HappeningsRecyclerAdapter extends RecyclerView.Adapter<HappeningsRe
 
             //Link the objects
             title = (TextView) itemView.findViewById(R.id.tvTitle);
-            description = (TextView) itemView.findViewById(R.id.tvDescription);
+            body = (TextView) itemView.findViewById(R.id.tvDescription);
             tvType = (TextView) itemView.findViewById(R.id.tvType);
+            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
             ivHappeningIcon = (CircleImageView) itemView.findViewById(R.id.ivHappeningIcon);
 
             itemView.setOnClickListener(this);

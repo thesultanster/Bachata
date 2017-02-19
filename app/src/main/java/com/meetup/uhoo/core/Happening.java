@@ -11,17 +11,21 @@ import java.lang.*;
 public class Happening implements Serializable{
 
     private String title;
-    private String description;
-    private Enum.HappeningType type;
+    private String body;
+    private String time;
+    private String type;
+    private String icon;
 
     public Happening(){
 
     }
 
-    public Happening(String title, String description, Enum.HappeningType type){
+    public Happening(String title, String body, String type, String icon, String time){
         this.title = title;
-        this.description = description;
+        this.body = body;
+        this.time = time;
         this.type = type;
+        this.icon = icon;
     }
 
 
@@ -29,12 +33,15 @@ public class Happening implements Serializable{
         return title;
     }
 
-    public String getDescription(){
-        return description;
+    public String getBody(){
+        return body;
     }
 
-    public Enum.HappeningType getType(){
-        return type;
-    }
+    public String getTime() { return time; }
+
+    public String getType() { return type; }
+
+    public String getIcon() { return icon; }
+
 
 }

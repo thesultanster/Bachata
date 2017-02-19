@@ -42,6 +42,7 @@ public class GooglePlacesNearbyService {
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
 
+                //TODO: get rid of limit
                 int limit = 5;
 
                 for (final PlaceLikelihood placeLikelihood : likelyPlaces) {
