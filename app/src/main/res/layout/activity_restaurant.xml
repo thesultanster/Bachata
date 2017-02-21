@@ -183,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="56dp"
                         android:textSize="16dp"
-                        android:text="Check out some of the users!"/>
+                        android:text="Check In to see people's profiles"/>
 
                     <TextView
                         android:layout_width="match_parent"

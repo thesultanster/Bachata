@@ -249,7 +249,7 @@ public class ProfileRowView extends FrameLayout {
         switch (checkinVisibilityState){
             case AVAILABLE:
                 ivCheckingState.setImageResource(R.drawable.fab_checkin_status_available);
-                tvCheckinState.setText("Available");
+                tvCheckinState.setText("Approach Me");
                 break;
             /*
             case CHECK:

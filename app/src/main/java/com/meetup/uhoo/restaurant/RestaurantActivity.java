@@ -3,6 +3,7 @@ package com.meetup.uhoo.restaurant;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.BottomSheetBehavior;
@@ -39,6 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.meetup.uhoo.AppConstant;
 import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.service_layer.SurveyDataFetchListener;
 import com.meetup.uhoo.service_layer.SurveyService;
 import com.meetup.uhoo.views.CheckinProfileDetailsView;
@@ -143,7 +145,34 @@ public class RestaurantActivity extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
                 String authType = prefs.getString("authType", null);
                 if (authType != null && authType.equals("ANON")) {
-                    Toast.makeText(RestaurantActivity.this, "Please Create An Account", Toast.LENGTH_SHORT).show();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RestaurantActivity.this);
+
+                    builder.setTitle("Please Create An Account");
+                    builder.setMessage("Check into businesses and see user's profiles!");
+
+                    builder.setPositiveButton("Let's Do It!", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                            dialog.dismiss();
+
+                            startActivity(intent);
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
                     return;
                 }
 
@@ -202,6 +231,22 @@ public class RestaurantActivity extends AppCompatActivity {
 
             }
         });
+
+
+        nsvBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("nsvBottomSheet","onclicklistener");
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        // Get user auth type. If anon user then Hide Profile Details
+        SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+        String authType = prefs.getString("authType", null);
+        if (authType != null && authType.equals("ANON")) {
+            cpdProfileDetailView.setVisibility(View.GONE);
+        }
 
 
     }

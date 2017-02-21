@@ -309,7 +309,7 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
                     tvCheckinText.setText("Not Checked In");
                     tvCheckinText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.red_pill));
                     tvCehckinFABLabel.setVisibility(View.GONE);
-                    tvBusinessName.setText("Pick a business to check in!");
+                    tvBusinessName.setText("Select a business!");
                     fabCheckinCheckout.setVisibility(View.GONE);
 
                     // Hide business  details in bottom sheet

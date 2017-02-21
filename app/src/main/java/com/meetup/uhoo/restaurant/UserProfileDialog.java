@@ -41,7 +41,7 @@ public class UserProfileDialog extends Dialog implements
 
         ivUserInterests.setSelectedItems(user);
 
-        name.setText(user.getFirstName() + " " + user.getLastName());
+        name.setText(user.getFirstName());
         miniBio.setText(user.getOneLiner());
 
         connectButton.setOnClickListener(this);

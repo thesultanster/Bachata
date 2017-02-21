@@ -71,8 +71,7 @@ public class SignIn extends AppCompatActivity {
         // Enable Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
 
-        // Log out of anonymous user
-        FirebaseAuth.getInstance().signOut();
+
 
         // Init User Data
         currentUserDataService = new CurrentUserDataService(getApplicationContext());
@@ -93,6 +92,9 @@ public class SignIn extends AppCompatActivity {
             public void onSuccess(final LoginResult loginResult) {
                 Log.i("Facebook Login", "facebook:onSuccess:" + loginResult);
 
+
+                // Log out of anonymous user
+                FirebaseAuth.getInstance().signOut();
 
                 // Set Auth Type and pass in Access token
                 currentUserDataService.setAuthType(Enum.AuthType.FACEBOOK, loginResult.getAccessToken().getToken());
@@ -212,6 +214,16 @@ public class SignIn extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mUser = firebaseAuth.getCurrentUser();
                 if (mUser != null) {
+
+                    // Get user auth type. If anon user then dont do anything
+                    SharedPreferences prefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+                    String authType = prefs.getString("authType", null);
+                    if (authType != null && authType.equals("ANON")) {
+                        return;
+                    }
+
+
+
                     // User is signed in
                     Log.i("auth", "onAuthStateChanged:signed_in:" + mUser.getUid());
 
@@ -294,11 +306,13 @@ public class SignIn extends AppCompatActivity {
         pd.dismiss();
     }
 
+    /*
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(getApplicationContext(), FindLocation.class);
         startActivity(intent);
     }
+    */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -314,6 +328,11 @@ public class SignIn extends AppCompatActivity {
 
         pd.setMessage("Logging In");
         pd.show();
+
+        // Get user shared prefs and save account uid
+        SharedPreferences.Editor editor = getSharedPreferences("currentUser", MODE_PRIVATE).edit();
+        editor.putString("authType", "FACEBOOK");
+        editor.apply();
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)

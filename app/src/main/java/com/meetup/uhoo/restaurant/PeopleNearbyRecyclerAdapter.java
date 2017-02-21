@@ -1,6 +1,10 @@
 package com.meetup.uhoo.restaurant;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import com.meetup.uhoo.credentials.SignIn;
 import com.meetup.uhoo.views.ProfileRowView;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
@@ -75,10 +80,48 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
             public void rowClick(View caller, int position) {
                 Log.d("rowClick", "rowClicks");
 
-                UserProfileDialog userDialog = new UserProfileDialog((RestaurantActivity) context, data.get(position));
-                userDialog.show();
-                Window window = userDialog.getWindow();
-                window.setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+
+                // Get user auth type. If anon user then tell them to create an account
+                SharedPreferences prefs = context.getSharedPreferences("currentUser", context.MODE_PRIVATE);
+                String authType = prefs.getString("authType", null);
+                if (authType != null && authType.equals("ANON")) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                    builder.setTitle("Please Create An Account");
+                    builder.setMessage("Check into businesses and see user's profiles!");
+
+                    builder.setPositiveButton("Let's Do It!", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Intent intent = new Intent(context, SignIn.class);
+                            dialog.dismiss();
+
+                            context.startActivity(intent);
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+                } else {
+                    UserProfileDialog userDialog = new UserProfileDialog((RestaurantActivity) context, data.get(position));
+                    userDialog.show();
+                    Window window = userDialog.getWindow();
+                    window.setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                }
+
+
+
 
             }
 
