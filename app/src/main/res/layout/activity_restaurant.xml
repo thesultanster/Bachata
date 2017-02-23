@@ -152,7 +152,7 @@
         android:id="@+id/nsvBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="18dp"
+
         app:behavior_peekHeight="108dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
@@ -228,7 +228,8 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:orientation="vertical"
-                android:elevation="24dp">
+                android:elevation="24dp"
+                >
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fbCheckinCheckout"

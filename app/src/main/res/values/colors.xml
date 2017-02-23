@@ -4,10 +4,11 @@
 
 
 
-    <color name="primaryColor">#5D4037</color>
-    <color name="primaryColorDark">#3E2722</color>
-    <color name="primaryColorLight">#795548</color>
-    <color name="colorAccent">#62C2A6</color>
+    <color name="primaryColor">#0097A7</color>
+    <color name="primaryColorDark">#006064</color>
+    <color name="primaryColorLight">#00BCD4</color>
+    <color name="colorAccent">#F9A825</color>
+    <color name="colorAccentDark">#F9A825</color>
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#727272</color>
 

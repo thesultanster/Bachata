@@ -1,6 +1,7 @@
 package com.meetup.uhoo.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.Enum;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.profile.ProfileActivity;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -103,10 +105,39 @@ public class ProfileRowView extends FrameLayout {
         ivCheckingState = (ImageView) view.findViewById(R.id.ivCheckinState);
         profileImage = (CircleImageView) view.findViewById(R.id.profileImage);
 
-        // If the type is Self, then load current user data
+
+
+
+        // If the type is Self, then load current user data and set listeners
         if(type == 1) {
             RefreshCurrentUserData();
+
+            view.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), ProfileActivity.class);
+                    getContext().startActivity(intent);
+                }
+            });
+
+            profileImage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), ProfileActivity.class);
+                    getContext().startActivity(intent);
+                }
+            });
+
+            tvOneLiner.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), ProfileActivity.class);
+                    getContext().startActivity(intent);
+                }
+            });
         }
+
+
 
 
 

@@ -80,31 +80,11 @@ public class CheckinProfileDetailsView extends FrameLayout {
             }
         });
 
-        // Set Defaulr checked state
+        // Set Default checked state
         swAvailability.setChecked(currentUser.checkinVisibilityState == Enum.CheckinVisibilityState.AVAILABLE.getValue());
 
+        String d;
 
-        tvEditProfile = (TextView) view.findViewById(R.id.tvEditProfile);
-        tvEditProfile.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent;
-
-                SharedPreferences prefs = context.getApplicationContext().getSharedPreferences("currentUser", Context.MODE_PRIVATE);
-                String authType = prefs.getString("authType", "ANON");
-
-                // If user is ANON then make them sign up
-                if (authType.equals("ANON")) {
-                    intent = new Intent(context.getApplicationContext(), SignIn.class);
-                } else {
-                    intent = new Intent(context.getApplicationContext(), ProfileActivity.class);
-                }
-
-
-                context.startActivity(intent);
-            }
-        });
         addView(view);
     }
 
