@@ -114,6 +114,10 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
                     alert.show();
 
                 } else {
+
+                    ProfileRowView profileRowView = (ProfileRowView) caller.findViewById(R.id.prProfileRow);
+
+
                     UserProfileDialog userDialog = new UserProfileDialog((RestaurantActivity) context, data.get(position));
                     userDialog.show();
                     Window window = userDialog.getWindow();

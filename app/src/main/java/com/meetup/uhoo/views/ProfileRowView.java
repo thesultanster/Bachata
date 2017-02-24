@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -309,6 +310,10 @@ public class ProfileRowView extends FrameLayout {
         return checkinVisibilityState;
     }
 
+
+    public Drawable getProfileDrawable(){
+        return profileImage.getBackground();
+    }
 
 
 }
