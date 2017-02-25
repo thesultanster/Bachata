@@ -116,9 +116,10 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
             return true;
 
 
+        // If user is NOT anonymous
         if (authType != null && !authType.equals("ANON")) {
             menu.findItem(R.id.create_account_icon).setVisible(false);
-            //menu.findItem(R.id.create_account_text).setVisible(false);
+            menu.findItem(R.id.profile_icon).setVisible(true);
         }
 
         Log.d("auth", "NavigationDrawerFramework auth type " + authType);
@@ -171,7 +172,12 @@ public class NavigationDrawerFramework extends AppCompatActivity implements Navi
         else if(item.getItemId() == R.id.gps_refresh_icon){
             Intent intent = new Intent(this, FindLocation.class);
             startActivity(intent);
-        }
+        } else
+            // If user clicks Profile  Icon
+            if(item.getItemId() == R.id.profile_icon){
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+            }
         return super.onOptionsItemSelected(item);
     }
 

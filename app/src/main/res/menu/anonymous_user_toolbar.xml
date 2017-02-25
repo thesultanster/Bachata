@@ -22,4 +22,15 @@
         app:showAsAction="ifRoom"
         />
 
+
+    <item
+        android:id="@+id/profile_icon"
+        android:title="create_account_icon"
+        android:orderInCategory="300"
+        android:icon="@drawable/ic_person_outline_white_24dp"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        />
+
+
 </menu>

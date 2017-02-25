@@ -28,7 +28,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:textSize="18sp"
-            android:text="Uhoo needs access to your contacts, device storage, and GPS location"/>
+            android:text="Uhoo needs to access your GPS location to find nearby cafes"/>
 
 
 

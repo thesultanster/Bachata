@@ -8,12 +8,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v7.widget.PopupMenu;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
@@ -55,6 +59,7 @@ public class ProfileRowView extends FrameLayout {
     private TextView tvCheckinState;
     private ImageView ivCheckingState;
     private CircleImageView profileImage;
+    private LinearLayout llCheckinStatus;
 
 
     public ProfileRowView(Context context, AttributeSet attrs, int defStyle) {
@@ -94,7 +99,7 @@ public class ProfileRowView extends FrameLayout {
         initView(context);
     }
 
-    private void initView(Context context) {
+    private void initView(final Context context) {
         View view = inflate(getContext(), R.layout.custom_view_profile_row, null);
 
         this.context = context;
@@ -105,21 +110,17 @@ public class ProfileRowView extends FrameLayout {
         tvCheckinState = (TextView) view.findViewById(R.id.tvCheckinState);
         ivCheckingState = (ImageView) view.findViewById(R.id.ivCheckinState);
         profileImage = (CircleImageView) view.findViewById(R.id.profileImage);
+        llCheckinStatus = (LinearLayout) view.findViewById(R.id.llCheckinStatus);
 
 
+        String a = "asdf";
 
 
         // If the type is Self, then load current user data and set listeners
         if(type == 1) {
             RefreshCurrentUserData();
 
-            view.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getContext(), ProfileActivity.class);
-                    getContext().startActivity(intent);
-                }
-            });
+
 
             profileImage.setOnClickListener(new OnClickListener() {
                 @Override
@@ -134,6 +135,41 @@ public class ProfileRowView extends FrameLayout {
                 public void onClick(View view) {
                     Intent intent = new Intent(getContext(), ProfileActivity.class);
                     getContext().startActivity(intent);
+                }
+            });
+
+            llCheckinStatus.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Creating the instance of PopupMenu
+                    PopupMenu popup = new PopupMenu(context, ivCheckingState);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater()
+                            .inflate(R.menu.popup_availability, popup.getMenu());
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(context,
+                                    "Status Changed: " + item.getTitle(),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+                            if(item.getTitle().equals("Busy")){
+                                setCheckinVisibilityState(Enum.CheckinVisibilityState.BUSY);
+                            }
+                            else{
+                                setCheckinVisibilityState(Enum.CheckinVisibilityState.AVAILABLE);
+                            }
+
+                            SaveProfileDataToDatabase();
+
+
+                            return true;
+                        }
+                    });
+
+                    popup.show(); //showing popup menu
                 }
             });
         }
@@ -211,7 +247,7 @@ public class ProfileRowView extends FrameLayout {
             }
         });
 
-
+        SaveProfileDataToLocalCurrentUser();
 
     }
 
@@ -314,6 +350,7 @@ public class ProfileRowView extends FrameLayout {
     public Drawable getProfileDrawable(){
         return profileImage.getBackground();
     }
+
 
 
 }
