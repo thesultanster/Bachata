@@ -1,13 +1,19 @@
 package com.meetup.uhoo.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v7.widget.PopupMenu;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -116,6 +122,8 @@ public class ProfileRowView extends FrameLayout {
         String a = "asdf";
 
 
+
+
         // If the type is Self, then load current user data and set listeners
         if(type == 1) {
             RefreshCurrentUserData();
@@ -194,6 +202,9 @@ public class ProfileRowView extends FrameLayout {
         Log.d("photoUrl", profileUrl);
 
         setCheckinVisibilityState (Enum.CheckinVisibilityState.values()[ sharedPrefs.getInt("checkinVisibilityState",0)]);
+
+
+
 
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -292,7 +303,20 @@ public class ProfileRowView extends FrameLayout {
                     final Bitmap finalMIcon = mIcon1;
                     handler.post(new Runnable(){
                         public void run() {
+
+
                             profileImage.setImageBitmap(finalMIcon);
+
+
+                            // Get user auth type. If anon user not looking at themself, then tell mask profile image
+                            SharedPreferences prefs = context.getSharedPreferences("currentUser", context.MODE_PRIVATE);
+                            String authType = prefs.getString("authType", null);
+                            if (authType != null && authType.equals("ANON") && type != 1) {
+
+                                blurProfile();
+                            }
+
+
                         }
                     });
 
@@ -351,6 +375,57 @@ public class ProfileRowView extends FrameLayout {
         return profileImage.getBackground();
     }
 
+
+    @SuppressLint("NewApi")
+    public static Bitmap blurRenderScript(Context context,Bitmap smallBitmap, int radius) {
+        try {
+            smallBitmap = RGB565toARGB888(smallBitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                smallBitmap.getWidth(), smallBitmap.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        RenderScript renderScript = RenderScript.create(context);
+
+        Allocation blurInput = Allocation.createFromBitmap(renderScript, smallBitmap);
+        Allocation blurOutput = Allocation.createFromBitmap(renderScript, bitmap);
+
+        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(renderScript,
+                Element.U8_4(renderScript));
+        blur.setInput(blurInput);
+        blur.setRadius(radius); // radius must be 0 < r <= 25
+        blur.forEach(blurOutput);
+
+        blurOutput.copyTo(bitmap);
+        renderScript.destroy();
+
+        return bitmap;
+
+    }
+
+    private static Bitmap RGB565toARGB888(Bitmap img) throws Exception {
+        int numPixels = img.getWidth() * img.getHeight();
+        int[] pixels = new int[numPixels];
+
+        //Get JPEG pixels.  Each int is the color values for one pixel.
+        img.getPixels(pixels, 0, img.getWidth(), 0, 0, img.getWidth(), img.getHeight());
+
+        //Create a Bitmap of the appropriate format.
+        Bitmap result = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
+
+        //Set RGB pixels.
+        result.setPixels(pixels, 0, result.getWidth(), 0, 0, result.getWidth(), result.getHeight());
+        return result;
+    }
+
+    private void blurProfile(){
+        Log.i("ProfileRowView", "blurProfile");
+        Bitmap bm=((BitmapDrawable) profileImage.getDrawable()).getBitmap();
+        profileImage.setImageBitmap(blurRenderScript(context,bm, 25));
+    }
 
 
 }

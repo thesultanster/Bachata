@@ -162,7 +162,11 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
 
             prProfileRow = (ProfileRowView) itemView.findViewById(R.id.prProfileRow);
 
+
+
+
             itemView.setOnClickListener(this);
+
 
         }
 
