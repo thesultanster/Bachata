@@ -119,10 +119,6 @@ public class ProfileRowView extends FrameLayout {
         llCheckinStatus = (LinearLayout) view.findViewById(R.id.llCheckinStatus);
 
 
-        String a = "asdf";
-
-
-
 
         // If the type is Self, then load current user data and set listeners
         if(type == 1) {
@@ -323,9 +319,13 @@ public class ProfileRowView extends FrameLayout {
                 } catch (MalformedURLException e) {
                     Log.e("MalformedURLException", profileUrl);
                     e.printStackTrace();
+
+                    profileImage.setImageBitmap(null);
                 } catch (IOException e) {
                     Log.e("IOException", profileUrl);
                     e.printStackTrace();
+
+                    profileImage.setImageBitmap(null);
                 }
 
 

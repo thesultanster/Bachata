@@ -49,7 +49,9 @@
             android:theme="@style/AppToolbar"
             android:layout_below="@+id/pendingRequestNotification"
             android:elevation="4dp"
-            />
+            >
+
+            </android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/content"

@@ -50,6 +50,10 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
             public void onUserFetch(User user) {
 
                 Log.i("user Fetch complete", user.getFirstName() + " " + user.getLastName());
+
+                if(data.size() == 0)
+                    return;
+
                 data.set(index,user);
                 updateRows();
             }
@@ -139,6 +143,10 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
         // This gives us current information list object
         User current = data.get(position);
         holder.prProfileRow.setData(current);
+
+        if(data.get(position).getPhotoUrl().isEmpty()){
+            holder.prProfileRow.setProfileUrl("");
+        }
     }
 
 

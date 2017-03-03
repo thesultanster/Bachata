@@ -62,7 +62,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:singleLine="true"
-            android:hint="Describe Yourself in One Line" />
+            android:hint="What's on your mind?" />
 
     </android.support.design.widget.TextInputLayout>
 

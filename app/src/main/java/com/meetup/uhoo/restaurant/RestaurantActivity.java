@@ -119,18 +119,22 @@ public class RestaurantActivity extends AppCompatActivity {
 
     void InflateVariables() {
 
+        // Setup survey
         svSurveyView = (SurveyView) findViewById(R.id.svSurveyView);
         svSurveyView.setBusiness(business.getPlaceId());
 
+        // Setup happenings and people viewpager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
+        // Setup happenings and people toolbar
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         fabCheckinCheckout = (FloatingActionButton) findViewById(R.id.fbCheckinCheckout);
         tvCehckinFABLabel = (TextView) findViewById(R.id.tvCheckinFABLabel);
         tvCheckinText = (TextView) findViewById(R.id.tvCheckinText);
+
 
         cpdProfileDetailView = (CheckinProfileDetailsView) findViewById(R.id.cpdProfileDetailView);
         nsvBottomSheet = (NestedScrollView) findViewById(R.id.nsvBottomSheet);
@@ -224,9 +228,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     CheckOutUser();
                     Refresh();
                 }
-
-
-
 
 
             }
