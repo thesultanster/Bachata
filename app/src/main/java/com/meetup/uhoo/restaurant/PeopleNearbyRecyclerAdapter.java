@@ -29,6 +29,8 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
     LayoutInflater inflator;
     Context context;
 
+    SharedPreferences prefs = null;
+
     public PeopleNearbyRecyclerAdapter(Context context, List<User> data) {
         this.context = context;
         inflator = LayoutInflater.from(context);
@@ -118,9 +120,6 @@ public class PeopleNearbyRecyclerAdapter extends RecyclerView.Adapter<PeopleNear
                     alert.show();
 
                 } else {
-
-                    ProfileRowView profileRowView = (ProfileRowView) caller.findViewById(R.id.prProfileRow);
-
 
                     UserProfileDialog userDialog = new UserProfileDialog((RestaurantActivity) context, data.get(position));
                     userDialog.show();

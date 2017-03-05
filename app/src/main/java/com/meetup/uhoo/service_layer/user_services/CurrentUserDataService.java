@@ -103,6 +103,7 @@ public class CurrentUserDataService {
     }
 
 
+    // Persists to database and cache
     public void saveUserToDatabase(){
 
 
@@ -131,7 +132,6 @@ public class CurrentUserDataService {
 
 
     }
-
 
 
 

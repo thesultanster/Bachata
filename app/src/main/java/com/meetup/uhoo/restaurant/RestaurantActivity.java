@@ -92,6 +92,8 @@ public class RestaurantActivity extends AppCompatActivity {
     //String restaurantId;
     Business business;
 
+    SharedPreferences prefs = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +105,18 @@ public class RestaurantActivity extends AppCompatActivity {
 
         InflateVariables();
 
+
+        prefs = getSharedPreferences("com.meetup.uhoo", MODE_PRIVATE);
+        if (prefs.getBoolean("firstrun", true)) {
+            // Do first run stuff here then set 'firstrun' as false
+            // using the following line to edit/commit prefs
+
+
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }
 
         // Set Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

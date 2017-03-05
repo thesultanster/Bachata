@@ -15,7 +15,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
@@ -59,6 +63,15 @@ public class FindLocation extends Activity {
         setContentView(R.layout.activity_find_location);
         //get the shared instance of the FirebaseAuth object
         mAuth = FirebaseAuth.getInstance();
+
+        LinearLayout llFindLocationButton = (LinearLayout) findViewById(R.id.llFindLocationButton);
+        //llFindLocationButton.setVisibility(View.GONE);
+
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(new AlphaAnimation(0.0F, 1.0F));
+        animation.setDuration(400);
+        animation.setStartOffset(3000);
+        llFindLocationButton.startAnimation(animation);
 
         btnPickLocation = (Button) findViewById(R.id.btnPickLocation);
         btnPickLocation.setOnClickListener(new View.OnClickListener() {

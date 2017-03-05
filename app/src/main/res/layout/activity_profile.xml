@@ -7,8 +7,19 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="20dp"
         android:fitsSystemWindows="true">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/AppToolbar"
+            android:layout_below="@+id/pendingRequestNotification"
+            />
+
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -22,13 +33,15 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+
+
             <com.meetup.uhoo.views.ProfileRowView
                 android:id="@+id/prCurrentUserProfileRow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/secondaryText"
                 android:padding="8dp"
-                app:type="Self"
+                app:type="Edit"
                 app:userFirstName="First"
                 app:userLastName="Last"
                 app:visibilityPermission="All" />

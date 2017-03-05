@@ -6,4 +6,5 @@ package com.meetup.uhoo.profile;
 public interface ProfileUpdateInterface{
     public void onBasicDataChanged();
     public void onActivitiesDataChanged();
+    public void onProfilePictureDataChanged();
 }

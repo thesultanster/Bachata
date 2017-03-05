@@ -119,12 +119,52 @@ public class ProfileRowView extends FrameLayout {
         llCheckinStatus = (LinearLayout) view.findViewById(R.id.llCheckinStatus);
 
 
-
-        // If the type is Self, then load current user data and set listeners
-        if(type == 1) {
+        // If type is Edit, then load current user data
+        if(type == 2){
             RefreshCurrentUserData();
 
+            // Setup checkin status
+            llCheckinStatus.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Creating the instance of PopupMenu
+                    PopupMenu popup = new PopupMenu(context, ivCheckingState);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater()
+                            .inflate(R.menu.popup_availability, popup.getMenu());
 
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(context,
+                                    "Status Changed: " + item.getTitle(),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+                            if(item.getTitle().equals("Busy")){
+                                setCheckinVisibilityState(Enum.CheckinVisibilityState.BUSY);
+                            }
+                            else{
+                                setCheckinVisibilityState(Enum.CheckinVisibilityState.AVAILABLE);
+                            }
+
+                            SaveProfileDataToDatabase();
+
+
+                            return true;
+                        }
+                    });
+
+                    popup.show(); //showing popup menu
+                }
+            });
+
+        }
+
+        // If the type is Self, then set listeners
+        if(type == 1) {
+
+            RefreshCurrentUserData();
 
             profileImage.setOnClickListener(new OnClickListener() {
                 @Override

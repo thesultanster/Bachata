@@ -157,8 +157,10 @@ public class InterestsView extends FrameLayout {
     }
     public void setSelectedItems(User user){
 
-
+        // Get Selected activities from user object
         selectedActivites = user.getActivityIconList();
+
+        // Pass activities to gridview and display
         gridAdapter = new SimpleProfileGridViewAdapter(getContext(), R.layout.grid_item_activity_icon, getData());
         gridView.setAdapter(gridAdapter);
 

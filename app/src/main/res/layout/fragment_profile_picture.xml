@@ -5,21 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.meetup.uhoo.views.InterestsView
-        android:id="@+id/av"
+    <ImageView
+        android:id="@+id/ivProfilePicture"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btnSaveActivities"
-        app:readOnly="false"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
         />
 
     <Button
-        android:id="@+id/btnSaveActivities"
+        android:id="@+id/btnSetProfilePicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:textColor="@color/white"
         android:backgroundTint="@color/colorAccentDark"
-        android:text="Save" />
+        android:text="Set Profile Picture" />
 
 </RelativeLayout>

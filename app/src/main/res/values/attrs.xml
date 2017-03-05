@@ -21,6 +21,7 @@
         <attr name="type" format="enum">
             <enum name="User" value="0" />
             <enum name="Self" value="1" />
+            <enum name="Edit" value="2" />
         </attr>
     </declare-styleable>
 
