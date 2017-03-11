@@ -2,6 +2,7 @@ package com.meetup.uhoo.restaurant;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -14,8 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
+import com.meetup.uhoo.profile.ProfileActivity;
+import com.meetup.uhoo.service_layer.user_services.CurrentUserDataService;
 import com.meetup.uhoo.views.InterestsView;
 
 import java.io.IOException;
@@ -35,11 +39,18 @@ public class UserProfileDialog extends Dialog implements
     TextView name, miniBio;
     InterestsView ivUserInterests;
     ImageView civProfilePicture;
+    ImageView ivEditProfile;
+
+    Activity a;
 
 
     public UserProfileDialog(Activity a, User user) {
         super(a);
         this.user = user;
+        this.a = a;
+
+        Log.d("UserProfileDialog",  a.getLocalClassName());
+
     }
 
     @Override
@@ -53,6 +64,7 @@ public class UserProfileDialog extends Dialog implements
         miniBio = (TextView) findViewById(R.id.miniBio);
         ivUserInterests = (InterestsView) findViewById(R.id.ivUserInterests);
         civProfilePicture = (ImageView) findViewById(R.id.civProfilePicture);
+        ivEditProfile = (ImageView) findViewById(R.id.ivEditProfile);
 
         ivUserInterests.setSelectedItems(user);
 
@@ -93,6 +105,22 @@ public class UserProfileDialog extends Dialog implements
             }
         };
         new Thread(runnable).start();
+
+        // Enable edit profile icon if current user is viewing themselves
+        CurrentUserDataService currentUserDataService = new CurrentUserDataService(getContext());
+        if( user.getUid() != null && user.getUid().equals( currentUserDataService.getCurrentUser().getUid())){
+
+
+            ivEditProfile.setVisibility(View.VISIBLE);
+            ivEditProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(getContext(), ProfileActivity.class);
+                    getContext().startActivity(intent);
+                }
+            });
+        }
 
     }
 

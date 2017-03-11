@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
          >
 
         <ImageView
@@ -33,6 +33,16 @@
             android:text="First Last"
             android:textColor="@color/white"
             />
+
+        <ImageView
+            android:id="@+id/ivEditProfile"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:src="@drawable/ic_mode_edit_white_24dp"/>
 
 
 

@@ -20,8 +20,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
+import com.meetup.uhoo.restaurant.RestaurantActivity;
+import com.meetup.uhoo.service_layer.business_services.BusinessNearbyListener;
+import com.meetup.uhoo.service_layer.business_services.BusinessService;
 import com.meetup.uhoo.service_layer.user_services.CurrentUserDataService;
 import com.meetup.uhoo.service_layer.user_services.UserCheckinListener;
 import com.meetup.uhoo.service_layer.user_services.UserCheckinService;
@@ -152,10 +156,34 @@ public class AutoCheckinService extends Service {
                                 final String businessId = dataSnapshot.getValue().toString();
 
 
+                                // Checkin User
                                 UserCheckinService userCheckinService = new UserCheckinService(getApplicationContext(), uid);
                                 userCheckinService.checkin(businessId, uid);
                                 currentUser.setCheckedInto(businessId);
                                 currentUser.saveUserDataLocally(getApplicationContext());
+
+
+                                BusinessService businessService = new BusinessService();
+                                businessService.fetchBusiness(businessId, new BusinessNearbyListener() {
+                                    @Override
+                                    public void onBusinessFetched(Business object) {
+                                        Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                                        intent.putExtra("business", object);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent );
+                                    }
+
+                                    @Override
+                                    public void onFetchComplete() {
+
+                                    }
+
+                                    @Override
+                                    public void onBusinessDoesntExist() {
+
+                                    }
+                                });
+
 
 
                             }

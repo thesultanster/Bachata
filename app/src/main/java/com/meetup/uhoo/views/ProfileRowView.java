@@ -1,6 +1,7 @@
 package com.meetup.uhoo.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -90,6 +91,7 @@ public class ProfileRowView extends FrameLayout {
             visibilityPermission = a.getInt(R.styleable.ProfileRowView_visibilityPermission,2);
             type = a.getInt(R.styleable.ProfileRowView_type,1);
 
+            // If type self
             if(type == 1){
                 userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             }
@@ -360,12 +362,24 @@ public class ProfileRowView extends FrameLayout {
                     Log.e("MalformedURLException", profileUrl);
                     e.printStackTrace();
 
-                    profileImage.setImageBitmap(null);
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            profileImage.setImageBitmap(null);
+                        }
+                    });
+
+
                 } catch (IOException e) {
                     Log.e("IOException", profileUrl);
                     e.printStackTrace();
 
-                    profileImage.setImageBitmap(null);
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            profileImage.setImageBitmap(null);
+                        }
+                    });
                 }
 
 
