@@ -32,24 +32,6 @@
     <color name="pastelRed">#EDB4D0</color>
     <color name="pastelGreen">#D0EDB4</color>
 
-    <color name="signUpLightBlue">#59626B</color>
-    <color name="signUpBlue">#3D464F</color>
-    <color name="signUpDarkBlue">#313941</color>
-    <color name="signUpLightOffWhite">#F0EADE</color>
-    <color name="signUpDarkOffWhite">#D8D2C6</color>
-    <color name="signUpRed">#D66951</color>
-    <color name="signUpDarkRed">#B64A2C</color>]
-    <color name="signUpBrightRed">#EE7242</color>
-    <color name="signUpOrange">#E9A44F</color>
-    <color name="signUpGrey">#B8B4AA</color>
-
-    <color name="spashScreenGrey">#D2DCE0</color>
-
-    <color name="tutorialSetLocation">#00858C</color>
-    <color name="tutorialBroadcast">#B64A2C</color>
-    <color name="tutorialGetTutored">#313941</color>
-    <color name="tutorialTerms">#603813</color>
-
 
 
     <!--grey-->
