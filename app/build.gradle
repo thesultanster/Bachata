@@ -9,8 +9,8 @@ android {
         applicationId "com.meetup.uhoo"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 32
-        versionName "2.5.3"
+        versionCode 33
+        versionName "2.6.0"
         multiDexEnabled true
     }
     buildTypes {
@@ -41,6 +41,7 @@ dependencies {
     compile 'com.firebase:geofire-android:2.1.0'
     compile 'com.google.android.gms:play-services:9.4.0'
     compile 'com.google.android.gms:play-services-auth:9.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.1'
     compile 'com.github.wangjiegulu:AndroidInject:1.0.6'

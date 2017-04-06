@@ -11,6 +11,7 @@ import android.location.Location;
 import android.provider.Settings;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -24,8 +25,13 @@ import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,13 +45,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.meetup.uhoo.R;
 import com.meetup.uhoo.businesses_nearby.RestaurantsNearby;
 import com.meetup.uhoo.service_layer.auto_checkin_services.AutoCheckinService;
+import com.meetup.uhoo.service_layer.auto_checkout_services.AutoCheckoutService;
+import com.meetup.uhoo.service_layer.user_services.UserCheckinListener;
+import com.meetup.uhoo.service_layer.user_services.UserCheckinService;
 import com.meetup.uhoo.util.location.FallbackLocationTracker;
 import com.meetup.uhoo.util.location.LocationTracker;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 
-public class FindLocation extends Activity {
+public class FindLocation extends Activity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     FallbackLocationTracker fallbackLocationTracker;
     Bundle args = new Bundle();
@@ -57,12 +69,27 @@ public class FindLocation extends Activity {
     int PLACE_PICKER_REQUEST = 1;
 
 
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    Double longitude;
+    Double latitude;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_location);
         //get the shared instance of the FirebaseAuth object
         mAuth = FirebaseAuth.getInstance();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        // Connect the client.
+        mGoogleApiClient.connect();
 
         LinearLayout llFindLocationButton = (LinearLayout) findViewById(R.id.llFindLocationButton);
         //llFindLocationButton.setVisibility(View.GONE);
@@ -115,7 +142,7 @@ public class FindLocation extends Activity {
     protected void onStop() {
         super.onStop();
 
-        fallbackLocationTracker.stop();
+        //fallbackLocationTracker.stop();
     }
 
 
@@ -188,12 +215,15 @@ public class FindLocation extends Activity {
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences("currentUser", 0);
             String authType = sharedPrefs.getString("authType", "");
             if(!authType.equals("ANON") && !authType.equals("")){
-                Log.d("AutoCheckinService", "Not Started ANON user found");
 
                 // use this to start and trigger a autocheckin
                 Intent i = new Intent(getApplicationContext(), AutoCheckinService.class);
                 i.putExtra("uid", user.getUid());
+                i.putExtra("latitude", loc.getLatitude());
+                i.putExtra("longitude", loc.getLongitude());
+
                 startService(i);
+
             }
 
 
@@ -241,20 +271,9 @@ public class FindLocation extends Activity {
         if (fallbackLocationTracker != null) {
 
 
-            // If has fine last known location
-            //if (fallbackLocationTracker.hasLocation()) {
-            //    LoginAnonymousUser(fallbackLocationTracker.getLocation());
-            //    return;
-            //}
-
-            // TODO: Put this in a timer
-            // If has course last known location
-            //if (fallbackLocationTracker.hasPossiblyStaleLocation()) {
-            //    LoginAnonymousUser(fallbackLocationTracker.getPossiblyStaleLocation());
-            //}
-
 
             // Then find fine location
+            /*
             fallbackLocationTracker.start(new LocationTracker.LocationUpdateListener() {
                 @Override
                 public void onUpdate(Location oldLoc, long oldTime, Location newLoc, long newTime) {
@@ -262,6 +281,7 @@ public class FindLocation extends Activity {
                     LoginAnonymousUser(newLoc);
                 }
             });
+            */
 
         }
     }
@@ -320,4 +340,44 @@ public class FindLocation extends Activity {
 
     }
 
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        //mGoogleApiClient.connect();
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(1000); // Update location every second
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        Log.i("FindLocation", "Location received: " + location.toString());
+                        Log.i("FindLocation", "User Location: " + latitude);
+
+
+                        Location loc2 = new Location("");
+                        loc2.setLatitude(location.getLatitude());
+                        loc2.setLongitude(location.getLongitude());
+
+                        LoginAnonymousUser(loc2);
+
+
+                        mGoogleApiClient.disconnect();
+
+
+                    }
+                });
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("FindLocation", "GoogleApiClient connection has been suspend");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("FindLocation", "GoogleApiClient connection has failed");
+    }
 }

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.SupplicantState;
@@ -24,6 +25,7 @@ import com.meetup.uhoo.core.Business;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
 import com.meetup.uhoo.restaurant.RestaurantActivity;
+import com.meetup.uhoo.service_layer.auto_checkout_services.AutoCheckoutService;
 import com.meetup.uhoo.service_layer.business_services.BusinessNearbyListener;
 import com.meetup.uhoo.service_layer.business_services.BusinessService;
 import com.meetup.uhoo.service_layer.user_services.CurrentUserDataService;
@@ -44,6 +46,9 @@ public class AutoCheckinService extends Service {
     private BroadcastReceiver awaitIPAddress = null;
     private WifiConnectionListener wifiConnectionListener;
     private String uid;
+    Double longitude;
+    Double latitude;
+    String businessId;
 
 
     private final BroadcastReceiver onWifiConnectReceiver = new BroadcastReceiver() {
@@ -120,10 +125,17 @@ public class AutoCheckinService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+
+        if (intent != null && intent.getExtras() != null) {
+            //Log.i("AutoCheckout","Got Location Intent");
+            longitude = intent.getExtras().getDouble("longitude");
+            latitude = intent.getExtras().getDouble("latitude");
+        }
+
         final String uid;
         try {
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        } catch (Exception e){
+        } catch (Exception e) {
             return Service.START_STICKY;
         }
 
@@ -153,7 +165,7 @@ public class AutoCheckinService extends Service {
                                 }
 
                                 Log.i("wifiConnectionListener", "bssid_business_relation:BusinessID: " + dataSnapshot.getValue().toString());
-                                final String businessId = dataSnapshot.getValue().toString();
+                                businessId = dataSnapshot.getValue().toString();
 
 
                                 // Checkin User
@@ -161,6 +173,12 @@ public class AutoCheckinService extends Service {
                                 userCheckinService.checkin(businessId, uid);
                                 currentUser.setCheckedInto(businessId);
                                 currentUser.saveUserDataLocally(getApplicationContext());
+
+                                Intent i = new Intent(getApplicationContext(), AutoCheckoutService.class);
+                                i.putExtra("latitude", latitude);
+                                i.putExtra("longitude", longitude);
+                                i.putExtra("businessId", businessId);
+                                startService(i);
 
 
                                 BusinessService businessService = new BusinessService();
@@ -170,7 +188,7 @@ public class AutoCheckinService extends Service {
                                         Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
                                         intent.putExtra("business", object);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent );
+                                        startActivity(intent);
                                     }
 
                                     @Override
@@ -183,7 +201,6 @@ public class AutoCheckinService extends Service {
 
                                     }
                                 });
-
 
 
                             }

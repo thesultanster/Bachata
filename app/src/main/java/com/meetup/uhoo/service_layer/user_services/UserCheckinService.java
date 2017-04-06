@@ -152,6 +152,11 @@ public class UserCheckinService {
 
     public void checkout(User user, final UserCheckinListener userCheckinListener) {
 
+        checkoutUser(user.getUid(), user.checkedInto, userCheckinListener);
+
+    }
+
+    public void checkoutUser(final String userId, String businessId, final UserCheckinListener userCheckinListener){
         // Create database reference
         // We will use this multiple times to update values to check out user
         DatabaseReference mDatabase;
@@ -162,13 +167,16 @@ public class UserCheckinService {
         //editor.putString("checkedIntoBusiness", null);
         editor.apply();
 
+        Log.i("checkout", "Checked Into: " + businessId);
+
+
         // Remove user from checkin table on database
-        mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child(user.checkedInto);
+        mDatabase = FirebaseDatabase.getInstance().getReference("checkin").child( businessId );
         mDatabase.child(uid).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 // Update user check in state to false on database
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid);
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users").child(userId);
                 mDatabase.child("isCheckedIn").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -181,8 +189,6 @@ public class UserCheckinService {
                 });
             }
         });
-
-
     }
 
 

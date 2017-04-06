@@ -58,6 +58,14 @@
             android:icon="@drawable/icon"
             android:label="AutoCheckinService"
             >
+
+        </service>
+
+        <service
+            android:name=".service_layer.auto_checkout_services.AutoCheckoutService"
+            android:icon="@drawable/icon"
+            android:label="AutoCheckinService"
+            >
         </service>
 
         <receiver android:name=".service_layer.auto_checkin_services.WifiListener">
