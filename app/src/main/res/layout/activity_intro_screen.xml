@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColorDark"
+    tools:context="com.meetup.uhoo.activities.IntroScreen">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/vVerticalLine"
+            android:layout_width="1dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginLeft="56dp"
+            android:background="@color/colorAccent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/vVerticalLine"
+            android:layout_marginRight="56dp"
+            android:orientation="vertical">
+
+            <TextViewd
+                android:id="@+id/tvNearYouTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="32sp"
+                android:text="near you..."/>
+
+
+            <TextView
+                android:id="@+id/tvNumberOfUsers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/vVerticalLine"
+                android:layout_marginTop="48dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:text="15 users"/>
+
+            <TextView
+                android:id="@+id/tvNumberOfUsersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/vVerticalLine"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/md_grey_500"
+                android:textSize="24sp"
+                android:text="Nearby in local businesses, cafes and restaurants"/>
+
+
+            <TextView
+                android:id="@+id/tvNumberOfHappenings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/vVerticalLine"
+                android:layout_marginTop="48dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:text="8 happenings"/>
+
+            <TextView
+                android:id="@+id/tvNumberOfHappeningsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/vVerticalLine"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/md_grey_500"
+                android:textSize="24sp"
+                android:text="Cool, free coffee at Sabor y Cultura"/>
+
+
+            <LinearLayout
+                android:id="@+id/llUhooContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="48dp"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/logo_uhoo"/>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_arrow_forward_white_24dp"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

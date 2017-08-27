@@ -36,7 +36,7 @@ import com.meetup.uhoo.R;
 import com.meetup.uhoo.core.User;
 import com.meetup.uhoo.core.UserDataFetchListener;
 import com.meetup.uhoo.service_layer.user_services.CurrentUserDataService;
-import com.meetup.uhoo.util.FindLocation;
+import com.meetup.uhoo.activities.FindLocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.google.android.gms.vision.text.Text;
 import com.meetup.uhoo.core.Happening;
 import com.meetup.uhoo.R;
+import com.meetup.uhoo.service_layer.analytics_engine.AnalyticsEngine;
 
 import java.util.Collections;
 import java.util.List;
@@ -74,7 +75,7 @@ public class HappeningsRecyclerAdapter extends RecyclerView.Adapter<HappeningsRe
 
             public void rowClick(View caller, int position) {
                 Log.d("rowClick", "rowClicks");
-
+                AnalyticsEngine.getInstance().logHappeningClick(data.get(position).getHappeningId());
 
             }
 
@@ -97,12 +98,12 @@ public class HappeningsRecyclerAdapter extends RecyclerView.Adapter<HappeningsRe
             case "offer":
                 holder.tvType.setText("Offer");
                 holder.tvType.setTextColor(context.getResources().getColorStateList(R.color.flatRed));
-                holder.ivHappeningIcon.setImageResource(R.color.flatRed);
+                holder.ivHappeningIcon.setImageResource(R.drawable.mic_red);
                 break;
             case "event":
                 holder.tvType.setText("Event");
                 holder.tvType.setTextColor(context.getResources().getColorStateList(R.color.flatBlue));
-                holder.ivHappeningIcon.setImageResource(R.color.flatBlue);
+                holder.ivHappeningIcon.setImageResource(R.drawable.store_blue);
                 break;
             /*
             case COMEDY:

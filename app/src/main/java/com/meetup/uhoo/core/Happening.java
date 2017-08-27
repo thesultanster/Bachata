@@ -15,6 +15,7 @@ public class Happening implements Serializable{
     private String time;
     private String type;
     private String icon;
+    private String happeningId;
 
     public Happening(){
 
@@ -42,6 +43,8 @@ public class Happening implements Serializable{
     public String getType() { return type; }
 
     public String getIcon() { return icon; }
+
+    public String getHappeningId() { return this.happeningId; }
 
 
 }

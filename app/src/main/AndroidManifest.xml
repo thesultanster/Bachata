@@ -10,7 +10,6 @@
         android:name="android.permission.ACCESS_WIFI_STATE"
         android:required="true" />
 
-
     <application
         android:name=".util.App"
         android:allowBackup="true"
@@ -18,23 +17,39 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Dark">
-        <activity android:name=".util.FindLocation" />
+        <activity android:name=".activities.FindLocation" />
         <activity android:name=".businesses_nearby.RestaurantsNearby" />
         <activity android:name=".credentials.CreateNewAccount" />
         <activity android:name=".credentials.SignIn" />
-        <activity android:name=".profile.ProfileActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:windowSoftInputMode="adjustNothing" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCVJ91aZoDBZyvyr3FEaLwHJhm3F-VSlPU" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <!--
+        Set custom default icon. This is used when no icon is set for incoming notification messages.
+        See README(https://goo.gl/l4GJaQ) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/icon" />
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
 
         <activity android:name=".restaurant.RestaurantActivity" />
         <activity
-            android:name=".util.SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:clearTaskOnLaunch="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -43,38 +58,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".util.PermissionsActivity"></activity>
+        <activity android:name=".util.PermissionsActivity" />
 
         <receiver android:name=".util.NotificationReceiver">
             <intent-filter>
-                <action android:name="DEALS_ACTION"/>
-                <action android:name="CHECKOUT_ACTION"/>
-                <action android:name="CHECKIN_ACTION"/>
+                <action android:name="DEALS_ACTION" />
+                <action android:name="CHECKOUT_ACTION" />
+                <action android:name="CHECKIN_ACTION" />
             </intent-filter>
         </receiver>
 
         <service
             android:name=".service_layer.auto_checkin_services.AutoCheckinService"
             android:icon="@drawable/icon"
-            android:label="AutoCheckinService"
-            >
-
-        </service>
-
+            android:label="AutoCheckinService"></service>
         <service
             android:name=".service_layer.auto_checkout_services.AutoCheckoutService"
             android:icon="@drawable/icon"
-            android:label="AutoCheckinService"
-            >
+            android:label="AutoCheckinService"></service>
+        <service android:name=".service_layer.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".service_layer.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
         </service>
 
         <receiver android:name=".service_layer.auto_checkin_services.WifiListener">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-
+        <activity android:name=".activities.IntroScreen"></activity>
     </application>
 
 </manifest>

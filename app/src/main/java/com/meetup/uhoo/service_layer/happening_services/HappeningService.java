@@ -66,8 +66,8 @@ public class HappeningService {
                         ArrayList<String> happenings = new ArrayList<String>();
                         // Go through evey survey, change it to Dashboarditem format and trigger
                         for (DataSnapshot survey : dataSnapshot.getChildren()) {
-                            happenings.add((String) survey.getValue());
-                            fetchHappeningFromDatabase((String) survey.getValue(), happeningDataFetchListener);
+                            happenings.add((String) survey.getKey());
+                            fetchHappeningFromDatabase((String) survey.getKey(), happeningDataFetchListener);
                         }
 
                     }

@@ -3,6 +3,7 @@ package com.meetup.uhoo.restaurant;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +26,9 @@ public class HappeningsFragment extends Fragment {
     private RecyclerView recyclerView;
     private HappeningsRecyclerAdapter adapter;
     private String businessId;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     @SuppressLint("ValidFragment")
     public HappeningsFragment( String businessId) {
@@ -49,6 +53,8 @@ public class HappeningsFragment extends Fragment {
             }
         });
 
+
+
         //adapter.addRow(new Happening("Free Drink","try our new Korean Citron Tea Slushie. Made fresh daily with hand squeezed citron and honey straight from the mouths of korean bees", Enum.HappeningType.DEAL));
         //adapter.addRow(new Happening("Open Mic Night","Open to comics of all colors, orientations, shapes and sizes, and planets of origin", Enum.HappeningType.EVENT));
         //adapter.addRow(new Happening("Pop Up Cafe","For five straight says, the folks from New York Bistro will be selling their handmade cockroach latte made with fresh roach larvee", Enum.HappeningType.COMEDY));
@@ -62,6 +68,15 @@ public class HappeningsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_people_checkedin, container, false);
+
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
