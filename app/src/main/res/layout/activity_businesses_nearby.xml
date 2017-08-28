@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:background="@color/white"
+                android:background="#0A141C"
                 android:orientation="vertical"
                 android:elevation="24dp">
 
@@ -53,6 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
+                        android:textColor="@color/white"
                         android:textSize="24sp"
                         android:text=":("
                         />
@@ -80,6 +81,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
+                                    android:textColor="@color/white"
                                     android:textSize="32dp"
                                     android:text="100"/>
 
@@ -87,6 +89,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
+                                    android:textColor="@color/white"
                                     android:text="People Checked in"/>
 
                             </LinearLayout>
@@ -102,6 +105,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
+                                    android:textColor="@color/white"
                                     android:textSize="32dp"
                                     android:text="3"/>
 
@@ -109,6 +113,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
+                                    android:textColor="@color/white"
                                     android:text="Example"/>
 
                             </LinearLayout>
@@ -125,6 +130,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
+                                    android:textColor="@color/white"
                                     android:textSize="32dp"
                                     android:text="9"/>
 
@@ -132,6 +138,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
+                                    android:textColor="@color/white"
                                     android:text="Happenings"/>
 
                             </LinearLayout>
@@ -190,6 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
+                    android:textColor="@color/white"
                     android:text="CHECK OUT"
                     android:textSize="14sp" />
 

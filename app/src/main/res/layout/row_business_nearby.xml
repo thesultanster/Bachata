@@ -8,8 +8,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-       >
+        android:layout_margin="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,8 +18,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
-                android:background="#022935"
-                >
+                android:background="#022935">
 
                 <TextView
                     android:id="@+id/name"
@@ -36,12 +34,12 @@
                     android:id="@+id/checkinText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
-                    android:textStyle="bold"
+                    android:text="X users checked in"
                     android:textColor="@color/white"
-                    android:text="X users checked in" />
+                    android:textStyle="bold" />
 
 
             </RelativeLayout>
@@ -66,20 +64,36 @@
                     android:orientation="vertical">
 
 
-                    <TextView
-                        android:id="@+id/miniBio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:text="Cafe and Restaurant"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/miniBio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Cafe and Restaurant"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+
+                        <TextView
+                            android:id="@+id/tvDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=".1mi"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-
                         >
 
                         <com.meetup.uhoo.views.ExpandedGridView
@@ -102,10 +116,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
-
-
 
 
     </android.support.v7.widget.CardView>
