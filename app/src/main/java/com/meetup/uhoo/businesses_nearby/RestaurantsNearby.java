@@ -229,11 +229,11 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
         }
 
 
+
         adapter.clearData();
 
 
-
-        businessNearbyService.startNearbyService(user.longitude, user.latitude, new BusinessNearbyListener() {
+        businessNearbyService.getNearbyBusinesses(user.longitude, user.latitude, new BusinessNearbyListener() {
             @Override
             public void onBusinessFetched(Business object) {
                 Log.i("businessNearbyService", "onBusinessFetched: " + object.getName());
@@ -241,14 +241,21 @@ public class RestaurantsNearby extends NavigationDrawerFramework implements Goog
             }
 
             @Override
+            public void onFetchComplete(ArrayList<Business> loadedBusinesses) {
+                adapter.clearData();
+                adapter.data = loadedBusinesses;
+                adapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
             public void onFetchComplete() {
                 mSwipeRefreshLayout.setRefreshing(false);
-
             }
 
             @Override
             public void onBusinessDoesntExist() {
-
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         }, this, this, this);
 

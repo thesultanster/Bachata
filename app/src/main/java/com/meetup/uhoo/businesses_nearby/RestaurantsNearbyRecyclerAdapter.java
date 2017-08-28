@@ -55,10 +55,11 @@ public class RestaurantsNearbyRecyclerAdapter extends RecyclerView.Adapter<Resta
                 notifyItemChanged(index);
             }
         });
+    }
 
-
-
-
+    public void setData(List<Business> data){
+        this.data = data;
+        notifyDataSetChanged();
     }
 
     public void clearData() {

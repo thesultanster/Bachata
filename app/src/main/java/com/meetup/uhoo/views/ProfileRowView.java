@@ -243,6 +243,8 @@ public class ProfileRowView extends FrameLayout {
 
 
 
+        //TODO: WHAT THE FUCK IS HAPPENING
+        /*
 
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -257,20 +259,26 @@ public class ProfileRowView extends FrameLayout {
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                } catch (OutOfMemoryError e){
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 final Bitmap finalMIcon = mIcon1;
-                handler.post(new Runnable(){
-                    public void run() {
-                        profileImage.setImageBitmap(finalMIcon);
-                    }
-                });
+                if(finalMIcon != null) {
+                    handler.post(new Runnable() {
+                        public void run() {
+                            profileImage.setImageBitmap(finalMIcon);
+                        }
+                    });
+                }
 
             }
         };
         new Thread(runnable).start();
+
+        */
 
         // Populate user data
         tvOneLiner.setText(oneLiner);

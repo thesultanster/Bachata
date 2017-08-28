@@ -192,6 +192,11 @@ public class AutoCheckinService extends Service {
                                     }
 
                                     @Override
+                                    public void onFetchComplete(ArrayList<Business> loadedBusinesses) {
+
+                                    }
+
+                                    @Override
                                     public void onFetchComplete() {
 
                                     }

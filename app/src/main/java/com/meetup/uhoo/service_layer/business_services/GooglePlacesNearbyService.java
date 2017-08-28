@@ -12,6 +12,8 @@ import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.meetup.uhoo.core.Business;
 
+import java.util.ArrayList;
+
 /**
  * Created by sultankhan on 1/25/17.
  */
@@ -74,6 +76,11 @@ public class GooglePlacesNearbyService {
                         @Override
                         public void onBusinessFetched(Business object) {
                             businessNearbyListener.onBusinessFetched(object);
+                        }
+
+                        @Override
+                        public void onFetchComplete(ArrayList<Business> loadedBusinesses) {
+                            businessNearbyListener.onFetchComplete();
                         }
 
                         @Override

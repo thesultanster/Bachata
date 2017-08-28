@@ -29,6 +29,8 @@ import com.meetup.uhoo.core.UserDataFetchListener;
 import com.meetup.uhoo.service_layer.business_services.BusinessNearbyListener;
 import com.meetup.uhoo.service_layer.business_services.BusinessService;
 
+import java.util.ArrayList;
+
 /**
  * Created by sultankhan on 1/31/17.
  */
@@ -250,6 +252,11 @@ public class UserCheckinService {
 
                 // notificationID allows you to update the notification later on.
                 mNotificationManager.notify(AppConstant.CHECKIN_NOTIF, mBuilder.build());
+            }
+
+            @Override
+            public void onFetchComplete(ArrayList<Business> loadedBusinesses) {
+
             }
 
             @Override
