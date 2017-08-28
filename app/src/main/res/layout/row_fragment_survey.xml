@@ -7,9 +7,9 @@
         android:id="@+id/tvAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp"
+        android:padding="8dp"
         android:gravity="center"
-        android:textColor="@color/colorAccentDark"
+        android:textColor="@color/md_grey_500"
         android:textSize="14sp"
         android:text="answer"/>
 

@@ -60,8 +60,11 @@ public class SurveyFragment extends Fragment {
         if(survey != null){
             tvSurveyBody.setText(survey.getBody());
             tvSurveyTitle.setText(survey.getTitle());
-
             surveyOptionList = survey.getOptions();
+
+            if(survey.getBody().equals("")){
+                tvSurveyBody.setVisibility(View.GONE);
+            }
 
         }
 

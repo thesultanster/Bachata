@@ -5,12 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#1A4465">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vpSurveyViewPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#1A4465"
             android:layout_above="@+id/tabDots"
             />
 
@@ -19,6 +21,7 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="24dp"
+            android:background="#163E5D"
             app:tabBackground="@drawable/tab_selector"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp"/>

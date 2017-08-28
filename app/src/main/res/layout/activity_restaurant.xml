@@ -108,6 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/primaryColorDark"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -165,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:background="@color/white"
+                android:background="#0A141C"
                 android:orientation="vertical"
                 android:elevation="24dp">
 
@@ -182,6 +183,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="56dp"
+                        android:textColor="@color/white"
                         android:textSize="16dp"
                         android:text="Check In to see people's profiles"/>
 
@@ -190,6 +192,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:layout_marginTop="8dp"
+                        android:textColor="@color/white"
                         android:textSize="24dp"
                         android:text="^"/>
 
@@ -207,7 +210,7 @@
                     <com.meetup.uhoo.views.SurveyView
                         android:id="@+id/svSurveyView"
                         android:layout_width="match_parent"
-                        android:layout_height="224dp"
+                        android:layout_height="225dp"
                         />
 
 
@@ -246,6 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
+                    android:textColor="@color/white"
                     android:text="CHECK IN"
                     android:textSize="14sp" />
 
